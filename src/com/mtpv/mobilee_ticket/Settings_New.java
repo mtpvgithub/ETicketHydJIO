@@ -415,8 +415,18 @@ public class Settings_New extends Activity implements OnClickListener {
 		btn_pinpadscan_xml = (Button) findViewById(R.id.btn_pinpadscan_xml);
 
 		update_apk = (ImageView) findViewById(R.id.update_apk);
+//		if (null != MainActivity.services_url && MainActivity.services_url.equals("https://www.echallan.org/eTicketMobileHyd")) {
+//			update_apk.setEnabled(false);
+//			update_apk.setClickable(false);
+//		}else{
+//			update_apk.setClickable(true);
+//			update_apk.setEnabled(true);
+//
+//		}
 
 		ffd = (TextView) findViewById(R.id.ffd);
+
+
 
 		btn_ps_name.setOnClickListener(this);
 		// update_apk.setOnClickListener(this);
@@ -707,6 +717,7 @@ public class Settings_New extends Activity implements OnClickListener {
 			break;
 			
 		case R.id.btnscan_settings_xml:
+
 			bluetoothFLG = true;
 			pinpadFLG = false;
 
@@ -1177,26 +1188,32 @@ public class Settings_New extends Activity implements OnClickListener {
 						pointNameBYpsname_name_code_arr[i] = ServiceHelper.PointNamesBypsNames_master[i].toString().trim().split("@");
 						Log.i("**POINT DETAILS**", "" + pointNameBYpsname_name_code_arr[i][1].toString().trim());
 					}
+
+
+
+
+					pointNameBy_PsName_code_arr.clear();
+					pointNameBy_PsName_arr.clear();
+
+					for (int j = 1; j < pointNameBYpsname_name_code_arr.length; j++) {
+						try {
+							pointNameBy_PsName_code_arr.add(pointNameBYpsname_name_code_arr[j][0]);
+							pointNameBy_PsName_arr.add(pointNameBYpsname_name_code_arr[j][1]);
+						}catch (Exception e)
+						{
+							e.printStackTrace();
+						}
+					}
+					Log.i("**PS NAMES**", ""+ pointNameBy_PsName_arr.size());
+					btn_pointby_ps_name.setClickable(true);
+
 				}catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 			}
 			/*------------TO CLEAR POINT CODE OF SECOND BUTTON-----------*/
-			pointNameBy_PsName_code_arr.clear();
-			pointNameBy_PsName_arr.clear();
 
-			for (int j = 1; j < pointNameBYpsname_name_code_arr.length; j++) {
-				try {
-					pointNameBy_PsName_code_arr.add(pointNameBYpsname_name_code_arr[j][0]);
-					pointNameBy_PsName_arr.add(pointNameBYpsname_name_code_arr[j][1]);
-				}catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-			Log.i("**PS NAMES**", ""+ pointNameBy_PsName_arr.size());
-			btn_pointby_ps_name.setClickable(true);
 			// showDialog(PS_NAME_DIALOG);
 		}
 	}

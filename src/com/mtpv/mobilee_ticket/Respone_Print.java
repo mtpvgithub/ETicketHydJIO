@@ -270,11 +270,7 @@ public class Respone_Print extends Activity {
 					showToast("Please set bluetooth address in setting");
 				} else {
 					try {
-						/*
-						 * String printdata = bth_printer.font_Courier_41("" +
-						 * printTicket); actual_printer.Call_PrintertoPrint("" +
-						 * address_spot, "" + printdata);
-						 */
+
 
 						Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
 

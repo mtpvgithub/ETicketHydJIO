@@ -13,61 +13,61 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" 
+        android:layout_centerHorizontal="true"
         android:gravity="center" >
 
-<!--         <RelativeLayout
-            android:id="@+id/relativeLayout1"
-            style="@style/header_style"
-            android:layout_width="match_parent"
+        <!--         <RelativeLayout
+                    android:id="@+id/relativeLayout1"
+                    style="@style/header_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" > -->
+
+        <ImageView
+            android:id="@+id/imageView1"
+            style="@style/header_images_style_left"
+            android:layout_alignParentStart="true"
+            android:contentDescription="@null"
+            android:layout_centerVertical="true" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            style="@style/header_images_style_right"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@null"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/header_text_style"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" > -->
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/header_txt" />
 
-            <ImageView
-                android:id="@+id/imageView1"
-                style="@style/header_images_style_left"
-                android:layout_alignParentStart="true"
-                android:contentDescription="@null"
-                android:layout_centerVertical="true" />
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/cust_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="23dp"
+            android:text="@string/app_version"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/imageView2"
-                style="@style/header_images_style_right"
-                android:layout_alignParentEnd="true"
-                android:contentDescription="@null"
-                android:layout_centerVertical="true" />
-
-            <TextView
-                android:id="@+id/textView1"
-                style="@style/header_text_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="@string/header_txt" />
-
-            <TextView
-                android:id="@+id/textView2"
-                style="@style/cust_text_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="23dp"
-                android:text="@string/app_version"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView_header_spot_challan_xml"
-                style="@style/cust_text_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/imageView2"
-                android:layout_centerHorizontal="true"
-                android:text="@string/ip_settings"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/textView_header_spot_challan_xml"
+            style="@style/cust_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageView2"
+            android:layout_centerHorizontal="true"
+            android:text="@string/ip_settings"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
         <!-- </RelativeLayout> -->
     </RelativeLayout>
 
@@ -122,46 +122,46 @@
                 android:text="@string/ip_settings_header"
                 android:textSize="@dimen/thirty_sp" />
 
-<!--             <LinearLayout
-                android:id="@+id/ll_rg_ipsettings_xml"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <!--             <LinearLayout
+                            android:id="@+id/ll_rg_ipsettings_xml"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/textView3"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="@dimen/header_grnt_padding_five"
+                            android:layout_marginTop="@dimen/header_grnt_padding_five" > -->
+
+            <RadioGroup
+                android:id="@+id/radioGroup_live_test"
                 android:layout_below="@+id/textView3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/header_grnt_padding_five"
-                android:layout_marginTop="@dimen/header_grnt_padding_five" > -->
+                android:layout_marginTop="@dimen/header_grnt_padding_five"
+                android:orientation="horizontal" >
 
-                <RadioGroup
-                    android:id="@+id/radioGroup_live_test"
-                    android:layout_below="@+id/textView3"
-                    android:layout_width="fill_parent"
+                <RadioButton
+                    android:id="@+id/radioButton_live"
+                    style="@style/dd_custom_radio_btn_style"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="@dimen/header_grnt_padding_five"
-                    android:layout_marginTop="@dimen/header_grnt_padding_five"
-                    android:orientation="horizontal" >
+                    android:paddingStart="@dimen/header_grnt_padding_five"
+                    android:paddingEnd="@dimen/header_grnt_padding_five"
+                    android:text="@string/open" />
 
-                    <RadioButton
-                        android:id="@+id/radioButton_live"
-                        style="@style/dd_custom_radio_btn_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="@dimen/header_grnt_padding_five"
-                        android:paddingEnd="@dimen/header_grnt_padding_five"
-                        android:checked="true"
-                        android:text="@string/live" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton_test"
-                        style="@style/dd_custom_radio_btn_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="@dimen/header_grnt_padding_five"
-                        android:paddingEnd="@dimen/header_grnt_padding_five"
+                <RadioButton
+                    android:id="@+id/radioButton_test"
+                    style="@style/dd_custom_radio_btn_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/header_grnt_padding_five"
+                    android:paddingEnd="@dimen/header_grnt_padding_five"
+                    android:checked="true"
 
 
-                        android:text="@string/test" />
-                </RadioGroup>
+                    android:text="@string/local" />
+            </RadioGroup>
             <!-- </LinearLayout> -->
 
             <LinearLayout

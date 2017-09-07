@@ -10,6 +10,7 @@ import io.fabric.sdk.android.Fabric;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import io.fabric.sdk.android.BuildConfig;
 import mother.com.test.PidSecEncrypt;
@@ -65,6 +66,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mtpv.mobilee_ticket_services.DBHelper;
+import com.mtpv.mobilee_ticket_services.DateUtil;
 import com.mtpv.mobilee_ticket_services.ServiceHelper;
 
 @SuppressLint({"WorldReadableFiles", "NewApi", "SimpleDateFormat"})
@@ -90,7 +92,7 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
     public static double latitude = 0.0, longitude = 0.0;
 
     public static String UNIT_CODE = "", UNIT_NAME = "", IMEI = "", URL = "", user_id = "", appVersion = null,
-            user_pwd = "", e_user_id = null, sim_No = null, e_user_tmp = "";
+            user_pwd = "", e_user_id = null, sim_No = null, e_user_tmp = "", device_Name = "", phone_Network = "", imei_sim_ChekURL;
 
     boolean isGPSEnabled = false, isNetworkEnabled = false, canGetLocation = false;
 
@@ -129,6 +131,12 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
     private static final int REQUEST_PERMISSIONS = 20;
     private SparseIntArray mErrorString;
 
+    //TIMESTRAMP PARAMETERS
+
+    public static String transID, clntLgnReq, clntLgnResp, srvrLOGINTIME, clntLOGINTIME;
+    DateUtil dateUtil;
+
+
     @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     @Override
@@ -141,8 +149,8 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.login);
-
         mErrorString = new SparseIntArray();
+
 
         if (Build.VERSION.SDK_INT > 22 && !hasPermissions(requiredPermissions)) {
 
@@ -160,7 +168,43 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
                             Manifest.permission.INSTALL_SHORTCUT}, R.string
                             .runtime_permissions_txt
                     , REQUEST_PERMISSIONS);
+
+
+            commonUIMethod();
+
+        } else {
+            commonUIMethod();
+            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            IMEI = getDeviceID(telephonyManager);
+            if (telephonyManager.getSimState() != TelephonyManager.SIM_STATE_ABSENT) {
+                sim_No = "" + telephonyManager.getSimSerialNumber();
+                phone_Network = "" + telephonyManager.getNetworkOperatorName();
+                device_Name = Build.MANUFACTURER;
+            } else {
+                sim_No = "";
+                device_Name = "";
+
+            }
+
+            if (isOnline()) {
+                if (!Objects.equals("", phone_Network)) {
+                    if (Objects.equals("airtel", phone_Network) || phone_Network.equals("AirTel")) {
+                        imei_sim_ChekURL = "http://192.168.11.97:8080/eTicketMobileHyd" + "" + url_to_fix;
+                        new Async_task_checkingSecurityWithIMEI().execute();
+                    }
+                }
+            } else {
+                showToast("PLease check your Network!");
+                finish();
+            }
+
+
         }
+
+
+    }
+
+    public void commonUIMethod() {
         showDialog(SPLASH_DIALOG);
         new Handler().postDelayed(new Runnable() {
 
@@ -169,18 +213,13 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
                 removeDialog(SPLASH_DIALOG);
             }
         }, 2500);
-
-
         LoadUIcomponents();
         textView2 = (TextView) findViewById(R.id.textView2);
         appVersion = textView2.getText().toString().trim();
-
         if (android.os.Build.VERSION.SDK_INT > 11) {
             StrictMode.ThreadPolicy polocy = new StrictMode.ThreadPolicy.Builder().build();
             StrictMode.setThreadPolicy(polocy);
         }
-
-
         preference = getSharedPreferences("preferences", MODE_WORLD_READABLE);
         service_type = preference.getString("servicetype", "test");
         services_url = preference.getString("serviceurl", "url1");
@@ -199,6 +238,8 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
         } else if ((!services_url.equals("url1") && (service_type.equals("test")))) {
             URL = "" + services_url + "" + url_to_fix;
         }
+
+
     }
 
     private void addShortcut() {
@@ -208,7 +249,6 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
         int flags = Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
                 | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT;
         shortcutIntent.addFlags(flags);
-
         Intent addIntent = new Intent();
         addIntent.putExtra("duplicate", false);
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
@@ -217,6 +257,8 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
                 Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.drawable.logo));
         addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
         getApplicationContext().sendBroadcast(addIntent);
+
+
     }
 
     private void LoadUIcomponents() {
@@ -228,14 +270,15 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
         btn_submit = (Button) findViewById(R.id.btnsubmit_login_xml);
         tv_ip_settings = (TextView) findViewById(R.id.tv_ipsettings);
 
-        // et_pid.setText("23001004");
-        //et_pid_pwd.setText("WdSt24Pr");
+        //et_pid.setText("23001004");
+        // et_pid_pwd.setText("WdSt48Pr");
 
         btn_cancel.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
         tv_ip_settings.setOnClickListener(this);
 
         db = new DBHelper(getApplicationContext());
+
     }
 
     @SuppressWarnings("unused")
@@ -327,8 +370,12 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
         IMEI = getDeviceID(telephonyManager);
         if (telephonyManager.getSimState() != TelephonyManager.SIM_STATE_ABSENT) {
             sim_No = "" + telephonyManager.getSimSerialNumber();
+            phone_Network = "" + telephonyManager.getNetworkOperatorName();
+            device_Name = Build.MANUFACTURER;
         } else {
             sim_No = "";
+            device_Name = "";
+
         }
     }
 
@@ -457,6 +504,7 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
 
                         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                            clntLgnReq = String.valueOf(System.currentTimeMillis());
                             new Async_task_login().execute();
 
                         } else {
@@ -540,6 +588,7 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
             // TODO Auto-generated method stub
 
             String[] version_split = appVersion.split("\\-");
+
             ServiceHelper.login("" + user_id, "" + e_user_tmp, "" + IMEI, "" + sim_No, "" + latitude, "" + longitude,
                     "" + version_split[1]);
             return null;
@@ -559,6 +608,7 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
             // TODO Auto-generated method stub
             super.onPostExecute(result);
             removeDialog(PROGRESS_DIALOG);
+            clntLgnResp = String.valueOf(System.currentTimeMillis());
 
             try {
 
@@ -581,7 +631,8 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
                     } else {
 
                         MainActivity.arr_logindetails = ServiceHelper.Opdata_Chalana.split(":");
-
+                        srvrLOGINTIME = ServiceHelper.Opdata_Chalana.split("~")[1];
+                        clntLOGINTIME = clntLgnReq + "#" + clntLgnResp;
                         for (int i = 0; i < MainActivity.arr_logindetails.length; i++) {
                         }
 
@@ -609,8 +660,6 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
                         String mobileNo_flg = "" + arr_logindetails[13];
 
 
-
-
                         editors.putString("PID_CODE", pidCode);
                         editors.putString("PID_NAME", pidName);
                         editors.putString("PS_CODE", psCd);
@@ -629,15 +678,15 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
                         editors.putString("MOBILE_NO_FLAG", mobileNo_flg);
                         editors.commit();
 
-                        if (null != services_url && services_url.equals("https://www.echallan.org/eTicketMobileHyd")) {
-                            otpno = "" + arr_logindetails[14];
-                            Log.d("OTP",""+otpno);
-                            Intent i = new Intent(MainActivity.this, Login_otp.class);
-                            startActivity(i);
-                        } else {
-                            startActivity(new Intent(getApplicationContext(), Dashboard.class));
-                            finish();
-                        }
+//                        if (null != services_url && services_url.equals("https://www.echallan.org/eTicketMobileHyd")) {
+//                            otpno = "" + arr_logindetails[14];
+//                            Log.d("OTP", "" + otpno);
+//                            Intent i = new Intent(MainActivity.this, Login_otp.class);
+//                            startActivity(i);
+//                        } else {
+                        startActivity(new Intent(getApplicationContext(), Dashboard.class));
+                        finish();
+//                        }
                     }
                 } else {
                     showToast("Login Failed!");
@@ -648,10 +697,109 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
         }
     }
 
+
+    public class Async_task_checkingSecurityWithIMEI extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            try {
+                String secure_IMEI = new com.mtpv.mobilee_ticket_services.PidSecEncrypt().encrypt(IMEI);
+                String dSecure_IMEI = new com.mtpv.mobilee_ticket_services.PidSecEncrypt().encrypt(secure_IMEI);
+                if (null != dSecure_IMEI) {
+                    ServiceHelper.imeiValidation("" + dSecure_IMEI);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // TODO Auto-generated method stub
+
+            return null;
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+            showDialog(PROGRESS_DIALOG);
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            removeDialog(PROGRESS_DIALOG);
+            try {
+                if (!ServiceHelper.Opdata_Chalana.equals("0") && null != ServiceHelper.Opdata_Chalana.toString()
+                        && !Objects.equals("", ServiceHelper.Opdata_Chalana)) {
+                    if (ServiceHelper.Opdata_Chalana.equals("R001")) {
+                        new Async_task_checkingSecurityWithSIM().execute();
+                    } else {
+                        securityDialog();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                securityDialog();
+            }
+        }
+    }
+
+    public class Async_task_checkingSecurityWithSIM extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            try {
+                String secure_SIM = new com.mtpv.mobilee_ticket_services.PidSecEncrypt().encrypt(sim_No);
+                String dSecure_SIM = new com.mtpv.mobilee_ticket_services.PidSecEncrypt().encrypt(secure_SIM);
+                if (null != dSecure_SIM) {
+                    ServiceHelper.simValidation(""+dSecure_SIM);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+            // TODO Auto-generated method stub
+
+            return null;
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+            showDialog(PROGRESS_DIALOG);
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            try {
+                if (!ServiceHelper.Opdata_Chalana.equals("0") && null != ServiceHelper.Opdata_Chalana.toString() &&
+                        !Objects.equals("", ServiceHelper.Opdata_Chalana)) {
+                    if (ServiceHelper.Opdata_Chalana.equals("R002")) {
+                        removeDialog(PROGRESS_DIALOG);
+                    } else {
+                        securityDialog();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                securityDialog();
+            }
+        }
+    }
+
+
     @SuppressWarnings("deprecation")
     @Override
     protected Dialog onCreateDialog(int id) {
-        // TODO Auto-generated method stub
         switch (id) {
             case SPLASH_DIALOG:
                 Dialog dg_splash = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
@@ -775,6 +923,60 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
         btn2.setBackgroundColor(Color.RED);
     }
 
+    private void securityDialog() {
+        TextView title = new TextView(this);
+        title.setText("Hyderabad E-Ticket");
+        title.setBackgroundColor(Color.RED);
+        title.setGravity(Gravity.CENTER);
+        title.setTextColor(Color.WHITE);
+        title.setTextSize(26);
+        title.setTypeface(title.getTypeface(), Typeface.BOLD);
+        title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dialog_logo, 0, R.drawable.dialog_logo, 0);
+        title.setPadding(20, 0, 20, 0);
+        title.setHeight(70);
+
+        String otp_message = "\n Your Device is Not Register! \n Please contact E- Challan Team to register the device.";
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this,
+                AlertDialog.THEME_HOLO_LIGHT);
+        alertDialogBuilder.setCustomTitle(title);
+        alertDialogBuilder.setIcon(R.drawable.dialog_logo);
+        alertDialogBuilder.setMessage(otp_message);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        alertDialog.getWindow().getAttributes();
+
+        TextView textView = (TextView) alertDialog.findViewById(android.R.id.message);
+        textView.setTextSize(28);
+        textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+        textView.setGravity(Gravity.CENTER);
+
+        Button btn1 = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        btn1.setTextSize(22);
+        btn1.setTextColor(Color.WHITE);
+        btn1.setTypeface(btn1.getTypeface(), Typeface.BOLD);
+        btn1.setBackgroundColor(Color.RED);
+
+        Button btn2 = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        btn2.setTextSize(22);
+        btn2.setTextColor(Color.WHITE);
+        btn2.setTypeface(btn2.getTypeface(), Typeface.BOLD);
+        btn2.setBackgroundColor(Color.RED);
+    }
+
     public void requestAppPermissions(final String[] requestedPermissions,
                                       final int stringId, final int requestCode) {
         mErrorString.put(requestCode, stringId);
@@ -832,6 +1034,24 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
 
     public void onPermissionsGranted(final int requestCode) {
         Toast.makeText(this, "Permissions Received.", Toast.LENGTH_LONG).show();
+
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        IMEI = getDeviceID(telephonyManager);
+        if (telephonyManager.getSimState() != TelephonyManager.SIM_STATE_ABSENT) {
+            sim_No = "" + telephonyManager.getSimSerialNumber();
+            phone_Network = "" + telephonyManager.getNetworkOperatorName();
+            device_Name = Build.MANUFACTURER;
+        } else {
+            sim_No = "";
+            device_Name = "";
+
+        }
+        if (isOnline()) {
+
+            new Async_task_checkingSecurityWithIMEI().execute();
+        } else {
+            showToast("Please check your Network!");
+        }
     }
 
     public boolean hasPermissions(String... permissions) {

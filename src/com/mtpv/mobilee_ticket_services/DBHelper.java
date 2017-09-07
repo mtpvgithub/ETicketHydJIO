@@ -89,47 +89,47 @@ public class DBHelper {
 	public static String Occupation_table = "OCCUPATION_TABLE";
 
 	/* TABLE CREATIONS QUERIES */
-	public static String wheelerCodeCreation = "create table " + wheelercode_table
+	public static String wheelerCodeCreation = "CREATE TABLE IF NOT EXISTS  " + wheelercode_table
 			+ " ( SNO INTEGER PRIMARY KEY AUTOINCREMENT , " + wheeler_code + " varchar2(20), " + wheeler_name
 			+ " varchar2(40));";
 
-	public static String occupationCreation = "create table " + occupation_table
+	public static String occupationCreation = "CREATE TABLE IF NOT EXISTS  " + occupation_table
 			+ " ( SNO INTEGER PRIMARY KEY AUTOINCREMENT , " + occuptn_code + " varchar2(20), " + occuptn_name
 			+ " varchar2(40));";
 
-	public static String barTableCreation = "create table " + bar_table + " ( SNO INTEGER PRIMARY KEY AUTOINCREMENT , "
+	public static String barTableCreation = "CREATE TABLE IF NOT EXISTS  " + bar_table + " ( SNO INTEGER PRIMARY KEY AUTOINCREMENT , "
 			+ bar_code + " varchar2(20), " + bar_name + " varchar2(40)) ";
 
 	public static String termailDetailsCreation = "CREATE TABLE IF NOT EXISTS  " + TERMINAL_DETAILS_TABLE
 			+ " ( SNO INTEGER PRIMARY KEY AUTOINCREMENT , " + TERMINAL_ID + " varchar2(40), " + BT_NAME
 			+ " varchar2(40), " + BT_ADDRESS + " varchar2(40)) ";
 
-	static String qualificationCreation = "create table " + qualification_table
+	static String qualificationCreation = "CREATE TABLE IF NOT EXISTS  " + qualification_table
 			+ " ( SNO INTEGER PRIMARY KEY AUTOINCREMENT , " + qlfctn_code + " varchar2(20), " + qlfctn_name
 			+ " varchar2(40));";
 
-	static String vehicleCatCreation = "create table " + vehicleCat_table
+	static String vehicleCatCreation = "CREATE TABLE IF NOT EXISTS  " + vehicleCat_table
 			+ " ( SNO INTEGER PRIMARY KEY AUTOINCREMENT , " + vhcle_cat_code + " varchar2(20), " + vhcle_cat_name
 			+ " varchar2(40));";
 
-	static String vehicleMainCatCreation = "create table " + vehicleMainCat_table
+	static String vehicleMainCatCreation = "CREATE TABLE IF NOT EXISTS  " + vehicleMainCat_table
 			+ " ( SNO INTEGER PRIMARY KEY AUTOINCREMENT , " + vhcle_maincat_code + " varchar2(20), "
 			+ vhcle_maincat_name + " varchar2(40));";
 
-	public static String psNamesCreation = "create table " + psName_table
+	public static String psNamesCreation = "CREATE TABLE IF NOT EXISTS  " + psName_table
 			+ " ( SNO INTEGER PRIMARY KEY AUTOINCREMENT , " + ps_code_settings + " varchar2(20), " + ps_name_settings
 			+ " varchar2(40));";
 
-	public static String violatioPointsDetaisCreation = "create table " + violationPointsTable
+	public static String violatioPointsDetaisCreation = "CREATE TABLE IF NOT EXISTS  " + violationPointsTable
 			+ " ( SNO INTEGER PRIMARY KEY AUTOINCREMENT , " + offenceCode + " varchar2(20), " + wheelerCode
 			+ " varchar2(20), " + penalityPoints + " varchar2(20));";
 
-	static String duplicatePrintCreation = "create table " + duplicatePrint_table
+	static String duplicatePrintCreation = "CREATE TABLE IF NOT EXISTS  " + duplicatePrint_table
 			+ " ( SNO INTEGER PRIMARY KEY AUTOINCREMENT , " + dup_print_respnse + " varchar2(5000), "
 			+ dup_print_app_type + " varchar2(30));";
 
 	/* VIOLATION CODE */
-	static String violationsCreation = "create table " + vioalation_table
+	static String violationsCreation = "CREATE TABLE IF NOT EXISTS  " + vioalation_table
 			+ " ( SNO INTEGER PRIMARY KEY AUTOINCREMENT , " + vltn_wheeler_code + " varchar2(20), " + vltn_offence_code
 			+ " varchar2(10), " + vltn_section + " varchar2(40), " + vltn_violation_desc + " varchar2(50), "
 			+ vltn_min_fine + " varchar2(40), " + vltn_max_fine + " varchar2(40));";

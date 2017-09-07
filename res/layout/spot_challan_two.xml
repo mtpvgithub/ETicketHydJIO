@@ -94,9 +94,10 @@
          	android:id="@+id/container"
 		    android:layout_width="fill_parent"
 		    android:layout_height="fill_parent"
-		    android:layout_above="@id/footer"
-		    android:layout_below="@id/header"
-		    android:layout_margin="10dp" >
+       android:layout_marginLeft="10dp"
+       android:layout_marginRight="10dp"
+       android:layout_below="@+id/header"
+       android:layout_centerHorizontal="true">
 
          <RelativeLayout
             android:layout_width="match_parent"
@@ -430,13 +431,76 @@
                     android:layout_marginLeft="@dimen/header_grnt_padding_five"
                     android:text="@string/send_otp" /> 
             </LinearLayout>
-            
-           
-           <LinearLayout
+
+
+             <LinearLayout
+                 android:id="@+id/layout_language"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@+id/ll_contactnum_spotchallantwo_xml"
+                 android:layout_centerHorizontal="true"
+                 android:layout_marginBottom="@dimen/header_grnt_padding_five"
+                 android:layout_marginTop="@dimen/header_grnt_padding_five"
+                 android:visibility="gone"
+                >
+
+                 <TextView
+                     android:id="@+id/tv_language"
+                     style="@style/navi_text_style"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentTop="true"
+                     android:layout_marginBottom="@dimen/header_grnt_padding_five"
+                     android:layout_marginTop="@dimen/header_grnt_padding_five"
+                     android:text="@string/languageselect" />
+                 <RadioGroup
+                     android:id="@+id/group_language"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:clickable="true"
+                     android:orientation="horizontal" >
+
+                     <RadioButton
+                         android:id="@+id/rd_Telugu"
+                         style="@style/dd_custom_radio_btn_style"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:checked="true"
+                         android:paddingLeft="@dimen/header_grnt_padding_ten"
+                         android:text="@string/telugu" />
+
+                     <RadioButton
+                         android:id="@+id/rd_English"
+                         style="@style/dd_custom_radio_btn_style"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:paddingLeft="@dimen/header_grnt_padding_ten"
+                         android:text="@string/english" />
+                     <RadioButton
+                         android:id="@+id/rd_Urdu"
+                         style="@style/dd_custom_radio_btn_style"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:paddingLeft="@dimen/header_grnt_padding_ten"
+                         android:text="@string/urdu" />
+                     <RadioButton
+                         android:id="@+id/rd_Hindi"
+                         style="@style/dd_custom_radio_btn_style"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:paddingLeft="@dimen/header_grnt_padding_ten"
+                         android:text="@string/hindi" />
+                 </RadioGroup>
+             </LinearLayout>
+
+
+
+             <LinearLayout
                 android:id="@+id/proffession_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ll_contactnum_spotchallantwo_xml"
+                android:layout_below="@+id/layout_language"
                 android:layout_centerHorizontal="true"
                 android:visibility="gone"
                 android:orientation="vertical"

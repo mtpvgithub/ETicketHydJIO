@@ -541,7 +541,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
             public void afterTextChanged(Editable s) {
 
                 if (!et_driver_lcnce_num.getText().toString().equalsIgnoreCase("")
-                        && et_driver_lcnce_num.getText().toString().length() >= 3) {
+                        && et_driver_lcnce_num.getText().toString().length() >= 5) {
                     dob_input.setVisibility(View.VISIBLE);
                     dob_input.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -688,7 +688,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                     String dateofbirthbut = dob_input.getText().toString();
 
 
-                    if (!et_driver_lcnce_num.getText().toString().equalsIgnoreCase("") && et_driver_lcnce_num.getText().toString().length() >= 3) {
+                    if (!et_driver_lcnce_num.getText().toString().equalsIgnoreCase("") && et_driver_lcnce_num.getText().toString().length() >= 5) {
                         if (dobcheck.equalsIgnoreCase("Yes")) {
                             asyncAllsOfMethods();
 
@@ -775,8 +775,12 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
 
                             if (Fake_NO_Dialog.fake_action == "not fake") {
 
-                                Async_getApprovefromRtaforPoint async_getApprovefromRtaforPoint = new Async_getApprovefromRtaforPoint();
-                                async_getApprovefromRtaforPoint.execute();
+                                if (isOnline()) {
+                                    Async_getApprovefromRtaforPoint async_getApprovefromRtaforPoint = new Async_getApprovefromRtaforPoint();
+                                    async_getApprovefromRtaforPoint.execute();
+                                }else {
+                                    showToast("Please Check your Network Connectivity");
+                                }
 
 
 
@@ -790,8 +794,12 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
 //                                edit.commit();
 //                                startActivity(new Intent(this, GenerateDrunkDriveCase.class));
 
-                                Async_getApprovefromRtaforPoint async_getApprovefromRtaforPoint = new Async_getApprovefromRtaforPoint();
-                                async_getApprovefromRtaforPoint.execute();
+                                if (isOnline()) {
+                                    Async_getApprovefromRtaforPoint async_getApprovefromRtaforPoint = new Async_getApprovefromRtaforPoint();
+                                    async_getApprovefromRtaforPoint.execute();
+                                }else {
+                                    showToast("Please check Network Connectivity ");
+                                }
 
                             } else if (Fake_NO_Dialog.fake_action == "fake") {
 
@@ -987,16 +995,10 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                             tv_maker_name.setText("" + rta_details_master[4]!=null?rta_details_master[4]:"" + "\t" + rta_details_master[6]!=null?rta_details_master[6]:"");
                             tv_engine_no.setText("" + rta_details_master[7]!=null?rta_details_master[7]:"");
                             tv_chasis_no.setText("" + rta_details_master[8]!=null?rta_details_master[8]:"");
-
                             Log.i("FAKE DETAILS", "" + rta_details_master[10]!=null?rta_details_master[10]:"");
-
                             tv_vehicle_details.setText("VEHICLE DETAILS");
-
-
                             rta_details_master = new String[0];
-
                             rta_details_master = ServiceHelper.rta_data.split("!");
-
                             Wheeler_check = rta_details_master[0].split(":");
                             String Wheeler_Enable_check = Wheeler_check[1].toString()!=null?Wheeler_check[1].toString():"";
 
@@ -1027,6 +1029,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                         {
                             e.printStackTrace();
                         }
+
                         new Async_getOffenderRemarks().execute();
 
                     } else {
@@ -1097,7 +1100,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                     e.printStackTrace();
                 }
             } else{
-                showToast("Error");
+                showToast("Remarks Data Not Found");
             }
 
         }
@@ -1300,7 +1303,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
 
                     owner_image_data = "" + SpotChallan.licence_details_spot_master[5] != null ? SpotChallan.licence_details_spot_master[5] : "";
 
-                    dl_points = SpotChallan.licence_details_spot_master[7] != null ? SpotChallan.licence_details_spot_master[7] : "";
+                    dl_points = SpotChallan.licence_details_spot_master[7] != null ? SpotChallan.licence_details_spot_master[7] : "0";
 
                 }catch (ArrayIndexOutOfBoundsException e)
                 {
@@ -1888,7 +1891,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
         @Override
         protected void onPostExecute(String result) {
 
-            if(!result.equalsIgnoreCase("")&&!result.equalsIgnoreCase(null) &&!result.equalsIgnoreCase("NA"))
+            if(!result.equalsIgnoreCase("")&&!result.equalsIgnoreCase(null))
             {
 
                 removeDialog(PROGRESS_DIALOG);
@@ -1900,7 +1903,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
 
                     String rta = rtaAprroved_Master[0].toString().trim();
 
-                    if ("1".equals(rta)) {
+  /*                  if ("1".equals(rta)) {*/
 
                         SharedPreferences sharedPreference = PreferenceManager
                                 .getDefaultSharedPreferences(getApplicationContext());
@@ -1908,7 +1911,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                         edit.putString("IMAGE", "" + image_data_tosend);
                         edit.commit();
                         startActivity(new Intent(Drunk_Drive.this, GenerateDrunkDriveCase.class));
-
+/*
                     } else if (rtaAprroved_Master[0].equals("0")) {
                         SharedPreferences sharedPreference = PreferenceManager
                                 .getDefaultSharedPreferences(getApplicationContext());
@@ -1916,7 +1919,8 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                         edit.putString("IMAGE", "" + image_data_tosend);
                         edit.commit();
                         startActivity(new Intent(Drunk_Drive.this, GenerateDrunkDriveCase.class));
-                    }
+                    }*/
+
 
                 }catch (Exception e)
                 {

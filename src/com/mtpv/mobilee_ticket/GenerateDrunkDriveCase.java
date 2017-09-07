@@ -346,6 +346,8 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
 
     byte[] byteArray;
 
+    int totaldl_points=0;
+
     static String date;
     public static String Current_Date;
 
@@ -991,6 +993,8 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
             case R.id.btn_cancel_dd3_xml:
                 Drunk_Drive.dd_dobFLG = false;
                 Drunk_Drive.dd_dob_DL = null;
+                totaldl_points=0;
+
                 finish();
                 break;
             case R.id.imgbtn_browseimage_dd3_xml:
@@ -2049,6 +2053,8 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
             // TODO Auto-generated method stub
             super.onPostExecute(result);
 
+            totaldl_points=0;
+
             if (ServiceHelper.Opdata_Chalana.equals("0")) {
                 Drunk_Drive.picturePath = "";
                 ticket_response = "Ticket Generation Failed";
@@ -2810,14 +2816,14 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
 
                             int presentviolatedpoints=0;
 
-                            if(Drunk_Drive.rtaAprroved_Master.length>0&&Drunk_Drive.rtaAprroved_Master!=null) {
+                            if(Drunk_Drive.rtaAprroved_Master!=null && Drunk_Drive.rtaAprroved_Master.length>0) {
 
                                 try {
-                                    presentviolatedpoints = Integer.parseInt(Drunk_Drive.rtaAprroved_Master[1].toString());
+                                    presentviolatedpoints = Integer.parseInt(Drunk_Drive.rtaAprroved_Master[1].toString().trim());
 
-                                    presentviolatedpoints = Integer.parseInt(Drunk_Drive.dl_points) + presentviolatedpoints;
+                                     totaldl_points = Integer.parseInt(Drunk_Drive.dl_points.trim()) + presentviolatedpoints;
 
-                                    Drunk_Drive.dl_points = String.valueOf(presentviolatedpoints);
+                                //    totaldl_points= String.valueOf(presentviolatedpoints);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -2826,7 +2832,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                                 }
                             }
 
-                            if ((Drunk_Drive.dl_points != null && Integer.parseInt(Drunk_Drive.dl_points) > 0)) {
+                            if ( totaldl_points> 0){
 
                                 pointsAlert();
 
@@ -2888,14 +2894,14 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
 
                         int presentviolatedpoints=0;
 
-                        if(Drunk_Drive.rtaAprroved_Master.length>0&&Drunk_Drive.rtaAprroved_Master!=null) {
+                        if(Drunk_Drive.rtaAprroved_Master!=null && Drunk_Drive.rtaAprroved_Master.length>0) {
 
                             try {
-                                presentviolatedpoints = Integer.parseInt(Drunk_Drive.rtaAprroved_Master[1].toString());
+                                presentviolatedpoints = Integer.parseInt(Drunk_Drive.rtaAprroved_Master[1].toString().trim());
 
-                                presentviolatedpoints = Integer.parseInt(Drunk_Drive.dl_points) + presentviolatedpoints;
+                                totaldl_points = Integer.parseInt(Drunk_Drive.dl_points.trim()) + presentviolatedpoints;
 
-                                Drunk_Drive.dl_points = String.valueOf(presentviolatedpoints);
+                                //Drunk_Drive.dl_points = String.valueOf(presentviolatedpoints);
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -2904,7 +2910,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                             }
                         }
 
-                        if ((Drunk_Drive.dl_points != null && Integer.parseInt(Drunk_Drive.dl_points) > 0)) {
+                        if ( totaldl_points > 0) {
 
                             pointsAlert();
 
@@ -2946,12 +2952,12 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                 AlertDialog.THEME_HOLO_LIGHT);
         alertDialogBuilder.setCustomTitle(title);
         alertDialogBuilder.setIcon(R.drawable.dialog_logo);
-        if (Integer.parseInt(Drunk_Drive.dl_points) > 12) {
-            alertDialogBuilder.setMessage("\nTotal Penalty Points on Driving License are " + Drunk_Drive.dl_points +
+        if (totaldl_points > 12) {
+            alertDialogBuilder.setMessage("\nTotal Penalty Points on Driving License are " + totaldl_points +
                     ", Detain the Original Driving License\n");
 
-        } else if (Integer.parseInt(Drunk_Drive.dl_points) > 0) {
-            alertDialogBuilder.setMessage("\nTotal Penalty Points on Driving License are " + Drunk_Drive.dl_points + "\n");
+        } else if (totaldl_points > 0) {
+            alertDialogBuilder.setMessage("\nTotal Penalty Points on Driving License are " + totaldl_points + "\n");
         }
 
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -2965,7 +2971,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
 
 
 
-                if (Integer.parseInt(Drunk_Drive.dl_points) > 12) {
+                if (totaldl_points > 12) {
 
                     if (chck_detainedItems_licence.isChecked()) {
 

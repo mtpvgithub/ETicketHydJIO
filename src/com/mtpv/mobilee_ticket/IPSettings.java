@@ -33,20 +33,27 @@ public class IPSettings extends Activity implements OnClickListener {
 
     String SERVICE_URL_PREF = "", FTP_URL_PREF = "", SERVICE_TYPE_PREf = "";
 
-    @SuppressWarnings("unused")
-    private String test_service_url3 = "http://192.168.11.55:8080/eTicketMobileHyd";
-    @SuppressWarnings("unused")
-    private String test_service_url4 = "http://192.168.11.55:8080/eTicketMobileHyd";
+   // private String test_service_url3 = "http://192.168.11.55:8080/eTicketMobileHyd";
+   // private String test_service_url4 = "http://192.168.11.55:8080/eTicketMobileHyd";
 
     //private String test_service_url = "http://192.168.11.10:8080/eTicketMobileHyd";
-    private String test_service_url = "http://192.168.11.97:8080/eTicketMobileHyd";
+    //private String test_service_url = "http://192.168.11.97:8080/eTicketMobileHyd";
+
+    //private String local_network_url="http://192.168.11.4/eTicketMobileHyd";
+
+//    private String local_network_url="http://192.168.11.10:8080/eTicketMobileHyd";
+
+    private String local_network_url="http://192.168.11.97:8080/eTicketMobileHyd";//Madhu System connecting
+
+
 //    private String live_service_url = "http://192.168.11.4/eTicketMobileHyd";
-    private String live_service_url = "https://www.echallan.org/eTicketMobileHyd";
+   // private String live_service_url = "https://www.echallan.org/eTicketMobileHyd";
+    private String live_service_url = "http://125.16.1.70:8080/eTicketMobileHyd";
 
 
     public static String ftp_fix = "192.168.11.9";
     public static String open_ftp_fix = "125.16.1.69";
-    String service_type = "live";
+    String service_type = "";
 
     @SuppressWarnings("deprecation")
     @SuppressLint("WorldReadableFiles")
@@ -62,41 +69,36 @@ public class IPSettings extends Activity implements OnClickListener {
 
         preference = getSharedPreferences("preferences", MODE_WORLD_READABLE);
         editor = preference.edit();
+
+        //This is main varible to set ipsettings defaultly if we change to live then ipsettings live set default one
         SERVICE_TYPE_PREf = preference.getString("servicetype", "test");
+
         SERVICE_URL_PREF = preference.getString("serviceurl", "url1");
         FTP_URL_PREF = preference.getString("ftpurl", "url2");
 
         rbtn_live = (RadioButton) findViewById(R.id.radioButton_live);
         rbtn_test = (RadioButton) findViewById(R.id.radioButton_test);
 
-       // rbtn_test.setChecked(true);
+       rbtn_test.setChecked(true);
 
-        rbtn_live.setChecked(true);
+       // rbtn_live.setChecked(true);
 
 
         if (SERVICE_TYPE_PREf.equals("live")) {
            rbtn_live.setChecked(true);
             et_service_url.setText("" + live_service_url);
+            et_ftp_url.setText("");
+            et_ftp_url.setText(open_ftp_fix);
+            service_type = "live";
         } else if(SERVICE_TYPE_PREf.equals("test")) {
-            et_service_url.setText("" + test_service_url);
+            et_service_url.setText("" + local_network_url);
+            et_ftp_url.setText("");
+            et_ftp_url.setText(ftp_fix);
             rbtn_test.setChecked(true);
+            service_type = "test";
         }
 
-//		if (SERVICE_TYPE_PREf.equals("live")) {
-//            rbtn_test.setChecked(true);
-//			et_service_url.setText("" + test_service_url);
-//		} else {
-//			et_service_url.setText("" + live_service_url);
-//			rbtn_live.setChecked(true);
-//		}
 
-        if (!FTP_URL_PREF.equals("url2")) {
-            et_ftp_url.setText(FTP_URL_PREF);
-        } else {
-            editor.putString("ftpurl", "" + ftp_fix);
-            et_ftp_url.setText("" + ftp_fix);
-        }
-        editor.commit();
     }
 
     private void LoadUIComponents() {
@@ -118,13 +120,16 @@ public class IPSettings extends Activity implements OnClickListener {
                 // TODO Auto-generated method stub
                 switch (checkedId) {
                     case R.id.radioButton_live:
+
                         service_type = "live";
                         et_service_url.setText(live_service_url);
+                        et_ftp_url.setText(open_ftp_fix);
                         break;
 
                     case R.id.radioButton_test:
                         service_type = "test";
-                        et_service_url.setText(test_service_url);
+                        et_service_url.setText(local_network_url);
+                        et_ftp_url.setText(ftp_fix);
                         break;
 
                     default:
@@ -150,7 +155,9 @@ public class IPSettings extends Activity implements OnClickListener {
                     showError(et_ftp_url, "Enter FTP URL");
 
                 } else {
-                    ftp_fix = et_ftp_url.getText().toString().trim();
+
+
+
                     preference = getSharedPreferences("preferences", MODE_WORLD_READABLE);
                     editor = preference.edit();
 

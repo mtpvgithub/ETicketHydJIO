@@ -14,7 +14,7 @@
     <string name="towing">Crane \n41 CP ACT</string>
     <string name="towing_one_line">Crane 41 CP ACT</string>
     <string name="reports">Reports</string>
-    <string name="app_version">Version-1.5.7</string>
+    <string name="app_version">Version-2.0</string>
     <string name="regNo">Regn.No</string>
     <string name="engine">Engine No</string>
     <string name="chasis">Chasis No</string>
@@ -63,6 +63,7 @@
     <string name="voter_id_no">Voter Id No      </string>
     <string name="driver_contact_no">Enter Driver Contact No</string>
     <string name="detained_items">Detained Items</string>
+    <string name="languageselect">Select Language</string>
     <string name="detained_items_rc">RC&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string>
     <string name="detained_items_vhcle">Vehicle</string>
     <string name="detained_items_licence">Licence</string>
@@ -205,6 +206,13 @@
     <string name="payment_mode">Payment Mode</string>
     <string name="cash">Cash</string>
     <string name="card">Card</string>
+
+
+    <string name="telugu">Telugu</string>
+    <string name="english">English</string>.
+    <string name="urdu">Urdu</string>
+    <string name="hindi">Hindi</string>
+
     <string name="card_type">Card Type</string>
     <string name="visa_card">Visa</string>
     <string name="master_card">Master</string>
@@ -227,6 +235,8 @@
     <string name="ftp_url">FTP URL</string>
     <string name="live">LIVE</string>
     <string name="test">TEST</string>
+    <string name="local">LOCAL NETWORK</string>
+    <string name="open">OPEN NETWORK</string>
 
     <!-- AADHAR DETAILS -->
     <string name="aadhar_no_eid">Aadhar No/EID</string>

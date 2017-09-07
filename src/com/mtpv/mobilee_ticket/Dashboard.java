@@ -258,6 +258,12 @@ public class Dashboard extends Activity implements OnClickListener {
             FTPClient ftpClient = new FTPClient();
 
             try {
+                if (null != MainActivity.services_url && MainActivity.services_url.equals("https://www.echallan.org/eTicketMobileHyd")) {
+                    server = "125.16.1.69";
+                }else{
+                    server = "192.168.11.9";
+                }
+                Log.i("server URL ::", ""+server);
                 ftpClient.connect(server, port);
                 ftpClient.login(username, password);
                 ftpClient.enterLocalPassiveMode();
@@ -275,7 +281,6 @@ public class Dashboard extends Activity implements OnClickListener {
                 if (inputStream == null || ftpClient.getReplyCode() == 550) {
                     fileOutput.close();
                     outputStream.close();
-
                     runOnUiThread(new Runnable() {
 
                         @SuppressWarnings("deprecation")
@@ -381,6 +386,7 @@ public class Dashboard extends Activity implements OnClickListener {
                         try {
                             db.open();
                             db.execSQL("delete from " + DBHelper.psName_table);
+                            db.execSQL("delete from " + DBHelper.wheeler_code);
                         } catch (Exception e) {
                             // TODO: handle exception
                             e.printStackTrace();
@@ -401,13 +407,10 @@ public class Dashboard extends Activity implements OnClickListener {
                 }
 
             } catch (SocketException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             return null;
@@ -415,7 +418,6 @@ public class Dashboard extends Activity implements OnClickListener {
 
         @Override
         protected void onPostExecute(String result) {
-            // TODO Auto-generated method stub
             super.onPostExecute(result);
         }
 

@@ -330,7 +330,7 @@
                 android:layout_marginTop="35dp"
                 android:layout_toRightOf="@+id/change_pswd"
                 android:src="@drawable/updte_btn"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
 </LinearLayout>
         </RelativeLayout>
