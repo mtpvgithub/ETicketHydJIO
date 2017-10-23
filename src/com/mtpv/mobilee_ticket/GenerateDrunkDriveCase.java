@@ -1,26 +1,5 @@
 package com.mtpv.mobilee_ticket;
 
-import it.sauronsoftware.ftp4j.FTPClient;
-import it.sauronsoftware.ftp4j.FTPDataTransferListener;
-import it.sauronsoftware.ftp4j.FTPException;
-import it.sauronsoftware.ftp4j.FTPIllegalReplyException;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.regex.Pattern;
-
-import mother.com.test.PidSecEncrypt;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -75,7 +54,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -91,6 +69,26 @@ import android.widget.Toast;
 import com.mtpv.mobilee_ticket_services.DBHelper;
 import com.mtpv.mobilee_ticket_services.ServiceHelper;
 import com.mtpv.mobilee_ticket_services.Utils;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.regex.Pattern;
+
+import it.sauronsoftware.ftp4j.FTPClient;
+import it.sauronsoftware.ftp4j.FTPDataTransferListener;
+import it.sauronsoftware.ftp4j.FTPException;
+import it.sauronsoftware.ftp4j.FTPIllegalReplyException;
+import mother.com.test.PidSecEncrypt;
 
 @SuppressWarnings("deprecation")
 @SuppressLint({"NewApi", "SetJavaScriptEnabled", "DefaultLocale"})
@@ -126,7 +124,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
     EditText et_regn_cid;
     EditText et_regn_cid_name;
     EditText et_regn_last_num;
-	/* FOR REG.NO END */
+    /* FOR REG.NO END */
 
     /* START OFF FIRST SCREEEN */
     EditText et_owner_dl_no;
@@ -171,7 +169,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
     Button btn_next;
     Button btn_cancel_final;
     Button btn_final_submittion;
-    Button btn_send_otp_to_mobile;
+    public static Button btn_send_otp_to_mobile;
     Button btn_verify_otp_from_mobile;
 
     String[] id_proof_arr = {"Aadhar Number", "Pancard Number", "Passport Number", "VoterId Number"};
@@ -189,7 +187,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
     SimpleDateFormat format;
 
     /* FOR TIME PICKER */
-    int hour, minute;
+    String hour, minute;
     String date_from;// like offence_date and counselling_date
 
     Context context;
@@ -294,6 +292,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
     ArrayList<String> vchle_SubCat_name_arr_list;
 
     /* TO SHOW SUCESS OR FAILURE TICKET GENERATIONS */
+
     String ticket_response = "";
 
     /* GPS VALUES */
@@ -343,18 +342,15 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
 
     public static ImageView offender_image;
     public static String final_image_data_tosend = null;
-
     byte[] byteArray;
-
-    int totaldl_points=0;
-
+    int totaldl_points = 0;
     static String date;
     public static String Current_Date;
-
     public static String image_data = null;
 
     @SuppressLint({"NewApi", "WorldReadableFiles"})
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
@@ -407,7 +403,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
         }
 		/* FIRST IT WILL MOVE TO RTADETAILS.CLASS */
 
-        preferences = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+        preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         editor = preferences.edit();
 		/* FOR CHECKING FTP DETAILS */
 		/*
@@ -477,8 +473,8 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
         db.close();
 
     }
-
     @SuppressLint({"DefaultLocale", "SimpleDateFormat"})
+
     private void LoadUIComponents() {
         // TODO Auto-generated method stub
         netwrk_info_txt = "" + getResources().getString(R.string.newtork_txt);
@@ -505,9 +501,9 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
         btn_offence_time = (Button) findViewById(R.id.btn_offence_time_dd_xml);
         btn_send_otp_to_mobile = (Button) findViewById(R.id.btn_sendOTPtoMobile_dd_xml);
 
-        if ("Y".equals(Drunk_Drive.otp_no_flg.trim().toUpperCase())) {
+        if (!SpotChallan.OtpStatus.trim().equals(null) && !SpotChallan.OtpStatus.trim().equals("") && "Y".equals(SpotChallan.OtpStatus.trim().toUpperCase())) {
             btn_send_otp_to_mobile.setVisibility(View.VISIBLE);
-        } else if ("N".equals(Drunk_Drive.otp_no_flg.trim().toUpperCase())) {
+        } else if (!SpotChallan.OtpStatus.trim().equals(null) && !SpotChallan.OtpStatus.trim().equals("") && "N".equals(SpotChallan.OtpStatus.trim().toUpperCase())) {
             btn_send_otp_to_mobile.setVisibility(View.GONE);
         }
 
@@ -533,7 +529,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
         chck_detainedItems_vhcle.setChecked(true);
         chck_detainedItems_vhcle.setClickable(false);
         chck_detainedItems_licence = (CheckBox) findViewById(R.id.checkBox_dt_lcns_dd2_xml);
-        chck_detainedItems_licence.setChecked(true);
+        // chck_detainedItems_licence.setChecked(false);
         chck_detainedItems_permit = (CheckBox) findViewById(R.id.checkBox_dt_permit_dd2_xml);
 
         // btn_counselling_date = (Button)
@@ -630,47 +626,15 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
         et_regn_cid_name.setText("" + (Drunk_Drive.details_regncid_name.toUpperCase()));
         et_regn_last_num.setText("" + (Drunk_Drive.details_regn_last_num.toUpperCase()));
 
-		/*
-		 * if (!ServiceHelper.Opdata_Chalana.equals("0") && RtaDetails.rtaFlG) {
-		 * Log.i("RTA DETAILS :::", ""+RtaDetails.rtaFlG);
-		 * et_driver_name.setText(""+RtaDetails.rta_details_master[1].
-		 * toUpperCase());
-		 * et_dd_address.setText(""+RtaDetails.rta_details_master[2].toUpperCase
-		 * ()); et_dd_city.setText("" + RtaDetails.rta_details_master[3]);
-		 * 
-		 * }else
-		 */
-		/*
-		 * if
-		 * (RtaDetails.et_driver_lcnce_num.getText().toString().trim().length()>
-		 * 0 && RtaDetails.et_driver_lcnce_num.getText()!=null) {
-		 * Log.i("Licence DETAILS :::", ""+RtaDetails.licFLG);
-		 * et_driver_name.setText(""+RtaDetails.licene_details_master!=null?
-		 * RtaDetails.licene_details_master[0].toUpperCase():"");
-		 * et_driver_fname.setText(""+RtaDetails.licene_details_master!=null?
-		 * RtaDetails.licene_details_master[1].toUpperCase():"");
-		 * et_driver_contact_no.setText(""+RtaDetails.licene_details_master!=
-		 * null?RtaDetails.licene_details_master[2].toUpperCase():"");
-		 * et_dd_address.setText(""
-		 * +RtaDetails.licene_details_master!=null?RtaDetails.
-		 * licene_details_master[4].toUpperCase():"");
-		 * 
-		 * }
-		 */
-        Log.i("RtaDetails.licFLG :::", "" + Drunk_Drive.licFLG);
-        Log.i("RtaDetails.et_driver_lcnce_num :::", "" + Drunk_Drive.et_driver_lcnce_num.getText().toString());
-        if (ServiceHelper.Opdata_Chalana.equals("")) {
-            Log.i("Licence DETAILS :::", "" + Drunk_Drive.licFLG);
-            et_driver_name.setText("" + SpotChallan.licence_details_spot_master != null
-                    ? SpotChallan.licence_details_spot_master[0].toUpperCase() : "");
-            et_driver_fname.setText("" + SpotChallan.licence_details_spot_master != null
-                    ? SpotChallan.licence_details_spot_master[1].toUpperCase() : "");
-            et_driver_contact_no.setText("");
-            et_dd_address.setText("" + SpotChallan.licence_details_spot_master != null
-                    ? SpotChallan.licence_details_spot_master[4].toUpperCase() : "");
+        if (ServiceHelper.license_data.equals(null) || ServiceHelper.license_data.equals("")) {
 
-        } else if (Drunk_Drive.et_driver_lcnce_num.getText().toString().length() >= 0 && Drunk_Drive.licFLG) {
-            Log.i("RtaDetails.licFLG :::", "" + Drunk_Drive.licFLG);
+            et_driver_name.setText("");
+            et_driver_fname.setText("");
+            et_driver_contact_no.setText("");
+            et_dd_address.setText("");
+
+        } else if (ServiceHelper.license_data != null && !"0".equals(ServiceHelper.license_data) && SpotChallan.licence_details_spot_master.length > 4) {
+
             et_driver_name.setText("" + SpotChallan.licence_details_spot_master != null
                     ? SpotChallan.licence_details_spot_master[0].toUpperCase() : "");
             et_driver_fname.setText("" + SpotChallan.licence_details_spot_master != null
@@ -680,8 +644,16 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
             et_dd_address.setText("" + SpotChallan.licence_details_spot_master != null
                     ? SpotChallan.licence_details_spot_master[4].toUpperCase() : "");
 
-        } else if (Drunk_Drive.et_aadharnumber.getText().toString().length() >= 0 && Drunk_Drive.adhrFLG) {
-            Log.i("Aadhar DETAILS :::", "" + Drunk_Drive.adhrFLG);
+        }
+
+        if (ServiceHelper.aadhar_data.equals("")) {
+
+            et_driver_name.setText("");
+            et_driver_fname.setText("");
+            et_driver_contact_no.setText("");
+            et_dd_address.setText("");
+
+        } else if (!"null".equals(ServiceHelper.aadhar_data) && !"0".equals(ServiceHelper.aadhar_data) && ServiceHelper.aadhar_details.length > 0) {
             // et_driver_name.setText(""+ServiceHelper.aadhar_details[0].toUpperCase());
             et_driver_name.setText("" + (!ServiceHelper.aadhar_details[0].equalsIgnoreCase("0")
                     ? ServiceHelper.aadhar_details[0].toUpperCase() : ""));
@@ -709,51 +681,57 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
             et_dd_city.setText("" + ServiceHelper.aadhar_details[7].toUpperCase());
 
         }
+        try {
 
-        if (Drunk_Drive.details_owner_dl_no.toString().trim().equals("")) {
+            if (Drunk_Drive.details_owner_dl_no.toString().trim().equals("")) {
+                owner_dl_no = "";
+            } else {
+                owner_dl_no = "" + Drunk_Drive.details_owner_dl_no.toString().trim();
+            }
+
+
+            if (Drunk_Drive.details_driver_dl_no.toString().trim().equals("")) {
+                driver_dlno = "";
+            } else {
+                driver_dlno = "" + Drunk_Drive.details_driver_dl_no.toString().trim();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             owner_dl_no = "";
-        } else {
-            owner_dl_no = "" + Drunk_Drive.details_owner_dl_no.toString().trim();
-        }
-
-        if (Drunk_Drive.details_driver_dl_no.toString().trim().equals("")) {
             driver_dlno = "";
-        } else {
-            driver_dlno = "" + Drunk_Drive.details_driver_dl_no.toString().trim();
         }
 
-		/* CARRYING DETAILS FROM RTA START */
-        // if (RtaDetails.rta_details_master.length == 0) {
-        //
-        // } else {
-        // et_driver_name.setText(""
-        // + RtaDetails.rta_details_master[1].toString().trim());
-        // }
 
-		/* ADDRESS */
-        if (Drunk_Drive.rta_details_master.length == 1) {
-            et_address.setText("");
-        } else if (Drunk_Drive.rta_details_master.length == 0) {
-            et_address.setText("");
+        try {
+            if (Drunk_Drive.rta_details_master != null && Drunk_Drive.rta_details_master.length >= 1) {
+                et_address.setText("");
+            } else if (Drunk_Drive.rta_details_master != null && Drunk_Drive.rta_details_master.length == 0) {
+                et_address.setText("");
 
-        } else {
-            et_address.setText("" + Drunk_Drive.rta_details_master[2].toString().trim());
+            } else {
+                et_address.setText("" + Drunk_Drive.rta_details_master[2].toString() != null ? Drunk_Drive.rta_details_master[2].toString() : "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            et_address.setText("");
         }
 
+        try {
 		/* CITY */
-        if (Drunk_Drive.rta_details_master.length == 1) {
-            et_city.setText("");
-        } else if (Drunk_Drive.rta_details_master.length == 0) {
-            et_city.setText("");
+            if (Drunk_Drive.rta_details_master != null && Drunk_Drive.rta_details_master.length > 0 && Drunk_Drive.rta_details_master.length == 1) {
+                et_city.setText("");
+            } else if (Drunk_Drive.rta_details_master != null && Drunk_Drive.rta_details_master.length == 0) {
+                et_city.setText("");
 
-        } else {
-            et_city.setText("" + Drunk_Drive.rta_details_master[3].toString().trim());
+            } else {
+                et_city.setText("" + Drunk_Drive.rta_details_master[3].toString().trim());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            et_city.setText("");
         }
 
-		/*
-		 * LIKE SIMID , IMEI PRESENT_DATE AND PRESENT_TIME ,HOURS MINUTES ,
-		 * MAC-ADDRESS
-		 */
+
         getInitialDetails();
 
 		/* FOR DEFAULT DATE TO BUTTON */
@@ -772,8 +750,8 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
         // attachImageFromRta();
 
     }
-
     @SuppressWarnings("unused")
+
     private void updateDisplay() {
         if (!Drunk_Drive.tv_aadhar_dob.getText().toString().trim().equals("")) {
             String age_by_date = Drunk_Drive.tv_aadhar_dob.getText().toString().trim();
@@ -799,8 +777,8 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
             person_age = year - y;
         }
     }
-
     @SuppressWarnings("unused")
+
     private void addItemsOnSpinner2() {
         // TODO Auto-generated method stub
 
@@ -860,35 +838,41 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
         }
         Log.i("attachImageFromRta", "" + img_found);
     }
-
     // LIKE SIMID , IMEI PRESENT_DATE AND PRESENT_TIME ,HOURS MINUTES ,
     // MAC-ADDRESS
 
     private void getInitialDetails() {
         // TODO Auto-generated method stub
-        cal = Calendar.getInstance();
+        try {
+            cal = Calendar.getInstance();
 		/* FOR DATE PICKER */
-        offnce_year = cal.get(Calendar.YEAR);
-        offnce_month = cal.get(Calendar.MONTH);
-        offnce_day = cal.get(Calendar.DAY_OF_MONTH);
+            offnce_year = cal.get(Calendar.YEAR);
+            offnce_month = cal.get(Calendar.MONTH);
+            offnce_day = cal.get(Calendar.DAY_OF_MONTH);
 
 		/* FOR TIME PICKER */
-        hour = cal.get(Calendar.HOUR_OF_DAY);
-        minute = cal.get(Calendar.MINUTE);
+            hour = String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
+            minute = String.valueOf(cal.get(Calendar.MINUTE));
 
-        telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        IMEI_send = telephonyManager.getDeviceId();// TO GET IMEI NUMBER
-        // String simId=telephonyManager.getSimSerialNumber();
+            telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            IMEI_send = telephonyManager.getDeviceId();// TO GET IMEI NUMBER
+            // String simId=telephonyManager.getSimSerialNumber();
 
-        if (telephonyManager.getSimState() != TelephonyManager.SIM_STATE_ABSENT) {
-            simID = "" + telephonyManager.getSimSerialNumber();
-        } else {
-            simID = "";
+            if (telephonyManager.getSimState() != TelephonyManager.SIM_STATE_ABSENT) {
+                simID = "" + telephonyManager.getSimSerialNumber();
+            } else {
+                simID = "";
+            }
+
+            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            WifiInfo wInfo = wifiManager.getConnectionInfo();
+            macAddress = wInfo.getMacAddress();
+        } catch (Exception e) {
+            e.printStackTrace();
+            macAddress = "0";
+            simID = "0";
+            IMEI_send = "0";
         }
-
-        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        WifiInfo wInfo = wifiManager.getConnectionInfo();
-        macAddress = wInfo.getMacAddress();
     }
 
     public Boolean isOnline() {
@@ -988,12 +972,11 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                 finalsubmit();
 
 
-
                 break;
             case R.id.btn_cancel_dd3_xml:
                 Drunk_Drive.dd_dobFLG = false;
                 Drunk_Drive.dd_dob_DL = null;
-                totaldl_points=0;
+                totaldl_points = 0;
 
                 finish();
                 break;
@@ -1056,7 +1039,12 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                             || (tempContactNumber.charAt(0) == '9')) {
                         if (isOnline()) {
                             otp_status = "send";
-                            new Async_sendOTP_to_mobile().execute();
+                            if (isOnline()) {
+                                SpotChallan.mobilenumber = "";
+                                SpotChallan.mobilenumber = tempContactNumber;
+
+                                new Async_sendOTP_to_mobile().execute();
+                            }
                         } else {
                             showToast("Please check your network connection!");
                         }
@@ -1068,7 +1056,11 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                     if (tempContactNumber.charAt(0) == '0') {
                         if (isOnline()) {
                             otp_status = "send";
-                            new Async_sendOTP_to_mobile().execute();
+                            if (isOnline()) {
+                                SpotChallan.mobilenumber = "";
+                                SpotChallan.mobilenumber = tempContactNumber;
+                                new Async_sendOTP_to_mobile().execute();
+                            }
                         } else {
                             showToast("Please check your network connection!");
                         }
@@ -1087,6 +1079,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                     if (isOnline()) {
                         Log.i("***OTP CONFIRMATION ENTERED", "" + vStatusConfirmationYN);
                         otp_status = "verify";
+
                         new Async_sendOTP_to_mobile().execute();
                     } else {
                         showToast("Please check your network connection!");
@@ -1165,7 +1158,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                             "" + et_regn_cid.getText().toString().trim() + et_regn_cid_name.getText().toString().trim()
                                     + et_regn_last_num.getText().toString().trim());
                     dialogbox.putExtra("MobileNo", et_driver_contact_no.getText().toString().trim());
-                    dialogbox.putExtra("otp_date", "" + getDate().toUpperCase());
+                    dialogbox.putExtra("otp_date", "" + btn_offence_date.getText().toString().toUpperCase());
                     dialogbox.putExtra("OTP_value", otpValue);
 
                     startActivity(dialogbox);
@@ -1251,7 +1244,9 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                 dp_offence_date.getDatePicker().setMaxDate(System.currentTimeMillis());
                 return dp_offence_date;
             case OFFENCE_TIME_PICKER:
-                return new TimePickerDialog(this, timePickerListener, hour, minute, false);
+
+
+                return new TimePickerDialog(this, timePickerListener, Integer.parseInt(hour), Integer.parseInt(minute), false);
 
             case PROGRESS_DIALOG:
                 ProgressDialog pd = ProgressDialog.show(this, "", "", true);
@@ -1640,8 +1635,23 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfDay) {
             // TODO Auto-generated method stub
-            hour = hourOfDay;
-            minute = minuteOfDay;
+            hour = String.valueOf(hourOfDay);
+            minute = String.valueOf(minuteOfDay);
+
+            try {
+
+                if (minuteOfDay < 10) {
+                    minute = "0" + minute;
+                }
+                if (hourOfDay < 10) {
+                    hour = "0" + hour;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                hour = hour;
+                minute = minute;
+            }
+
             btn_offence_time.setText((hour + ":" + minute).toString().trim());
             removeDialog(OFFENCE_TIME_PICKER);
         }
@@ -1944,99 +1954,109 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
             // TODO Auto-generated method stub
             // String split_wheeler[]= RtaDetails.whlr_code_send.split("\\-");
             // Log.i("split_string_array :::", ""+split_wheeler[0].trim());
-            Log.i("DD CASE Details :::", Drunk_Drive.whlr_code_send);
 
-            String emailID = (edt_email_ID.getText() != null && edt_email_ID.getText().toString().trim().length() > 0)
-                    ? edt_email_ID.getText().toString().trim() : "NA";
-            String barNAME = (bar_name.getText() != null && bar_name.getText().toString().trim().length() > 0)
-                    ? bar_name.getText().toString().trim() : "NA";
-            String liquor_Address = (barAddress.getText() != null
-                    && barAddress.getText().toString().trim().length() > 0) ? barAddress.getText().toString().trim()
-                    : "NA";
-            String liquor_code = (bar_type_code != null && bar_type_code.length() > 0) ? bar_type_code : "NA";
-
-            String profession_name = (edt_prfession_name.getText() != null
-                    && edt_prfession_name.getText().toString().trim().length() > 0)
-                    ? edt_prfession_name.getText().toString().trim() : "NA";
-            String profession_Addres = (edt_prfession_Address.getText() != null
-                    && edt_prfession_Address.getText().toString().trim().length() > 0)
-                    ? edt_prfession_Address.getText().toString().trim() : "NA";
-            String professionCode = (profession_code != null && profession_code.length() > 0) ? profession_code : "NA";
-
-            String identification_mark = (edt_identification_mark.getText() != null
-                    && edt_identification_mark.getText().toString().trim().length() > 0)
-                    ? edt_identification_mark.getText().toString().trim() : "NA";
-            aadhar = (Drunk_Drive.et_aadharnumber.getText() != null
-                    && Drunk_Drive.et_aadharnumber.getText().toString().trim().length() == 12)
-                    ? Drunk_Drive.et_aadharnumber.getText().toString().trim() : "NA";
-
-            SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            String psCd = sharedPreference.getString("PS_CODE", "");
-            String psName = sharedPreference.getString("PS_NAME", "");
-            String pidCd = sharedPreference.getString("PID_CODE", "");
-            String pidName = sharedPreference.getString("PID_NAME", "");
-            String cadre = sharedPreference.getString("CADRE_NAME", "");
-            String cadreCd = sharedPreference.getString("CADRE_CODE", "");
-
-            String pswd = sharedPreference.getString("PASS_WORD", "");
-
-            if (Drunk_Drive.image_data_tosend != null) {
-                image_data = "" + Drunk_Drive.image_data_tosend;
-            } else if (final_image_data_tosend != null) {
-                image_data = "" + final_image_data_tosend;
-            } else {
-                image_data = "" + final_image_data_tosend;
-            }
 
             try {
-                pswd = PidSecEncrypt.encryptmd5(pswd);
+
+                String emailID = (edt_email_ID.getText() != null && edt_email_ID.getText().toString().trim().length() > 0)
+                        ? edt_email_ID.getText().toString().trim() : "NA";
+
+                String barNAME = (bar_name.getText() != null && bar_name.getText().toString().trim().length() > 0)
+                        ? bar_name.getText().toString().trim() : "NA";
+
+                String liquor_Address = (barAddress.getText() != null
+                        && barAddress.getText().toString().trim().length() > 0) ? barAddress.getText().toString().trim()
+                        : "NA";
+
+                String liquor_code = (bar_type_code != null && bar_type_code.length() > 0) ? bar_type_code : "NA";
+
+                String profession_name = (edt_prfession_name.getText() != null
+                        && edt_prfession_name.getText().toString().trim().length() > 0)
+                        ? edt_prfession_name.getText().toString().trim() : "NA";
+
+                String profession_Addres = (edt_prfession_Address.getText() != null
+                        && edt_prfession_Address.getText().toString().trim().length() > 0)
+                        ? edt_prfession_Address.getText().toString().trim() : "NA";
+
+                String professionCode = (profession_code != null && profession_code.length() > 0) ? profession_code : "NA";
+
+                String identification_mark = (edt_identification_mark.getText() != null
+                        && edt_identification_mark.getText().toString().trim().length() > 0)
+                        ? edt_identification_mark.getText().toString().trim() : "NA";
+
+                aadhar = (Drunk_Drive.et_aadharnumber.getText() != null
+                        && Drunk_Drive.et_aadharnumber.getText().toString().trim().length() == 12)
+                        ? Drunk_Drive.et_aadharnumber.getText().toString().trim() : "NA";
+
+                SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String psCd = sharedPreference.getString("PS_CODE", "");
+                String psName = sharedPreference.getString("PS_NAME", "");
+                String pidCd = sharedPreference.getString("PID_CODE", "");
+                String pidName = sharedPreference.getString("PID_NAME", "");
+                String cadre = sharedPreference.getString("CADRE_NAME", "");
+                String cadreCd = sharedPreference.getString("CADRE_CODE", "");
+
+                String pswd = sharedPreference.getString("PASS_WORD", "");
+
+
+                if (Drunk_Drive.image_data_tosend != null) {
+                    image_data = "" + Drunk_Drive.image_data_tosend;
+                } else if (final_image_data_tosend != null) {
+                    image_data = "" + final_image_data_tosend;
+                } else {
+                    image_data = "" + final_image_data_tosend;
+                }
+
+                try {
+                    pswd = PidSecEncrypt.encryptmd5(pswd);
+
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+
+                String dob = Drunk_Drive.dd_dob_DL;
+
+
+                String rtaresponse = "NA|NA|NA";
+
+                if (!ServiceHelper.rtaapproovedresponse.equalsIgnoreCase(null) && ServiceHelper.rtaapproovedresponse.length() > 3) {
+                    rtaresponse = ServiceHelper.rtaapproovedresponse.trim().toString();
+
+                }
+
+
+                ServiceHelper.generateDrunDriveCase_1_5_2(
+                        "" + "" + et_regn_cid.getText().toString() + "" + et_regn_cid_name.getText().toString(),
+                        "" + et_regn_last_num.getText().toString(),
+                        "" + et_regn_cid.getText().toString() + "" + et_regn_cid_name.getText().toString() + ""
+                                + et_regn_last_num.getText().toString(),
+                        pidCd, // operator code or pid code
+                        pidName, // operator name or pid name
+                        pidCd, // operator code or pid code
+                        pidName, // operator name or pid name
+                        psCd, // arr[2]- ps-code @ arr[3]- ps-name
+                        psName, "" + ps_code, "" + ps_name, "" + psnameby_point_code, "" + point_name, exct_lctn_send,
+                        "" + btn_offence_date.getText().toString().trim(),
+                        "" + btn_offence_time.getText().toString().trim(), "" + finedby_val_send, "" + owner_dl_no,
+                        "" + driver_dlno, "" + et_driver_name.getText().toString().trim(), "" + driver_fname, "" + aadhar,
+                        "" + pan_no, "" + passport, "" + dob, "" + et_driver_contact_no.getText().toString().trim(),
+                        "" + offence_code_send, "" + offence_Amount_send, "" + sb_detaneditems_send,
+                        "" + counselling_date_send, "" + et_alcohol_reading.getText().toString().trim(),
+                        "" + et_age.getText().toString().trim(), "" + oocupation_send, "" + qualification_send,
+                        "" + gender_send, "" + et_check_sino.getText().toString().trim(), "" + Drunk_Drive.whlr_code_send,
+                        "" + vhle_cat_send, "" + vhle_catMain_send, "" + rtaresponse,
+                        "" + et_address.getText().toString().trim(), "" + et_city.getText().toString().trim(),
+                        "" + Dashboard.UNIT_CODE, "" + Dashboard.UNIT_NAME, "" + cadreCd, "" + cadre,
+                        " " + final_image_data_tosend, "" + IMEI_send, "" + latitude, "" + longitude, "" + macAddress,
+                        "" + simID, "" + breath_anlysr, "" + Drunk_Drive.licence_status, "" + liquor_code + "|" + barNAME,
+                        "" + liquor_Address, "" + professionCode + "|" + profession_name,
+                        "" + profession_Addres + "|" + emailID + "|" + identification_mark);
 
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
-
-            String dob = Drunk_Drive.dd_dob_DL;
-
-
-            String rtaresponse="NA|NA|NA";
-
-            if(!ServiceHelper.rtaapproovedresponse.equalsIgnoreCase(null)&&ServiceHelper.rtaapproovedresponse.length()>3)
-            {
-                rtaresponse=ServiceHelper.rtaapproovedresponse.trim().toString();
-
-            }
-
-
-            ServiceHelper.generateDrunDriveCase_1_5_2(
-                    "" + "" + et_regn_cid.getText().toString() + "" + et_regn_cid_name.getText().toString(),
-                    "" + et_regn_last_num.getText().toString(),
-                    "" + et_regn_cid.getText().toString() + "" + et_regn_cid_name.getText().toString() + ""
-                            + et_regn_last_num.getText().toString(),
-                    pidCd, // operator code or pid code
-                    pidName, // operator name or pid name
-                    pidCd, // operator code or pid code
-                    pidName, // operator name or pid name
-                    psCd, // arr[2]- ps-code @ arr[3]- ps-name
-                    psName, "" + ps_code, "" + ps_name, "" + psnameby_point_code, "" + point_name, exct_lctn_send,
-                    "" + btn_offence_date.getText().toString().trim(),
-                    "" + btn_offence_time.getText().toString().trim(), "" + finedby_val_send, "" + owner_dl_no,
-                    "" + driver_dlno, "" + et_driver_name.getText().toString().trim(), "" + driver_fname, "" + aadhar,
-                    "" + pan_no, "" + passport, "" + dob, "" + et_driver_contact_no.getText().toString().trim(),
-                    "" + offence_code_send, "" + offence_Amount_send, "" + sb_detaneditems_send,
-                    "" + counselling_date_send, "" + et_alcohol_reading.getText().toString().trim(),
-                    "" + et_age.getText().toString().trim(), "" + oocupation_send, "" + qualification_send,
-                    "" + gender_send, "" + et_check_sino.getText().toString().trim(), "" + Drunk_Drive.whlr_code_send,
-                    "" + vhle_cat_send, "" + vhle_catMain_send, "" + rtaresponse,
-                    "" + et_address.getText().toString().trim(), "" + et_city.getText().toString().trim(),
-                    "" + Dashboard.UNIT_CODE, "" + Dashboard.UNIT_NAME, "" + cadreCd, "" + cadre,
-                    " " + final_image_data_tosend, "" + IMEI_send, "" + latitude, "" + longitude, "" + macAddress,
-                    "" + simID, "" + breath_anlysr, "" + Drunk_Drive.licence_status, "" + liquor_code + "|" + barNAME,
-                    "" + liquor_Address, "" + professionCode + "|" + profession_name,
-                    "" + profession_Addres + "|" + emailID + "|" + identification_mark);
-
-
 
             return null;
         }
@@ -2052,63 +2072,31 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
         protected void onPostExecute(String result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
+            removeDialog(PROGRESS_DIALOG);
 
-            totaldl_points=0;
+            totaldl_points = 0;
 
-            if (ServiceHelper.Opdata_Chalana.equals("0")) {
+            if (ServiceHelper.Opdata_Chalana != null && ServiceHelper.Opdata_Chalana.equals("0")) {
                 Drunk_Drive.picturePath = "";
                 ticket_response = "Ticket Generation Failed";
-                removeDialog(PROGRESS_DIALOG);
                 showDialog(ERROR_DIALOG);
-            } else if (ServiceHelper.Opdata_Chalana.equals("1")) {
+            } else if (ServiceHelper.Opdata_Chalana != null && ServiceHelper.Opdata_Chalana.equals("1")) {
                 Drunk_Drive.picturePath = "";
                 ticket_response = "Already Challan Generated";
-                removeDialog(PROGRESS_DIALOG);
                 showDialog(ERROR_DIALOG);
-            } else {
-                if (ServiceHelper.final_response_master.length > 0) {
+            } else if (ServiceHelper.final_response_master != null && !ServiceHelper.Opdata_Chalana.equals("0") && ServiceHelper.final_response_master.length > 0) {
 
-					/* TO SEND IMAGE TO FTP */
-                    Log.i("IMAGE path when reponse is greater ", "" + img_found);
-                    if (!(ServiceHelper.final_response_master[17].toString().trim().equals(""))
-                            && (!ServiceHelper.final_response_master[18].toString().trim().equals(""))) {
+                if (ServiceHelper.final_response_master != null && ServiceHelper.final_response_master.length > 18 && !ServiceHelper.final_response_master[17].toString().trim().equals("")
+                        && !ServiceHelper.final_response_master[18].toString().trim().equals("")) {
 
-                        Log.i("*****17**18**", "" + ServiceHelper.final_response_master[17] + "\n"
-                                + ServiceHelper.final_response_master[18]);
-
-                        Log.i("*****LOCAL COMPLETE IMAGE PATH**", "" + img_found);
-
-                        Log.i("*****SERVER COMPLETE PATH**", "" + ServiceHelper.final_response_master[17]);
-
-                        Intent intent = new Intent(GenerateDrunkDriveCase.this, DrunkResponse.class);
-                        startActivity(intent);
-
-						/*
-						 * image_path_splitter = new String[0];
-						 * image_ToBe_renamed = "";
-						 * 
-						 * image_path_splitter = new
-						 * String[image_path_splitter.length];
-						 * image_path_splitter = picturePath_dd.split("/");
-						 * image_ToBe_renamed =
-						 * image_path_splitter[image_path_splitter.length -
-						 * 1].toString(); Log.i("*****IMAGES SPLITETD**",""+
-						 * image_path_splitter[image_path_splitter.length -
-						 * 1].toString());
-						 * 
-						 * Log.i("FTP IMAGE", "" + img_found+
-						 * "--1 for yes---0 for No"); if (img_found == 1) {
-						 * uploadFile(picturePath_dd); } else {
-						 * removeDialog(PROGRESS_DIALOG); img_found = 0;
-						 * 
-						 * Intent intent = new
-						 * Intent(GenerateDrunkDriveCase.this,DrunkResponse.
-						 * class); startActivity(intent); }
-						 */
-
-                    }
-
+                    Intent intent = new Intent(GenerateDrunkDriveCase.this, DrunkResponse.class);
+                    startActivity(intent);
                 }
+
+
+            } else {
+                ticket_response = "Ticket Generation Failed";
+                showDialog(ERROR_DIALOG);
             }
         }
 
@@ -2554,8 +2542,8 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
 
     }
 
-    public void finalsubmit()
-    {
+
+    public void finalsubmit() {
         ps_name = preferences.getString("psname_name", "psname");
         point_name = preferences.getString("point_name", "pointname");
 
@@ -2660,12 +2648,6 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                 sb_detaneditems_send.append("04:PERMIT@");
             }
 
-            Log.i("**SEND SCRN VALS**",
-                    "\ndetained items : " + sb_detaneditems_send.toString() + "\ncounselling_date_send** :"
-                            + counselling_date_send + "\nocptn : " + oocupation_send + "\nqlfctn : "
-                            + qualification_send + "\nvech cat : " + vhle_cat_send + "\nvech main cat : "
-                            + vhle_catMain_send + "\nvech sub cat : " + vhle_catSub_send);
-
 				/* THIRD SCREEN VALUES */
             ps_name = preferences.getString("psname_name", "psname");
             point_name = preferences.getString("point_name", "pointname");
@@ -2686,27 +2668,14 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                 anlyser_id_send = Long.toString(preferences.getLong("analyser_id", 0));
             }
 
-            // String exct_lctn;
-            // String anlyser_id;
 
             if (isOnline()) {
 
                 ps_code = preferences.getString("psname_code", "0");
                 psnameby_point_code = preferences.getString("point_code", "0");
 
-                // new Async_generate_dd_case().execute();
-                Log.i("THIRD SCREEN VALUES", "THIRD SCREEN VALUES");
-                Log.i("**ps_name** :", "" + ps_name);
-                Log.i("**ps_code** :", "" + ps_code);
-                Log.i("**point_name** :", "" + point_name);
-                Log.i("**psnameby_point_code :**", "" + psnameby_point_code);
-                Log.i("**exct_lctn_send** :", "" + exct_lctn_send);
-                Log.i("**breath_anlysr : **", "" + breath_anlysr);
-
                 getLocation();
-                // showToast(latitude + "\n" + longitude);
-                Log.i("**GPS VALUES**", "" + (latitude + "\n" + longitude));
-                Log.i("FTP IMAGE PATH B4 SERVICE CALL", "" + img_found);
+
                 if (btn_offence_date.getText().toString().trim()
                         .equals("" + getResources().getString(R.string.select))) {
                     showToast("Select Offence Date");
@@ -2807,47 +2776,74 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                     Log.i("FTP IMAGE ", "Please Select Image");
                     showToast("Please Select Image");
                 } else {
-                    if ("Y".equals(Drunk_Drive.otp_no_flg.trim().toUpperCase()) && otpStatus != null) {
-                        Log.i("otpStatus ::::", "" + OTP_input.OTP_status);
+                    if ("Y".equals(SpotChallan.OtpStatus.trim().toUpperCase()) && otpStatus != null) {
                         if (otpStatus.equals("0")) {
                             showToast("OTP Verification Failed");
                         } else if (otpStatus.equals("1")) {
 
 
-                            int presentviolatedpoints=0;
+                            int presentviolatedpoints = 0;
 
-                            if(Drunk_Drive.rtaAprroved_Master!=null && Drunk_Drive.rtaAprroved_Master.length>0) {
+                            if (Drunk_Drive.rtaAprroved_Master != null && Drunk_Drive.rtaAprroved_Master.length > 0) {
 
                                 try {
                                     presentviolatedpoints = Integer.parseInt(Drunk_Drive.rtaAprroved_Master[1].toString().trim());
 
-                                     totaldl_points = Integer.parseInt(Drunk_Drive.dl_points.trim()) + presentviolatedpoints;
+                                    totaldl_points = Integer.parseInt(Drunk_Drive.dl_points.trim()) + presentviolatedpoints;
 
-                                //    totaldl_points= String.valueOf(presentviolatedpoints);
+                                    //    totaldl_points= String.valueOf(presentviolatedpoints);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
 
                                     //  dl_points=dl_points;
+
+                                    totaldl_points = 0;
                                 }
                             }
 
-                            if ( totaldl_points> 0){
+                            if (totaldl_points > 0) {
 
                                 pointsAlert();
 
                             } else {
 
-                                new Async_generate_dd_case().execute();
+                                if (isOnline()) {
+                                    new Async_generate_dd_case().execute();
+                                } else {
+                                    showToast("Please Check Your Network Connection");
+                                }
                             }
 
+                        } else if (otpStatus.equals("2")) {
 
 
+                            int presentviolatedpoints = 0;
 
+                            if (Drunk_Drive.rtaAprroved_Master != null && Drunk_Drive.rtaAprroved_Master.length > 0) {
 
+                                try {
+                                    presentviolatedpoints = Integer.parseInt(Drunk_Drive.rtaAprroved_Master[1].toString().trim());
+                                    totaldl_points = Integer.parseInt(Drunk_Drive.dl_points.trim()) + presentviolatedpoints;
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    totaldl_points = 0;
+                                }
+                            }
 
+                            if (totaldl_points > 0) {
+
+                                pointsAlert();
+
+                            } else {
+                                if (isOnline()) {
+                                    new Async_generate_dd_case().execute();
+                                } else {
+                                    showToast("Please Check Your Network Connection");
+                                }
+                            }
                         }
-                    } else if ("Y".equals(Drunk_Drive.otp_no_flg.trim().toUpperCase()) && otpStatus == null) {
+                    } else if ("Y".equals(SpotChallan.OtpStatus.trim().toUpperCase()) && otpStatus == null) {
                         otpStatus = null;
                         showToast("Please Verify Number with OTP");
                         TextView title = new TextView(GenerateDrunkDriveCase.this);
@@ -2892,38 +2888,33 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                     } else {
 
 
-                        int presentviolatedpoints=0;
+                        int presentviolatedpoints = 0;
 
-                        if(Drunk_Drive.rtaAprroved_Master!=null && Drunk_Drive.rtaAprroved_Master.length>0) {
+                        if (Drunk_Drive.rtaAprroved_Master != null && Drunk_Drive.rtaAprroved_Master.length > 0) {
 
                             try {
                                 presentviolatedpoints = Integer.parseInt(Drunk_Drive.rtaAprroved_Master[1].toString().trim());
 
                                 totaldl_points = Integer.parseInt(Drunk_Drive.dl_points.trim()) + presentviolatedpoints;
 
-                                //Drunk_Drive.dl_points = String.valueOf(presentviolatedpoints);
-
                             } catch (Exception e) {
                                 e.printStackTrace();
 
+                                totaldl_points = 0;
                                 //  dl_points=dl_points;
                             }
                         }
 
-                        if ( totaldl_points > 0) {
+                        if (totaldl_points > 0) {
 
                             pointsAlert();
 
                         } else {
 
-                            new Async_generate_dd_case().execute();
+                            if (isOnline()) {
+                                new Async_generate_dd_case().execute();
+                            }
                         }
-
-
-
-
-
-                       // new Async_generate_dd_case().execute();
                     }
 
                 }
@@ -2965,27 +2956,43 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
 
-
-
-
-
-
-
                 if (totaldl_points > 12) {
 
                     if (chck_detainedItems_licence.isChecked()) {
 
-                        new Async_generate_dd_case().execute();
+                        if (isOnline()) {
+                            new Async_generate_dd_case().execute();
+                        } else {
+                            showToast("Please Check Your Network Connection");
+                        }
                     } else if (!chck_detainedItems_licence.isChecked() && chck_detainedItems_vhcle.isChecked()) {
-                        new Async_generate_dd_case().execute();
+                        if (isOnline()) {
+                            new Async_generate_dd_case().execute();
+                        } else {
+                            showToast("Please Check Your Network Connection");
+                        }
                     } else {
                         detainAlert();
                     }
                 } else {
-                    new Async_generate_dd_case().execute();
+                    if (isOnline()) {
+                        new Async_generate_dd_case().execute();
+                    } else {
+                        showToast("Please Check Your Network Connection");
+                    }
                 }
             }
         });
+
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+
         alertDialogBuilder.setCancelable(false);
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();

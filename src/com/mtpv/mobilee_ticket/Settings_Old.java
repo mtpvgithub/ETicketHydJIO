@@ -214,7 +214,7 @@ public class Settings_Old extends Activity implements OnClickListener {
 
 		/*---------------------------------------------*/
 
-		dashboard.preferences = getSharedPreferences("preferences",MODE_WORLD_READABLE);
+		dashboard.preferences = getSharedPreferences("preferences",Context.MODE_PRIVATE);
 		dashboard.editor = dashboard.preferences.edit();
 
 		/* FOR PS NAMES */
@@ -479,7 +479,7 @@ public class Settings_Old extends Activity implements OnClickListener {
 				et_pinpad.setError(Html.fromHtml("<font color='black'>Check PIN pad Bluetooth Details Properly</font>"));
 			}
 			else {
-				dashboard.preferences = getSharedPreferences("preferences",	MODE_WORLD_READABLE);
+				dashboard.preferences = getSharedPreferences("preferences",	Context.MODE_PRIVATE);
 				dashboard.editor = dashboard.preferences.edit();
 
 				/* FOR EXACT LOCATION PREF VALUES */
@@ -870,7 +870,7 @@ public class Settings_Old extends Activity implements OnClickListener {
 							ps_code_pos = which;
 
 							dashboard.preferences = getSharedPreferences(
-									"preferences", MODE_WORLD_READABLE);
+									"preferences", Context.MODE_PRIVATE);
 							dashboard.editor = dashboard.preferences.edit();
 							dashboard.editor.putInt("psname_code_toSet", which);
 							dashboard.editor.putString("psname_code",
@@ -892,7 +892,7 @@ public class Settings_Old extends Activity implements OnClickListener {
 								selected_pointby_psname = -1;
 
 								dashboard.preferences = getSharedPreferences(
-										"preferences", MODE_WORLD_READABLE);
+										"preferences", Context.MODE_PRIVATE);
 								dashboard.editor = dashboard.preferences.edit();
 
 								dashboard.editor.putInt("point_code_toSet",
@@ -936,7 +936,7 @@ public class Settings_Old extends Activity implements OnClickListener {
 							selected_pointby_psname = which;
 							btn_pointby_ps_name.setText(""+ pointNameBy_PsName_arr.get(which).toString().trim());
 
-							dashboard.preferences = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+							dashboard.preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
 							dashboard.editor = dashboard.preferences.edit();
 
 							dashboard.editor.putInt("point_code_toSet", which);

@@ -188,45 +188,19 @@ public class DBHelper {
 			// TODO Auto-generated method stub
 
 			db.execSQL(wheelerCodeCreation);
-			Log.i("wheelerCodeCreation Table", "Created");
-
 			db.execSQL(occupationCreation);
-			Log.i("occupationCreation Table", "Created");
-
 			db.execSQL(barTableCreation);
-			Log.i("barTableCreation Table", "Created");
-
 			db.execSQL(qualificationCreation);
-			Log.i("qualificationCreation Table", "Created");
-
 			db.execSQL(vehicleCatCreation);
-			Log.i("vehicleCatCreation Table", "Created");
-
 			db.execSQL(vehicleMainCatCreation);
-			Log.i("vehicleMainCatCreation Table", "Created");
-
 			db.execSQL(psNamesCreation);
-			Log.i("psNamesCreation Table", "Created");
-
 			db.execSQL(violatioPointsDetaisCreation);
-			Log.i("violatioPointsDetaisCreation Table", "Created");
-
 			db.execSQL(duplicatePrintCreation);
-			Log.i("duplicatePrintCreation Table", "Created");
-
 			db.execSQL(violationsCreation);
-			Log.i("violationsCreation Table", "Created");
-
 			db.execSQL(termailDetailsCreation);
-			Log.i("termailDetailsCreation Table", "Created");
+
 		}
 
-		/*
-		 * @Override public void onUpgrade(SQLiteDatabase db, int oldVersion,
-		 * int newVersion) { // TODO Auto-generated method stub
-		 * //db.execSQL("DROP TABLE IF EXISTS " + bar_table);
-		 * db.execSQL("DROP TABLE IF EXISTS " + DATABASE_NAME); onCreate(db); }
-		 */
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -288,8 +262,6 @@ public class DBHelper {
 		ContentValues con = new ContentValues();
 		con.put(bar_code, barCode);
 		con.put(bar_name, barName);
-		// Log.i("Bar Table ::::::",
-		// ""+DBHelper.bar_table.trim().toUpperCase());
 		db.insert(DBHelper.bar_table.trim().toUpperCase(), null, con);
 	}
 
@@ -298,8 +270,6 @@ public class DBHelper {
 		con.put(TERMINAL_ID, term_id);
 		con.put(BT_NAME, bTname);
 		con.put(BT_ADDRESS, bTaddress);
-		// Log.i("Bar Table ::::::",
-		// ""+DBHelper.bar_table.trim().toUpperCase());
 		db.insert(DBHelper.TERMINAL_DETAILS_TABLE.trim(), null, con);
 	}
 
@@ -339,12 +309,7 @@ public class DBHelper {
 		db.insert(violationPointsTable, null, con);
 	}
 
-	/*
-	 * public static void insertOccupationDetails(String occup_code, String
-	 * occup_desc) { ContentValues con = new ContentValues();
-	 * con.put(occupation_name, occup_code); con.put(occupation_desc,
-	 * occup_desc); db.insert(occupation_table, null, con); }
-	 */
+
 
 	public static void insertDuplicatePrintDetails(String dup_res, String app_type) {
 		ContentValues con = new ContentValues();
@@ -360,9 +325,6 @@ public class DBHelper {
 	}
 
 	public static void deleteDuplicateRecords(String tablename, String apptype) {
-		Log.i("**DB_HELPER**", "started deleting from");
-		Log.i("**DB_HELPER**", "tablename : " + tablename + "\napptype : " + apptype);
-		Log.i("**DB_HELPER**", "Successfully deleted");
 		db.execSQL("delete from " + tablename + " WHERE " + dup_print_app_type + " = " + "'" + apptype + "'");
 	}
 

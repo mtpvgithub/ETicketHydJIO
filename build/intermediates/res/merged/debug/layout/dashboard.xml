@@ -221,123 +221,119 @@
             android:textSize="19sp" />
     </LinearLayout>
 
+    <!--<LinearLayout-->
+    <!--android:id="@+id/linearLayout4"-->
+    <!--style="@style/margin_top_btm_style"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:visibility="visible"-->
+    <!--android:layout_below="@+id/linearLayout3"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginTop="0dp" >-->
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_about_version"-->
+    <!--style="@style/navi_text_style"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+
+    <!--android:background="@null"-->
+    <!--android:drawableTop="@drawable/spot_challan"-->
+    <!--android:gravity="center_horizontal|center_vertical"-->
+    <!--android:text="@string/about_version"-->
+
+    <!--android:textSize="19sp"-->
+    <!--android:layout_weight="1" />-->
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_special_drive"-->
+    <!--style="@style/navi_text_style"-->
+    <!--android:layout_width="197dp"-->
+    <!--android:layout_height="wrap_content"-->
+
+    <!--android:background="@null"-->
+    <!--android:drawableTop="@drawable/about"-->
+    <!--android:gravity="center_horizontal|center_vertical"-->
+    <!--android:text="@string/special_drive"-->
+
+    <!--android:textSize="19sp"-->
+    <!--android:layout_weight="1" />-->
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_special_drive1"-->
+    <!--style="@style/navi_text_style"-->
+    <!--android:layout_width="197dp"-->
+    <!--android:layout_height="wrap_content"-->
+
+    <!--android:background="@null"-->
+    <!--android:drawableTop="@drawable/about"-->
+    <!--android:gravity="center_horizontal|center_vertical"-->
+    <!--android:text="@string/special_drive"-->
+
+    <!--android:textSize="19sp"-->
+    <!--android:visibility="invisible"-->
+    <!--android:layout_weight="1" />-->
+    <!--</LinearLayout>-->
+
     <LinearLayout
         android:id="@+id/linearLayout4"
         style="@style/margin_top_btm_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayout3"
-        android:visibility="visible" >
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp" >
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
 
-            <ImageView
-                android:id="@+id/tv_about_version"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@null"
-                android:gravity="center"
-                android:src="@drawable/about"
-                android:visibility="visible" />
-
-            <TextView
-                style="@style/navi_text_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@string/about_version"
-                android:textSize="19sp" />
-        </LinearLayout>
 
         <TextView
-            android:id="@+id/echallan"
-            style="@style/navi_text_style"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:background="@null"
-            android:drawableTop="@drawable/spot_challan"
-            android:gravity="center_horizontal"
-            android:text="@string/echallan"
-            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/echallan_reports"
+            android:id="@+id/tv_about_version"
+
             style="@style/navi_text_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
             android:background="@null"
-            android:drawableTop="@drawable/spot_challan"
-            android:gravity="center"
-            android:text="@string/echallanreports"
-            android:visibility="gone" />
+            android:drawableTop="@drawable/about"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/about_version"
+            android:textSize="19sp" />
 
-        <LinearLayout
+
+
+        <TextView
+            android:id="@+id/tv_special_drive"
+            style="@style/navi_text_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone" >
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/sp_drive"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/special_drive"
+            android:textSize="19sp"
+            android:visibility="visible"/>
 
-            <ImageView
-                android:id="@+id/aadhaar"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:contentDescription="@null"
-                android:src="@drawable/aadhaar_update" />
+        <TextView
+            android:id="@+id/tv_dd_basic"
 
-            <TextView
-                style="@style/navi_text_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/update_aadhar" />
-        </LinearLayout>
+            style="@style/navi_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableTop="@drawable/ddwithoutdloraadhar"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/ddbasic_drive"
+            android:textSize="19sp"
+            android:visibility="invisible"/>
     </LinearLayout>
 
-    <!--
-     <LinearLayout
-        android:id="@+id/linearLayout4"
-        style="@style/margin_top_btm_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout3"
-        android:gravity="center"
-        android:layout_centerHorizontal="true" >
 
-         <TextView
-             android:id="@+id/tv_settings_dashboard_xml"
-             style="@style/navi_text_style"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_weight="1"
-             android:background="@null"
-             android:drawableTop="@drawable/settings"
-             android:gravity="center_horizontal|center_vertical"
-             android:text="@string/settings" /> 
-             </LinearLayout> -->
-
-
-    <!--
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        style="@style/margin_top_btm_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout3"
-        android:gravity="center" >
-
-        <ImageView
-            android:id="@+id/offline"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/offline" />
-    </LinearLayout> -->
 
 </RelativeLayout>

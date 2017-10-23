@@ -1,27 +1,5 @@
 package com.mtpv.mobilee_ticket;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
-
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.mtpv.mobilee_ticket_services.DBHelper;
-import com.mtpv.mobilee_ticket_services.DateUtil;
-import com.mtpv.mobilee_ticket_services.ServiceHelper;
-import com.mtpv.mobilee_ticket_services.Utils;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -86,6 +64,28 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.mtpv.mobilee_ticket_services.DBHelper;
+import com.mtpv.mobilee_ticket_services.DateUtil;
+import com.mtpv.mobilee_ticket_services.ServiceHelper;
+import com.mtpv.mobilee_ticket_services.Utils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 @SuppressLint("DefaultLocale")
 public class Drunk_Drive extends Activity implements OnClickListener, LocationListener {
@@ -101,6 +101,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
     public static CheckBox police_vehcle, govt_vehcle;
 
     EditText et_regcid, et_vchl_num, et_last_num;
+
 
     public static EditText et_driver_lcnce_num, et_aadharnumber;
 
@@ -256,6 +257,8 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
+    int challantype=0,casesLimit=0,casesBooked=0;
+
     String bookedPScode_send_from_settings, bookedPSname_send_from_settings, point_code_send_from_settings, point_name_send_from_settings,
             exact_location_send_from_settings;
 
@@ -286,6 +289,29 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
         // id_date.setText(strdate1);
         Current_Date = strdate1;
 
+
+        //DD Basic Changes
+
+/*        try
+        {
+
+            challantype=Integer.parseInt(Dashboard.CHALLAN_TYPE);
+            casesBooked=Integer.parseInt(Dashboard.CASES_BOOKED);
+            casesLimit=Integer.parseInt(Dashboard.CASES_LIMIT);
+
+
+        }catch (NumberFormatException e)
+        {
+            e.printStackTrace();
+        }*/
+
+       /* if(Dashboard.check_vhleHistory_or_Spot.equalsIgnoreCase("drunkdrive_withourDlAadhar") && casesBooked>0)
+        {
+            ShowMessage("Total DD Cases Without Dl And Aadhar Since 24 Hours :"+casesBooked+"\n"+"Total Limit is "+casesLimit);
+        }*/
+
+
+
         LoadUIComponents();
 
         // licence_status = "1";
@@ -310,7 +336,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
 
 
 
-        preferences = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+        preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         editor = preferences.edit();
 
         bookedPScode_send_from_settings = preferences.getString("psname_code", "0");
@@ -677,28 +703,110 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                 tv_vehicle_details.setText("");
                 tv_licence_details.setText("");
 
-                if ((et_driver_lcnce_num.getText().toString().trim().equals(""))
-                        && (et_aadharnumber.getText().toString().trim().equals(""))) {
 
-                    ShowMessage("Please Enter Driver License No / Aadhar Number To Continue");
-                }
-
-                else {
-
-                    String dateofbirthbut = dob_input.getText().toString();
+                ServiceHelper.rc_send = "";
+                ServiceHelper.license_data = "";
+                ServiceHelper.aadhar_data = "";
+                SpotChallan.OtpStatus="";
+                SpotChallan.OtpResponseDelayTime="";
 
 
-                    if (!et_driver_lcnce_num.getText().toString().equalsIgnoreCase("") && et_driver_lcnce_num.getText().toString().length() >= 5) {
-                        if (dobcheck.equalsIgnoreCase("Yes")) {
+                tv_vhle_no.setText("");
+                tv_owner_name.setText("");
+                tv_address.setText("");
+                tv_maker_name.setText("");
+                tv_chasis_no.setText("");
+                tv_engine_no.setText("");
+
+                dl_no.setText("");
+                tv_licnce_ownername.setText("");
+                tv_lcnce_father_name.setText("");
+                tv_lcnce_address.setText("");
+                tv_lcnce_phone_number.setText("");
+                tv_dlpoints_spotchallan_xml.setText("");
+                img_aadhar_image.setImageDrawable(getResources().getDrawable(R.drawable.empty_profile_img));
+
+                tv_aadhar_user_name.setText("");
+                tv_aadhar_care_off.setText("");
+                tv_aadhar_dob.setText("");
+                tv_aadhar_gender.setText("");
+                tv_aadhar_address.setText("");
+                tv_aadhar_mobile_number.setText("");
+                tv_aadhar_uid.setText("");
+
+                ll_aadhar_layout.setVisibility(View.GONE);
+                tv_aadhar_header.setVisibility(View.GONE);
+                rl_lcnce_Details.setVisibility(View.GONE);
+
+
+                //    if(Dashboard.check_vhleHistory_or_Spot.equalsIgnoreCase("drunkdrive")) {
+
+
+
+  /*                  if ((et_driver_lcnce_num.getText().toString().trim().equals(""))
+                            && (et_aadharnumber.getText().toString().trim().equals(""))) {
+
+                        ShowMessage("Please Enter Driver License No / Aadhar Number To Continue");
+                    }
+
+                    else {*/
+
+                String dateofbirthbut = dob_input.getText().toString();
+
+
+                if (!et_driver_lcnce_num.getText().toString().equalsIgnoreCase("") && et_driver_lcnce_num.getText().toString().length() >= 5) {
+                    if (dobcheck.equalsIgnoreCase("Yes")) {
+
+                        if(isOnline()) {
                             asyncAllsOfMethods();
-
-                        } else {
-                            showToast("Please Select Date Of Birth !");
+                        }else {
+                            showToast("Please Check Your Network Connection");
                         }
+
                     } else {
+                        showToast("Please Select Date Of Birth !");
+                    }
+                } else {
+                    if (isOnline()) {
                         asyncAllsOfMethods();
+                    }else {
+                        showToast("Please Check Your Network Connection");
                     }
                 }
+
+
+
+
+               /* }else if(Dashboard.check_vhleHistory_or_Spot.equalsIgnoreCase("drunkdrive_withourDlAadhar"))
+                {
+
+                  if(casesBooked<casesLimit) {
+
+                      if (et_driver_lcnce_num.getText().toString() != null && !et_driver_lcnce_num.getText().toString().equalsIgnoreCase("") &&
+                              et_driver_lcnce_num.getText().toString().length() >= 5) {
+                          if (dobcheck.equalsIgnoreCase("Yes")) {
+
+                              if (isOnline()) {
+                                  asyncAllsOfMethods();
+                              } else {
+                                  showToast("Please Check Your Network Connection");
+                              }
+
+                          } else {
+                              showToast("Please Select Date Of Birth !");
+                          }
+                      } else {
+
+                          if (isOnline()) {
+                              asyncAllsOfMethods();
+                          } else {
+                              showToast("Please Check Your Network Connection");
+                          }
+                      }
+                  }else {
+                      showToast("Your Limit Of Without DL and Aadhar Cases Completed Please Contact Echallan to Enhance the Limit Or Please Enforce With Normal DD Module");
+                  }
+                }*/
                 break;
 
             case R.id.btn_pendingchallans_rtadetails_xml:
@@ -722,7 +830,9 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                                 + (et_vchl_num.getText().toString().trim().toUpperCase()) + ""
                                 + (et_last_num.getText().toString().trim().toUpperCase()));
                         Log.i("**VEHCILE NUM RTA DETIALS SEND***", "" + vehicle_num_send);
-                        new Async_getPendingChallans().execute();
+                        if(isOnline()) {
+                            new Async_getPendingChallans().execute();
+                        }
                     } else {
                         showToast("" + NETWORK_TXT);
                     }
@@ -881,58 +991,74 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
 
     private void asyncAllsOfMethods() {
 
-        VerhoeffCheckDigit ver = new VerhoeffCheckDigit();
+        if(isOnline()) {
 
-        if (et_regcid.getText().toString().trim().equals("")) {
-            // utils.showError(et_regcid, "Enter Registration Code");
-            et_regcid.setError(Html.fromHtml("<font color='black'>Enter Registration Code</font>"));
-            et_regcid.requestFocus();
+            VerhoeffCheckDigit ver = new VerhoeffCheckDigit();
 
-        } else if (et_last_num.getText().toString().trim().equals("")) {
-            // utils.showError(et_last_num, "");
-            et_last_num.setError(Html.fromHtml("<font color='black'>Enter Vehicle Number</font>"));
-            et_last_num.requestFocus();
+            if (et_regcid.getText().toString().trim().equals("")) {
+                // utils.showError(et_regcid, "Enter Registration Code");
+                et_regcid.setError(Html.fromHtml("<font color='black'>Enter Registration Code</font>"));
+                et_regcid.requestFocus();
 
-        } else {
-            if (isOnline()) {
-                vehicle_num_send = "";
-                vehicle_num_send = ("" + (et_regcid.getText().toString().trim().toUpperCase()) + ""
-                        + (et_vchl_num.getText().toString().trim().toUpperCase()) + ""
-                        + (et_last_num.getText().toString().trim().toUpperCase()));
-                Log.i("**VEHCILE_NUM_TO_SEND***", "" + vehicle_num_send);
+            } else if (et_last_num.getText().toString().trim().equals("")) {
+                // utils.showError(et_last_num, "");
+                et_last_num.setError(Html.fromHtml("<font color='black'>Enter Vehicle Number</font>"));
+                et_last_num.requestFocus();
 
-                Dashboard.rta_details_request_from = "RTACLASS";
-                completeVehicle_num_send = ("" + et_regcid.getText().toString() + ""
-                        + et_vchl_num.getText().toString() + "" + et_last_num.getText().toString());
-                new Async_getRTADetails().execute();
-
+            } else {
                 if (isOnline()) {
-                    if (!et_driver_lcnce_num.getText().toString().trim().equals("")) {
-                        Dashboard.licence_details_request_from = "RTACLASS";
-                        new Async_getLicenceDetails().execute();
+                    vehicle_num_send = "";
+                    vehicle_num_send = ("" + (et_regcid.getText().toString().trim().toUpperCase()) + ""
+                            + (et_vchl_num.getText().toString().trim().toUpperCase()) + ""
+                            + (et_last_num.getText().toString().trim().toUpperCase()));
+                    Log.i("**VEHCILE_NUM_TO_SEND***", "" + vehicle_num_send);
+
+                    Dashboard.rta_details_request_from = "RTACLASS";
+                    completeVehicle_num_send = ("" + et_regcid.getText().toString() + ""
+                            + et_vchl_num.getText().toString() + "" + et_last_num.getText().toString());
+                    if (isOnline()) {
+                        new Async_getRTADetails().execute();
                     }
-                }
+
+                    if (isOnline()) {
+                        if (!et_driver_lcnce_num.getText().toString().trim().equals("")) {
+                            Dashboard.licence_details_request_from = "RTACLASS";
+                            if ("Y".equals(dl_data_flg.trim().toUpperCase())) {
+
+                                if (isOnline()) {
+                                    new Async_getLicenceDetails().execute();
+                                }
+                            }
+                        }
+                    }
 
 					/* TO GET AADHAR DETAILS */
-                ll_aadhar_layout.setVisibility(View.GONE);
-                tv_aadhar_header.setVisibility(View.GONE);
-                img_aadhar_image.setImageResource(R.drawable.photo);
+                    ll_aadhar_layout.setVisibility(View.GONE);
+                    tv_aadhar_header.setVisibility(View.GONE);
+                    img_aadhar_image.setImageResource(R.drawable.photo);
 
-                if (et_aadharnumber.getText() != null && et_aadharnumber.getText().toString().trim().length() >= 1
-                        && (!ver.isValid(et_aadharnumber.getText().toString()))) {
-                    showToast("Please Enter Valid Adhaar Number");
-                    et_aadharnumber
-                            .setError(Html.fromHtml("<font color='black'>Please Enter Valid Adhaar Number</font>"));
-                } else if ((et_aadharnumber.getText().toString().trim().length() == 12)
-                        || (et_aadharnumber.getText().toString().trim().length() == 28)) {
-                    if (isOnline()) {
-                        new Async_getAadharDetails().execute();
+                    if (et_aadharnumber.getText() != null && et_aadharnumber.getText().toString().trim().length() >= 1
+                            && (!ver.isValid(et_aadharnumber.getText().toString()))) {
+                        showToast("Please Enter Valid Adhaar Number");
+                        et_aadharnumber
+                                .setError(Html.fromHtml("<font color='black'>Please Enter Valid Adhaar Number</font>"));
+                    } else if ((et_aadharnumber.getText().toString().trim().length() == 12)
+                            || (et_aadharnumber.getText().toString().trim().length() == 28)) {
+
+                        if ("Y".equals(aadhaar_data_flg.trim().toUpperCase())) {
+                            if (isOnline()) {
+                                new Async_getAadharDetails().execute();
+                            }
+                        }
                     }
+                } else {
+                    showToast("" + NETWORK_TXT);
                 }
-            } else {
-                showToast("" + NETWORK_TXT);
             }
+        }else {
+            showToast("Please Check Your Network Connection");
         }
+
     }
 
     protected void selectImage() {
@@ -981,7 +1107,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
 
             try {
 
-                if(!ServiceHelper.rta_data.equalsIgnoreCase("NA")) {
+                if(ServiceHelper.rta_data!=null && !ServiceHelper.rta_data.equalsIgnoreCase("NA") && !"0".equals(ServiceHelper.rta_data)) {
                     if ((!ServiceHelper.rta_data.equalsIgnoreCase("0")) && (rta_details_master.length > 1)) {
                         rl_rta_details_layout.setVisibility(View.VISIBLE);
 
@@ -995,10 +1121,16 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                             tv_maker_name.setText("" + rta_details_master[4]!=null?rta_details_master[4]:"" + "\t" + rta_details_master[6]!=null?rta_details_master[6]:"");
                             tv_engine_no.setText("" + rta_details_master[7]!=null?rta_details_master[7]:"");
                             tv_chasis_no.setText("" + rta_details_master[8]!=null?rta_details_master[8]:"");
+
                             Log.i("FAKE DETAILS", "" + rta_details_master[10]!=null?rta_details_master[10]:"");
+
                             tv_vehicle_details.setText("VEHICLE DETAILS");
+
+
                             rta_details_master = new String[0];
+
                             rta_details_master = ServiceHelper.rta_data.split("!");
+
                             Wheeler_check = rta_details_master[0].split(":");
                             String Wheeler_Enable_check = Wheeler_check[1].toString()!=null?Wheeler_check[1].toString():"";
 
@@ -1029,8 +1161,9 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                         {
                             e.printStackTrace();
                         }
-
-                        new Async_getOffenderRemarks().execute();
+                        if(isOnline()) {
+                            new Async_getOffenderRemarks().execute();
+                        }
 
                     } else {
                         tv_vehicle_details.setText("VEHICLE DETAILS NOT FOUND!");
@@ -1040,10 +1173,13 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                     }
 
 
-                    if ((et_aadharnumber.getText().toString().trim().length() == 12)
-                            || (et_aadharnumber.getText().toString().trim().length() == 28)) {
-                        new Async_getAadharDetails().execute();
-                    }
+//                    if ((et_aadharnumber.getText().toString().trim().length() == 12)
+//                            || (et_aadharnumber.getText().toString().trim().length() == 28)) {
+//
+//                        if(isOnline()) {
+//                            new Async_getAadharDetails().execute();
+//                        }
+//                    }
                 }else {
                     tv_vehicle_details.setText("VEHICLE DETAILS NOT FOUND!");
                     rl_rta_details_layout.setVisibility(View.GONE);
@@ -1090,10 +1226,12 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                     Drunk_Drive.offender_remarks_resp_master = new String[0];
 
                     Drunk_Drive.offender_remarks_resp_master = ServiceHelper.offender_remarks.split("!");
-                    Log.i("**getRTADetails Length***", "" + Drunk_Drive.offender_remarks_resp_master.length);
 
-                    if ((!offender_remarks_resp_master[10].toString().trim().equals("NA"))) {
+                    if (!offender_remarks_resp_master[10].toString().trim().equals("NA") && offender_remarks_resp_master.length>1) {
                         showDialog(FAKE_NUMBERPLATE_DIALOG);
+                    }
+                    else {
+                        showToast("No Remarks Found");
                     }
                 }catch (Exception e)
                 {
@@ -1135,7 +1273,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
             super.onPostExecute(result);
             removeDialog(PROGRESS_DIALOG);
 
-            if (ServiceHelper.aadhar_details.length > 0) {
+            if (!"null".equals(ServiceHelper.aadhar_data) && !"0".equals(ServiceHelper.aadhar_data) && ServiceHelper.aadhar_details.length > 0) {
 
                 ll_aadhar_layout.setVisibility(View.VISIBLE);
                 tv_aadhar_header.setVisibility(View.VISIBLE);
@@ -1177,7 +1315,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                     String date_birth="0",service_year="0";
 
 
-                   try {
+                    try {
 
                         date_birth = ServiceHelper.aadhar_details[10]!=null?ServiceHelper.aadhar_details[10]:"";
                         if(date_birth!=null && !date_birth.equalsIgnoreCase(""))
@@ -1212,10 +1350,15 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                     if (ServiceHelper.aadhar_details[13].toString().trim().equals("0")) {
 
                     } else if (ServiceHelper.aadhar_details[13] != null) {
-                        byte[] decodestring = Base64.decode("" + ServiceHelper.aadhar_details[13].toString().trim(),
-                                Base64.DEFAULT);
-                        Bitmap decocebyte = BitmapFactory.decodeByteArray(decodestring, 0, decodestring.length);
-                        img_aadhar_image.setImageBitmap(decocebyte);
+                        try {
+                            byte[] decodestring = Base64.decode("" + ServiceHelper.aadhar_details[13].toString().trim(),
+                                    Base64.DEFAULT);
+                            Bitmap decocebyte = BitmapFactory.decodeByteArray(decodestring, 0, decodestring.length);
+                            img_aadhar_image.setImageBitmap(decocebyte);
+                        }catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     } else {
                         ServiceHelper.aadhar_details[13] = null;
                     }
@@ -1224,7 +1367,8 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                         // img_aadhar_image.setClickable(true);
                     }
 
-                    String Qrdata = "AADHAAAR NUMBER:" + " " + ServiceHelper.aadhar_details[11] + "\n" + "NAME:" + " "
+
+                    String Qrdata = "AADHAAAR NUMBER:" + " " + ServiceHelper.aadhar_details[11]!=null?ServiceHelper.aadhar_details[11]:"" + "\n" + "NAME:" + " "
                             + ServiceHelper.aadhar_details[0]!=null?ServiceHelper.aadhar_details[0]:"" + "\n" + "FATHER NAME:" + " "
                             + ServiceHelper.aadhar_details[1]!=null?ServiceHelper.aadhar_details[1]:"" + "\n" + "AGE:" + " " + final_age + "\n" + "GENDER:" + " "
                             + ServiceHelper.aadhar_details[9]!=null?ServiceHelper.aadhar_details[9]:""+ "\n" + "ADDRESS:" + " " + Compleate_addr;
@@ -1286,70 +1430,69 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                 dl_no.setText("" + et_driver_lcnce_num.getText().toString().trim());
 
 
-            if ((!ServiceHelper.license_data.equals("0")) && (SpotChallan.licence_details_spot_master.length > 0)) {
+                if (ServiceHelper.license_data != null && !"0".equals(ServiceHelper.license_data) && SpotChallan.licence_details_spot_master.length > 0) {
 
-                rl_lcnce_Details.setVisibility(View.VISIBLE);
-                Log.i("ServiceHelper.aadhar_data::::", "" + ServiceHelper.license_data);
-                Drunk_Drive.licFLG = true;
-                adhrFLG = false;
-                rtaFlG = false;
-
-                try {
-                    tv_licnce_ownername.setText("" + SpotChallan.licence_details_spot_master[0] != null ? SpotChallan.licence_details_spot_master[0] : "");
-                    tv_lcnce_father_name.setText("" + SpotChallan.licence_details_spot_master[1] != null ? SpotChallan.licence_details_spot_master[1] : "");
-                    tv_lcnce_phone_number.setText("" + SpotChallan.licence_details_spot_master[2] != null ? SpotChallan.licence_details_spot_master[2] : "");
-                    tv_lcnce_address.setText("" + SpotChallan.licence_details_spot_master[4] != null ? SpotChallan.licence_details_spot_master[4] : "");
-
-
-                    owner_image_data = "" + SpotChallan.licence_details_spot_master[5] != null ? SpotChallan.licence_details_spot_master[5] : "";
-
-                    dl_points = SpotChallan.licence_details_spot_master[7] != null ? SpotChallan.licence_details_spot_master[7] : "0";
-
-                }catch (ArrayIndexOutOfBoundsException e)
-                {
-                    e.printStackTrace();
-
-                    dl_points="0";
-
-                }
-
-                if (licence_no != null && (dl_points != null && Integer.parseInt(dl_points) > 0)) {
-
-                    tv_dlpoints_spotchallan_xml.setText("TOTAL PENALTY POINTS :"+dl_points);
-
-                }
-                else {
-                    tv_dlpoints_spotchallan_xml.setText("TOTAL PENALTY POINTS :"+"0");
-                }
-
-
-                if (owner_image_data != null && owner_image_data.trim().length() > 100) {
+                    rl_lcnce_Details.setVisibility(View.VISIBLE);
+                    Drunk_Drive.licFLG = true;
+                    adhrFLG = false;
+                    rtaFlG = false;
 
                     try {
-                        owner_imageByteArray = Base64.decode(owner_image_data.getBytes(), 1);
-                        Log.i("Image 2 byte[]", "" + Base64.decode(owner_image_data.trim().getBytes(), 1));
-                        Bitmap bmp = BitmapFactory.decodeByteArray(owner_imageByteArray, 0, owner_imageByteArray.length);
-                        dl_img.setImageBitmap(bmp);
-                    }catch (Exception e)
+                        tv_licnce_ownername.setText("" + SpotChallan.licence_details_spot_master[0] != null ? SpotChallan.licence_details_spot_master[0] : "");
+                        tv_lcnce_father_name.setText("" + SpotChallan.licence_details_spot_master[1] != null ? SpotChallan.licence_details_spot_master[1] : "");
+                        tv_lcnce_phone_number.setText("" + SpotChallan.licence_details_spot_master[2] != null ? SpotChallan.licence_details_spot_master[2] : "");
+                        tv_lcnce_address.setText("" + SpotChallan.licence_details_spot_master[4] != null ? SpotChallan.licence_details_spot_master[4] : "");
+
+
+                        owner_image_data = "" + SpotChallan.licence_details_spot_master[5] != null ? SpotChallan.licence_details_spot_master[5] : "";
+
+                        dl_points = SpotChallan.licence_details_spot_master[7] != null ? SpotChallan.licence_details_spot_master[7] : "0";
+
+                    }catch (ArrayIndexOutOfBoundsException e)
                     {
                         e.printStackTrace();
-                        dl_img.setImageDrawable(getResources().getDrawable(R.drawable.empty_profile_img));
+
+                        dl_points="0";
+
+                    }
+
+                    if (licence_no != null && (dl_points != null && Integer.parseInt(dl_points) > 0)) {
+
+                        tv_dlpoints_spotchallan_xml.setText("TOTAL PENALTY POINTS :"+dl_points);
+
+                    }
+                    else {
+                        tv_dlpoints_spotchallan_xml.setText("TOTAL PENALTY POINTS :"+"0");
                     }
 
 
-                } else if (owner_image_data == null && owner_image_data.trim().length() == 0) {
-                    dl_img.setImageResource(R.drawable.empty_profile_img);
+                    if (owner_image_data != null && owner_image_data.trim().length() > 100) {
+
+                        try {
+                            owner_imageByteArray = Base64.decode(owner_image_data.getBytes(), 1);
+                            Log.i("Image 2 byte[]", "" + Base64.decode(owner_image_data.trim().getBytes(), 1));
+                            Bitmap bmp = BitmapFactory.decodeByteArray(owner_imageByteArray, 0, owner_imageByteArray.length);
+                            dl_img.setImageBitmap(bmp);
+                        }catch (Exception e)
+                        {
+                            e.printStackTrace();
+                            dl_img.setImageDrawable(getResources().getDrawable(R.drawable.empty_profile_img));
+                        }
+
+
+                    } else if (owner_image_data == null && owner_image_data.trim().length() == 0) {
+                        dl_img.setImageResource(R.drawable.empty_profile_img);
+                    }
+                    tv_licence_details.setText("LICENCE DETAILS");
+                    Log.i("LICENCE DETAILS FOUND", "" + licFLG);
+
+                } else {
+                    Drunk_Drive.licFLG = false;
+                    Log.i("NO LICENCE DETAILS FOUND", "" + licFLG);
+                    tv_licence_details.setText("LICENCE DETAILS NOT FOUND!");
+                    rl_lcnce_Details.setVisibility(View.GONE);
+
                 }
-                tv_licence_details.setText("LICENCE DETAILS");
-                Log.i("LICENCE DETAILS FOUND", "" + licFLG);
-
-            } else {
-                Drunk_Drive.licFLG = false;
-                Log.i("NO LICENCE DETAILS FOUND", "" + licFLG);
-                tv_licence_details.setText("LICENCE DETAILS NOT FOUND!");
-                rl_lcnce_Details.setVisibility(View.GONE);
-
-            }
             }catch (Exception e)
             {
                 e.printStackTrace();
@@ -1871,12 +2014,14 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
             }
 
 
-            String rtaApproverResponse = ServiceHelper.getApprovefromRtaforPoint("",completeVehicle_num_send,new DateUtil().getTodaysDate(),new DateUtil().getPresentTime(),
-                    "",Dashboard.UNIT_CODE,bookedPScode_send_from_settings,exact_location_send_from_settings,"63@W/o Documents(S 130/177)@100!33@Drunken Driving(S 185(a))@0","0",licence_no.toString(),
-                    driverName,driverAddress,
-                    driverCity,"U","",
-                    "",dd_dob_DL,point_name_send_from_settings,"",bookedPSname_send_from_settings,
-                    pidName,cadre_name,whlr_code_send,point_code_send_from_settings,"");
+            String rtaApproverResponse = ServiceHelper.getApprovefromRtaforPoint("",completeVehicle_num_send!=null?completeVehicle_num_send:"NA",
+                    new DateUtil().getTodaysDate(),new DateUtil().getPresentTime(),
+                    "",Dashboard.UNIT_CODE,bookedPScode_send_from_settings,exact_location_send_from_settings,
+                    "63@W/o Documents(S 130/177)@100!33@Drunken Driving(S 185(a))@0","0",licence_no,
+                    driverName!=null?driverName.toString():"NA",driverAddress!=null?driverAddress.toString():"NA",
+                    driverCity!=null?driverCity.toString():"NA","U","",
+                    "",dd_dob_DL!=null?dd_dob_DL.toString():"NA",point_name_send_from_settings,"",bookedPSname_send_from_settings,
+                    pidName,cadre_name,whlr_code_send!=null?whlr_code_send.toString():"NA",point_code_send_from_settings,"");
 
             return rtaApproverResponse;
         }
@@ -1890,48 +2035,50 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
 
         @Override
         protected void onPostExecute(String result) {
+            removeDialog(PROGRESS_DIALOG);
 
-            if(!result.equalsIgnoreCase("")&&!result.equalsIgnoreCase(null))
+            if(ServiceHelper.rtaapproovedresponse != null &&!ServiceHelper.rtaapproovedresponse.equalsIgnoreCase("") &&
+                    !ServiceHelper.rtaapproovedresponse.equalsIgnoreCase("NA|NA|NA"))
             {
-
-                removeDialog(PROGRESS_DIALOG);
 
                 try {
                     rtaAprroved_Master = new String[0];
 
                     rtaAprroved_Master = ServiceHelper.rtaapproovedresponse.split("\\|");
 
-                    String rta = rtaAprroved_Master[0].toString().trim();
 
-  /*                  if ("1".equals(rta)) {*/
 
-                        SharedPreferences sharedPreference = PreferenceManager
-                                .getDefaultSharedPreferences(getApplicationContext());
-                        SharedPreferences.Editor edit = sharedPreference.edit();
-                        edit.putString("IMAGE", "" + image_data_tosend);
-                        edit.commit();
-                        startActivity(new Intent(Drunk_Drive.this, GenerateDrunkDriveCase.class));
-/*
-                    } else if (rtaAprroved_Master[0].equals("0")) {
-                        SharedPreferences sharedPreference = PreferenceManager
-                                .getDefaultSharedPreferences(getApplicationContext());
-                        SharedPreferences.Editor edit = sharedPreference.edit();
-                        edit.putString("IMAGE", "" + image_data_tosend);
-                        edit.commit();
-                        startActivity(new Intent(Drunk_Drive.this, GenerateDrunkDriveCase.class));
-                    }*/
+                    SpotChallan.OtpStatus=rtaAprroved_Master[3].toString()!= null ? rtaAprroved_Master[3].toString().trim() : "N";
+                    SpotChallan.OtpResponseDelayTime=rtaAprroved_Master[4].toString()!= null ? rtaAprroved_Master[4].toString().trim(): "0";
+
+                    SharedPreferences sharedPreference = PreferenceManager
+                            .getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor edit = sharedPreference.edit();
+                    edit.putString("IMAGE", "" + image_data_tosend);
+                    edit.commit();
+                    startActivity(new Intent(Drunk_Drive.this, GenerateDrunkDriveCase.class));
 
 
                 }catch (Exception e)
                 {
                     e.printStackTrace();
                 }
-//
-//                else if(rtaAprroved_Master[0].equals("2"))
-//                {
-//
-//                    ShowMessage("Re Select Violation ");
-//                }
+
+            }
+            else {
+
+                rtaAprroved_Master = new String[0];
+
+                SpotChallan.OtpStatus="N";
+                SpotChallan.OtpResponseDelayTime="0";
+
+                SharedPreferences sharedPreference = PreferenceManager
+                        .getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor edit = sharedPreference.edit();
+                edit.putString("IMAGE", "" + image_data_tosend);
+                edit.commit();
+                startActivity(new Intent(Drunk_Drive.this, GenerateDrunkDriveCase.class));
+
             }
         }
 

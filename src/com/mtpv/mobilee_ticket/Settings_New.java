@@ -242,7 +242,7 @@ public class Settings_New extends Activity implements OnClickListener {
 		}*/
 		/*---------------------------------------------*/
 
-		dashboard.preferences = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+		dashboard.preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
 		dashboard.editor = dashboard.preferences.edit();
 
 		/* FOR PS NAMES */
@@ -672,7 +672,7 @@ public class Settings_New extends Activity implements OnClickListener {
 			 */
 			else {
 				dashboard.preferences = getSharedPreferences("preferences",
-						MODE_WORLD_READABLE);
+						Context.MODE_PRIVATE);
 				dashboard.editor = dashboard.preferences.edit();
 
 				/* FOR EXACT LOCATION PREF VALUES */
@@ -966,7 +966,7 @@ public class Settings_New extends Activity implements OnClickListener {
 							public void run() {
 								progress.setProgress(downloadedSize);
 								float per = ((float) downloadedSize / totalSize) * 100;
-								cur_val.setText((int) per / 1500000 + "%");
+								cur_val.setText((int) per / 225000 + "%");
 							}
 						});
 					}
@@ -1065,7 +1065,7 @@ public class Settings_New extends Activity implements OnClickListener {
 							btn_ps_name.setText(""+ psname_name[which].toString().trim());
 							ps_code_pos = which;
 
-							dashboard.preferences = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+							dashboard.preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
 							dashboard.editor = dashboard.preferences.edit();
 							dashboard.editor.putInt("psname_code_toSet", which);
 							dashboard.editor.putString("psname_code", psname_code[which].toString());
@@ -1081,7 +1081,7 @@ public class Settings_New extends Activity implements OnClickListener {
 
 							if (isOnline()) {
 								selected_pointby_psname = -1;
-								dashboard.preferences = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+								dashboard.preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
 								dashboard.editor = dashboard.preferences.edit();
 								dashboard.editor.putInt("point_code_toSet", selected_pointby_psname);
 								dashboard.editor.commit();
@@ -1121,7 +1121,7 @@ public class Settings_New extends Activity implements OnClickListener {
 							// TODO Auto-generated method stub
 							selected_pointby_psname = which;
 							btn_pointby_ps_name.setText(""+ pointNameBy_PsName_arr.get(which).toString().trim());
-							dashboard.preferences = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+							dashboard.preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
 							dashboard.editor = dashboard.preferences.edit();
 
 							dashboard.editor.putInt("point_code_toSet", which);

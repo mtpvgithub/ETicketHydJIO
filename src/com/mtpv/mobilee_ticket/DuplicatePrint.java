@@ -147,7 +147,7 @@ public class DuplicatePrint extends Activity implements OnClickListener {
 		present_month = cal.get(Calendar.MONTH);
 		present_day = cal.get(Calendar.DAY_OF_MONTH);
 
-		preferences = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+		preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
 		editor = preferences.edit();
 		address = preferences.getString("btaddress", "btaddr");
 

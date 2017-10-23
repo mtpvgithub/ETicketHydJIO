@@ -160,7 +160,7 @@
                     android:checked="true"
 
 
-                    android:text="@string/local" />
+                    android:text="@string/mpls" />
             </RadioGroup>
             <!-- </LinearLayout> -->
 

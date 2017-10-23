@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -136,7 +137,7 @@ public class DrunkResponse extends Activity implements OnClickListener {
 		CheckBlueToothState();
 		registerReceiver(null, new IntentFilter(BluetoothDevice.ACTION_FOUND));
 
-		preferences = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+		preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
 		editor = preferences.edit();
 		address = preferences.getString("btaddress", "btaddr");
 		// showToast(address);
@@ -186,7 +187,7 @@ public class DrunkResponse extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.btnprint_res_xml:
 			
-			
+
 			new Async_Print().execute();
 
 			break;
@@ -256,15 +257,17 @@ public class Async_Print extends AsyncTask<Void, Void, String>{
 					try {
 						/*printdata = bth_printer.font_Courier_41(""+ ServiceHelper.final_reponse_split[0]);
 						actual_printer.Call_PrintertoPrint("" + address, ""+ printdata);*/
-						
-						Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
 
-		                String print_data = printer.font_Courier_41(""+ ServiceHelper.final_reponse_split[0]);
-		                actual_printer.openBT(address);
-		                
-		                actual_printer.printData(print_data);
-		                 Thread.sleep(5000);
-		                actual_printer.closeBT();
+						if(ServiceHelper.final_reponse_split!=null && ServiceHelper.final_reponse_split.length>0)  {
+							Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
+
+							String print_data = printer.font_Courier_41("" + ServiceHelper.final_reponse_split[0]);
+							actual_printer.openBT(address);
+
+							actual_printer.printData(print_data);
+							Thread.sleep(5000);
+							actual_printer.closeBT();
+						}
 					} catch (Exception e) {
 						// TODO: handle exception
 						

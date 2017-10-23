@@ -796,7 +796,7 @@
                         </LinearLayout>
                         <!--
 <LinearLayout
-    android:id="@+id/fathername_layout"  
+    android:id="@+id/fathername_layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="3dp"
@@ -804,7 +804,7 @@
     android:orientation="horizontal"
     android:layout_marginLeft="5dp"
     android:weightSum="1" >
-    
+
     <TextView
         style="@style/TextColor"
         android:layout_width="fill_parent"
@@ -813,14 +813,14 @@
         android:text="@string/Fathername_txt"
         android:textSize="20sp"
          />
-    
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=":"
         style="@style/TextColor"
         android:textSize="22sp"/>
-    
+
     <TextView
         android:id="@+id/rc_father_name"
         style="@style/TextColor"
@@ -830,9 +830,9 @@
         android:layout_weight="0.3"
         android:paddingLeft="10dp"
         android:text=""
-        android:textSize="20sp" 
+        android:textSize="20sp"
         />
-    
+
 </LinearLayout>
                         -->
 
@@ -874,7 +874,7 @@
                         </LinearLayout>
 
                         <!--
-    <LinearLayout 
+    <LinearLayout
          android:id="@+id/dor_layout"
          android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -891,14 +891,14 @@
         android:text="@string/Dor_txt"
         android:textSize="20sp"
          />
-    
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=":"
         style="@style/TextColor"
         android:textSize="22sp"/>
-    
+
     <TextView
         android:id="@+id/dor"
         style="@style/TextColor"
@@ -909,10 +909,10 @@
         android:paddingLeft="10dp"
         android:singleLine="false"
         android:text=""
-        android:textSize="20sp" 
+        android:textSize="20sp"
          />
      </LinearLayout>
-      <LinearLayout 
+      <LinearLayout
          android:id="@+id/rvu_layout"
          android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -929,14 +929,14 @@
         android:text="@string/RVU_txt"
         android:textSize="20sp"
          />
-    
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=":"
         style="@style/TextColor"
         android:textSize="22sp"/>
-    
+
     <TextView
         android:id="@+id/rvu"
         style="@style/TextColor"
@@ -947,7 +947,7 @@
         android:paddingLeft="10dp"
         android:singleLine="false"
         android:text=""
-        android:textSize="20sp" 
+        android:textSize="20sp"
          />
      </LinearLayout>
                         -->
@@ -1272,7 +1272,7 @@
                             android:orientation="vertical" >
 
                             <!--
-     <ImageView 
+     <ImageView
     android:id="@+id/owner_sign"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -1282,7 +1282,7 @@
     android:layout_gravity="center"/>
                             -->
                             <!--
-    <TextView 
+    <TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:textColor="#e51616"
@@ -1323,7 +1323,7 @@
                             android:orientation="vertical" >
 
                             <!--
-    <ImageView 
+    <ImageView
     android:id="@+id/rtasign"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -1355,7 +1355,7 @@
                     </LinearLayout>
 
                     <!--
-   <View 
+   <View
    android:layout_width="fill_parent"
    android:layout_height="4dp"
    android:layout_margin="10dp"

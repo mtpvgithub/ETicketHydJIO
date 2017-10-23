@@ -377,7 +377,7 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2.17"
-                    android:digits="-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ/."
+                    android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ/"
                     android:gravity="center"
                     android:inputType="text|textCapCharacters"
                     android:maxLength="25"></EditText>
@@ -1295,7 +1295,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
 
                 <LinearLayout

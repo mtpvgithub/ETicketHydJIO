@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -144,7 +145,7 @@ public class DD_Response_Print extends Activity {
 		CheckBlueToothState();
 		registerReceiver(null, new IntentFilter(BluetoothDevice.ACTION_FOUND));
 
-		preferences = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+		preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
 		editor = preferences.edit();
 		address_spot = preferences.getString("btaddress", "btaddr");
 		

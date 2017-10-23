@@ -14,7 +14,7 @@
     <string name="towing">Crane \n41 CP ACT</string>
     <string name="towing_one_line">Crane 41 CP ACT</string>
     <string name="reports">Reports</string>
-    <string name="app_version">Version-2.0</string>
+    <string name="app_version">Version-2.3.2</string>
     <string name="regNo">Regn.No</string>
     <string name="engine">Engine No</string>
     <string name="chasis">Chasis No</string>
@@ -54,6 +54,8 @@
     <string name="driver_father_name">Driver\'s Father Name</string>
     <string name="aadhar_no">Aadhar No    </string>
     <string name="about_version">About version</string>
+    <string name="specialdrive">Special Drive</string>
+
     <string name="update_aadhar">Update Aadhar</string>
     <string name="tv_age">Age</string>
     <string name="tv_gender">Gender</string>
@@ -198,6 +200,7 @@
     <!-- SPOT CHALLAN -->
     <string name="spot_challan">Spot Challan</string>
     <string name="special_drive">Special Drive</string>
+    <string name="ddbasic_drive">DD BASIC \n WITHOUT DL \n AND AADHAR</string>
     <string name="select_violation">Select Violation</string>
 
     <!-- SPOT CHALLAN_TWO.XML VALUES -->
@@ -236,6 +239,8 @@
     <string name="live">LIVE</string>
     <string name="test">TEST</string>
     <string name="local">LOCAL NETWORK</string>
+    <string name="mpls">MPLS NETWORK</string>
+
     <string name="open">OPEN NETWORK</string>
 
     <!-- AADHAR DETAILS -->
@@ -334,5 +339,12 @@
     <string name="enter_last_fiv_dig_chass_no">Enter Last Five Digits of Vehicle Chasis No</string>
     <string name="title_activity_dash_pc__hg">DashPC_HG</string>
     <string name="title_activity_drunk__drive__fake__dialog">Drunk_Drive_Fake_Dialog</string>
+
+    <string name="chasisimposed">Imposed By ChasisNo</string>
+    <string name="engineimposed">Imposed By EngineNo</string>
+    <string name="regnoimposed">Imposed By RegNo</string>
+    <string name="chasisengineimposed">Imposed By ChasisandEngine Nos</string>
+    <string name="imposed">IMPOSED BY</string>
+
 
 </resources>

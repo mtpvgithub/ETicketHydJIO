@@ -2,24 +2,22 @@ package com.mtpv.mobilee_ticket;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.mtpv.mobilee_ticket.R;
 
 public class IPSettings extends Activity implements OnClickListener {
 
@@ -33,22 +31,28 @@ public class IPSettings extends Activity implements OnClickListener {
 
     String SERVICE_URL_PREF = "", FTP_URL_PREF = "", SERVICE_TYPE_PREf = "";
 
-   // private String test_service_url3 = "http://192.168.11.55:8080/eTicketMobileHyd";
-   // private String test_service_url4 = "http://192.168.11.55:8080/eTicketMobileHyd";
+    // private String test_service_url3 = "http://192.168.11.55:8080/eTicketMobileHyd";
+    // private String test_service_url4 = "http://192.168.11.55:8080/eTicketMobileHyd";
 
     //private String test_service_url = "http://192.168.11.10:8080/eTicketMobileHyd";
     //private String test_service_url = "http://192.168.11.97:8080/eTicketMobileHyd";
 
-    //private String local_network_url="http://192.168.11.4/eTicketMobileHyd";
-
-//    private String local_network_url="http://192.168.11.10:8080/eTicketMobileHyd";
-
-    private String local_network_url="http://192.168.11.97:8080/eTicketMobileHyd";//Madhu System connecting
+    private String local_network_url="http://192.168.11.4/eTicketMobileHyd";
 
 
-//    private String live_service_url = "http://192.168.11.4/eTicketMobileHyd";
-   // private String live_service_url = "https://www.echallan.org/eTicketMobileHyd";
-    private String live_service_url = "http://125.16.1.70:8080/eTicketMobileHyd";
+    //Connecting_sunilsys
+    // private String local_network_url="http://125.16.1.70:8080/eTicketMobileHyd";
+
+    //Connecting_madhusys
+ //   private String local_network_url="http://192.168.11.97:8080/eTicketMobileHyd";
+
+
+    //private String local_network_url="http://192.168.11.10:8080/eTicketMobileHydTest";
+
+
+
+    //    private String live_service_url = "http://192.168.11.4/eTicketMobileHyd";
+   private String live_service_url = "https://www.echallan.org/eTicketMobileHyd";
 
 
     public static String ftp_fix = "192.168.11.9";
@@ -67,7 +71,7 @@ public class IPSettings extends Activity implements OnClickListener {
 
 
 
-        preference = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+        preference = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         editor = preference.edit();
 
         //This is main varible to set ipsettings defaultly if we change to live then ipsettings live set default one
@@ -79,13 +83,13 @@ public class IPSettings extends Activity implements OnClickListener {
         rbtn_live = (RadioButton) findViewById(R.id.radioButton_live);
         rbtn_test = (RadioButton) findViewById(R.id.radioButton_test);
 
-       rbtn_test.setChecked(true);
+        rbtn_test.setChecked(true);
 
-       // rbtn_live.setChecked(true);
+        // rbtn_live.setChecked(true);
 
 
         if (SERVICE_TYPE_PREf.equals("live")) {
-           rbtn_live.setChecked(true);
+            rbtn_live.setChecked(true);
             et_service_url.setText("" + live_service_url);
             et_ftp_url.setText("");
             et_ftp_url.setText(open_ftp_fix);
@@ -158,7 +162,7 @@ public class IPSettings extends Activity implements OnClickListener {
 
 
 
-                    preference = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+                    preference = getSharedPreferences("preferences", Context.MODE_PRIVATE);
                     editor = preference.edit();
 
                     if (preference.contains("serviceurl")) {

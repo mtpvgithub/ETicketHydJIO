@@ -37,7 +37,7 @@ public class Login_otp extends Activity {
     EditText otp_input ;
     Button otp_cancel, ok_dialog ;
 
-    String otpgiven=null;
+   static String otpgiven=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,21 +53,23 @@ public class Login_otp extends Activity {
         ok_dialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                otpgiven=otp_input.getText().toString().trim();
+                Login_otp.otpgiven=otp_input.getText().toString().trim();
 
-                if (otpgiven.equals(MainActivity.otpno)) {
+
                  //   Verify_status = "Y";
                     if (isOnline()) {
                    //     SpotChallan.otp_status = "verify";
-
+                        if (Login_otp.otpgiven.equals(MainActivity.otpno)) {
                         new Async_otpverify().execute();
+
+                        }else{
+                            showToast("Entered Wrong OTP");
+                            otp_input.setText("");
+                        }
                     } else {
                         showToast("Please check your network connection!");
                     }
-                }else{
-                    showToast("Entered Wrong OTP");
-                    otp_input.setText("");
-                }
+
             }
         });
 
@@ -163,7 +165,7 @@ public class Login_otp extends Activity {
 			/*String regn_no,String mobileNo,String date, String otp,String verify_status*/
 
             //SpotChallan.otp_status = "send" ;
-            ServiceHelper.confirmLoginOTP(MainActivity.pidCodestatic,otpgiven);
+            ServiceHelper.confirmLoginOTP(MainActivity.pidCodestatic,Login_otp.otpgiven);
 
             return null;
         }

@@ -19,14 +19,6 @@ public class DateUtil {
         return formattedDate;
     }
 
-    public String getDateandTime() {
-        String pattern = "yyyy-MM-dd hh:mm:ss.SSS";
-        format = new SimpleDateFormat(pattern);
-        String formattedDate = format.format(new Date());
-
-        return formattedDate;
-    }
-
     public long DaysCalucate(String dateStart, String dateStop) {
         // String dateStart ="0101120912";
         // String dateStop = "0101121041";

@@ -257,7 +257,7 @@ public class E_Challan extends Activity implements OnClickListener, LocationList
 		db.close();
 
 		/* PREFERENCES */
-		preferences = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+		preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
 		editor = preferences.edit();
 		/* FOR CHECKING FTP DETAILS */
 		ftp_host_spot = preferences.getString("ftpurl", "host");

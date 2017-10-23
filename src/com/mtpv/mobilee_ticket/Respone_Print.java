@@ -1,13 +1,12 @@
 package com.mtpv.mobilee_ticket;
 
-import java.sql.SQLException;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -17,8 +16,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,9 +25,10 @@ import android.widget.Toast;
 
 import com.analogics.thermalAPI.Bluetooth_Printer_3inch_ThermalAPI;
 import com.analogics.thermalprinter.AnalogicsThermalPrinter;
-import com.mtpv.mobilee_ticket.R;
 import com.mtpv.mobilee_ticket_services.DBHelper;
 import com.mtpv.mobilee_ticket_services.ServiceHelper;
+
+import java.sql.SQLException;
 
 @SuppressLint("WorldReadableFiles")
 public class Respone_Print extends Activity {
@@ -76,14 +76,14 @@ public class Respone_Print extends Activity {
 
 		if ((SpotChallan.cardFLG && SpotChallan.radioGroupButton_spotpaymentYes.isChecked())
 				&& (Dashboard.check_vhleHistory_or_Spot.equals("spot")
-						|| Dashboard.check_vhleHistory_or_Spot.equals("drunkdrive") 
-						|| Dashboard.check_vhleHistory_or_Spot.equals("vehiclehistory"))) {
+				|| Dashboard.check_vhleHistory_or_Spot.equals("drunkdrive")
+				|| Dashboard.check_vhleHistory_or_Spot.equals("vehiclehistory"))) {
 			Log.i("SpotChallan.cardFLG   1 :", "" + SpotChallan.cardFLG);
-			if ((Dashboard.check_vhleHistory_or_Spot.equals("spot") 
+			if ((Dashboard.check_vhleHistory_or_Spot.equals("spot")
 					|| Dashboard.check_vhleHistory_or_Spot.equals("vehiclehistory"))
 					&& SpotChallan.violation_code != null
 					&& (SpotChallan.et_aadharnumber_spot.getText().toString().trim().equals("")
-							|| SpotChallan.violation_code.equals("30") || SpotChallan.violation_code.equals("64"))) {
+					|| SpotChallan.violation_code.equals("30") || SpotChallan.violation_code.equals("64"))) {
 				Log.i("Log   1 :", "*Called*");
 				make_paymnt.setVisibility(View.GONE);
 			} else if (SpotChallan.cardFLG && Dashboard.check_vhleHistory_or_Spot.equals("vehiclehistory")) {
@@ -111,14 +111,7 @@ public class Respone_Print extends Activity {
 				"PENDING_CHALLAN_AMNT", "");// PENDING_CHALLAN_AMNT
 		String pending_challans = sharedPreferences.getString(
 				"PENDING_CHALLANS", "");
-		// editors.putString("TICKET_DETAILS", ""+ticketNo);
 
-		Log.i("Challans in Print ---->1 ", "" + all_challans);
-		Log.i("unit_name in Print ---->1 ", "" + unitName);
-		Log.i("unit_code in Print ---->1 ", "" + unitCode);
-		Log.i("ticket details in Print ----->1", "" + ticket_No);
-		Log.i("pending_amnt in Print ----->1", "" + pending_amnt);
-		Log.i("pending_challans in Print ----->1", "" + pending_challans);
 
 		db = new DBHelper(getApplicationContext());
 
@@ -126,7 +119,7 @@ public class Respone_Print extends Activity {
 			try {
 				db.open();
 				db.deleteDuplicateRecords(DBHelper.duplicatePrint_table, "" + ""
-								+ getResources().getString(R.string.dup_vhcle_hstry));
+						+ getResources().getString(R.string.dup_vhcle_hstry));
 				db.insertDuplicatePrintDetails("" + ServiceHelper.final_spot_reponse_master[0], ""
 						+ getResources().getString(R.string.dup_vhcle_hstry));
 				db.close();
@@ -171,9 +164,9 @@ public class Respone_Print extends Activity {
 			try {
 				db.open();
 				db.deleteDuplicateRecords(DBHelper.duplicatePrint_table, ""
-								+ getResources().getString(R.string.release_documents_one_line));
+						+ getResources().getString(R.string.release_documents_one_line));
 				db.insertDuplicatePrintDetails("" + ServiceHelper.final_spot_reponse_master[0], "" + getResources().getString(
-										R.string.release_documents_one_line));
+						R.string.release_documents_one_line));
 				db.close();
 
 			} catch (SQLException e) {
@@ -187,22 +180,49 @@ public class Respone_Print extends Activity {
 		CheckBlueToothState();
 		registerReceiver(null, new IntentFilter(BluetoothDevice.ACTION_FOUND));
 
-		preferences = getSharedPreferences("preferences", MODE_WORLD_READABLE);
+		preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
 		editor = preferences.edit();
 		address_spot = preferences.getString("btaddress", "btaddr");
+
+
+		/*if(!mtpv_SpecialDrive.specialDrive.equalsIgnoreCase(null)
+				&& mtpv_SpecialDrive.specialDrive.equalsIgnoreCase("SPDRIVE")) {
+
+			text_to_print.setText(mtpv_SpecialDrive.specialDriveData);
+			if (text_to_print.getText().toString().length() > 15) {
+				tv_sucess_text_header.setText("" + getResources().getString(R.string.ticket_generated_successfully));
+			}
+
+
+			printTicket = text_to_print.getText().toString();
+		}else
+		{*/
 
 		text_to_print.setText(ServiceHelper.spot_final_res_status.split("\\^")[0]);
 		if (text_to_print.getText().toString().length() > 15) {
 			tv_sucess_text_header.setText("" + getResources().getString(R.string.ticket_generated_successfully));
 		}
 
+
 		printTicket = text_to_print.getText().toString();
+
+		//	}
 
 		back.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+	/*			if(!mtpv_SpecialDrive.specialDrive.equalsIgnoreCase(null)
+						&& mtpv_SpecialDrive.specialDrive.equalsIgnoreCase("SPDRIVE")) {
+
+					mtpv_SpecialDrive.specialDrive="";
+					mtpv_SpecialDrive.specialDriveData="";
+					finish();
+					startActivity(new Intent(Respone_Print.this, mtpv_SpecialDrive.class));
+
+				}else
+				{*/
 				finish();
 				startActivity(new Intent(Respone_Print.this, SpotChallan.class));
 				// Respone_Print.this.finish();
@@ -213,6 +233,7 @@ public class Respone_Print extends Activity {
 				SpotChallan.tv_toal_amount_pending_challans.setText("0");
 				SpotChallan.total_amount = 0;
 				SpotChallan.sb_detained_items = null;
+				//}
 			}
 		});
 
@@ -270,7 +291,11 @@ public class Respone_Print extends Activity {
 					showToast("Please set bluetooth address in setting");
 				} else {
 					try {
-
+						/*
+						 * String printdata = bth_printer.font_Courier_41("" +
+						 * printTicket); actual_printer.Call_PrintertoPrint("" +
+						 * address_spot, "" + printdata);
+						 */
 
 						Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
 
@@ -308,14 +333,14 @@ public class Respone_Print extends Activity {
 	protected Dialog onCreateDialog(int id) {
 		// TODO Auto-generated method stub
 		switch (id) {
-		case PROGRESS_DIALOG:
-			ProgressDialog pd = ProgressDialog.show(this, "", "", true);
-			pd.setContentView(R.layout.custom_progress_dialog);
-			pd.setCancelable(false);
-			return pd;
+			case PROGRESS_DIALOG:
+				ProgressDialog pd = ProgressDialog.show(this, "", "", true);
+				pd.setContentView(R.layout.custom_progress_dialog);
+				pd.setCancelable(false);
+				return pd;
 
-		default:
-			break;
+			default:
+				break;
 		}
 		return super.onCreateDialog(id);
 	}
@@ -340,8 +365,7 @@ public class Respone_Print extends Activity {
 
 	private void showToast(String msg) {
 		// TODO Auto-generated method stub
-		// Toast.makeText(getApplicationContext(), "" + msg,
-		// Toast.LENGTH_SHORT).show();
+
 		Toast toast = Toast.makeText(getApplicationContext(), "" + msg, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		View toastView = toast.getView();
