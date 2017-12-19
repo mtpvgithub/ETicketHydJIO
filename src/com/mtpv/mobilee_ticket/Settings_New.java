@@ -1,22 +1,5 @@
 package com.mtpv.mobilee_ticket;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.SocketException;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
-
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,7 +8,6 @@ import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,9 +21,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.content.FileProvider;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
@@ -60,11 +44,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mtpv.mobilee_ticket.R;
-import com.mtpv.mobilee_ticket.SpotChallan.Async_sendOTP_to_mobile;
 import com.mtpv.mobilee_ticket_services.DBHelper;
 import com.mtpv.mobilee_ticket_services.ServiceHelper;
-import com.pinpad.mtpv.GetPinPad;
+
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.SocketException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 @SuppressLint("SdCardPath")
@@ -105,16 +101,16 @@ public class Settings_New extends Activity implements OnClickListener {
 	String ps_code_title = "Select PS By Point Name";
 
 	String[][] psname_name_code_arr;// to get names and ps codes ex :
-									// psname_name_code_arr[0][0]="uppal"; and
-									// psname_name_code_arr[0][1]="2301";
+	// psname_name_code_arr[0][0]="uppal"; and
+	// psname_name_code_arr[0][1]="2301";
 	ArrayList<String> ps_names_arr, ps_codes_fr_names_arr;// to get ps names
-															// from
-															// psname_name_code_arr
+	// from
+	// psname_name_code_arr
 
 	String[][] pointNameBYpsname_name_code_arr;
 	ArrayList<String> pointNameBy_PsName_arr;// point name for second dialog
 	ArrayList<String> pointNameBy_PsName_code_arr;// point code for second
-													// dialog
+	// dialog
 
 	GenerateDrunkDriveCase dashboard;
 	DBHelper db;
@@ -195,7 +191,7 @@ public class Settings_New extends Activity implements OnClickListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		et_pinpad = (EditText)findViewById(R.id.edt_pinpad_xml);
 		
 		/*if (et_pinpad.getText().toString().trim().equals("")) {
@@ -266,7 +262,7 @@ public class Settings_New extends Activity implements OnClickListener {
 
 		/* GETTING WEB URL */
 		Dashboard.modified_url = dashboard.preferences.getString("weburl", "myurl");
-		
+
 		if (Dashboard.modified_url.equals("myurl")) {
 		} else {
 			et_web_url.setText("" + Dashboard.modified_url);
@@ -336,7 +332,7 @@ public class Settings_New extends Activity implements OnClickListener {
 
 		lv_bt_items.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+									int position, long id) {
 				Log.i("bluetoothFLG and pinpadFLG********", "" + bluetoothFLG
 						+ " And " + pinpadFLG);
 
@@ -599,69 +595,69 @@ public class Settings_New extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		
 		/* FIRST BUTTON DIALOG */
-		case R.id.btnpsname_settings_xml:
-			showDialog(PS_NAME_DIALOG);
-			break;
-			
-		case R.id.btnpointby_psname_settings_xml:
+			case R.id.btnpsname_settings_xml:
+				showDialog(PS_NAME_DIALOG);
+				break;
+
+			case R.id.btnpointby_psname_settings_xml:
 
 			/* SECOND BUTTON DIALOG */
-			if (btn_ps_name
-					.getText()
-					.toString()
-					.equals(""
-							+ getResources().getString(R.string.select_ps_name))) {
-				showToast("Select PS Name");
-			} else {
-				Log.i("point by ps len b4 dialog call", ""
-						+ pointNameBy_PsName_arr.size());
-				showDialog(PS_CODE_DIALOG);
-			}
-			break;
-			
-		case R.id.btncancel_settings_xml:
-			dashboard.preferences.edit().clear().commit();
-			btn_ps_name.setText(""+ getResources().getString(R.string.select_ps_name));
-			btn_pointby_ps_name.setText(""+ getResources().getString(R.string.select_pointbypsname));
-			et_exact_location.setText("");
-			et_analyser.setText("");
-			et_bt_address.setText("");
-			et_pinpad.setText("");
-			selected_ps_name = -1;
-			selected_pointby_psname = -1;
+				if (btn_ps_name
+						.getText()
+						.toString()
+						.equals(""
+								+ getResources().getString(R.string.select_ps_name))) {
+					showToast("Select PS Name");
+				} else {
+					Log.i("point by ps len b4 dialog call", ""
+							+ pointNameBy_PsName_arr.size());
+					showDialog(PS_CODE_DIALOG);
+				}
+				break;
 
-			Log.i("B4 RESET pointNameBy_PsName_arr", ""+ pointNameBy_PsName_arr.size());
-			pointNameBy_PsName_code_arr.clear();
-			pointNameBy_PsName_arr.clear();
-			Log.i("RESET pointNameBy_PsName_arr","" + pointNameBy_PsName_arr.size());
-			break;
+			case R.id.btncancel_settings_xml:
+				dashboard.preferences.edit().clear().commit();
+				btn_ps_name.setText(""+ getResources().getString(R.string.select_ps_name));
+				btn_pointby_ps_name.setText(""+ getResources().getString(R.string.select_pointbypsname));
+				et_exact_location.setText("");
+				et_analyser.setText("");
+				et_bt_address.setText("");
+				et_pinpad.setText("");
+				selected_ps_name = -1;
+				selected_pointby_psname = -1;
 
-		case R.id.btnback_settings_xml:
-			
-			SharedPreferences shared_pc = PreferenceManager
-			.getDefaultSharedPreferences(getApplicationContext());
-			
-			String cadre_code = shared_pc.getString("CADRE_CODE", "");
-			
-			if(cadre_code!=null && Integer.parseInt(cadre_code)<=13){
-				startActivity(new Intent(getApplicationContext(), Dashboard.class));
-			} else {
-				startActivity(new Intent(getApplicationContext(), Dashboard_PC.class));
-			}
-			//startActivity(new Intent(this, Dashboard.class));
-			break;
-			
-		case R.id.btnsubmit_settings_xml:
-			if (btn_ps_name.getText().toString().trim().equals(""+ getResources().getString(R.string.select_ps_name))) {
-				showToast("Select PS Name");
-			} else if (btn_pointby_ps_name.getText().toString().trim().equals(""+ getResources().getString(R.string.select_pointbypsname))) {
-				showToast("Select Point Name");
-			} else if ((et_bt_address.getText().toString().trim().equals(""))
-					&& (et_bt_address.getText().toString().trim().length() < 10)) {
-				// et_bt_address.setError("Check Bluetooth Details Properly");
-				et_bt_address.setError(Html.fromHtml("<font color='black'>Check Bluetooth Details Properly</font>"));
-				et_bt_address.requestFocus();
-			} /*
+				Log.i("B4 RESET pointNameBy_PsName_arr", ""+ pointNameBy_PsName_arr.size());
+				pointNameBy_PsName_code_arr.clear();
+				pointNameBy_PsName_arr.clear();
+				Log.i("RESET pointNameBy_PsName_arr","" + pointNameBy_PsName_arr.size());
+				break;
+
+			case R.id.btnback_settings_xml:
+
+				SharedPreferences shared_pc = PreferenceManager
+						.getDefaultSharedPreferences(getApplicationContext());
+
+				String cadre_code = shared_pc.getString("CADRE_CODE", "");
+
+				if(cadre_code!=null && Integer.parseInt(cadre_code)<=13){
+					startActivity(new Intent(getApplicationContext(), Dashboard.class));
+				} else {
+					startActivity(new Intent(getApplicationContext(), Dashboard_PC.class));
+				}
+				//startActivity(new Intent(this, Dashboard.class));
+				break;
+
+			case R.id.btnsubmit_settings_xml:
+				if (btn_ps_name.getText().toString().trim().equals(""+ getResources().getString(R.string.select_ps_name))) {
+					showToast("Select PS Name");
+				} else if (btn_pointby_ps_name.getText().toString().trim().equals(""+ getResources().getString(R.string.select_pointbypsname))) {
+					showToast("Select Point Name");
+				} else if ((et_bt_address.getText().toString().trim().equals(""))
+						&& (et_bt_address.getText().toString().trim().length() < 10)) {
+					// et_bt_address.setError("Check Bluetooth Details Properly");
+					et_bt_address.setError(Html.fromHtml("<font color='black'>Check Bluetooth Details Properly</font>"));
+					et_bt_address.requestFocus();
+				} /*
 			 * else if ((et_pinpad.getText().toString().trim().equals("")) &&
 			 * (et_pinpad.getText().toString().trim().length() < 10)) {
 			 * //edt_pinpad_xml
@@ -670,129 +666,129 @@ public class Settings_New extends Activity implements OnClickListener {
 			 * "<font color='black'>Check PIN pad Bluetooth Details Properly</font>"
 			 * )); et_pinpad.requestFocus(); }
 			 */
-			else {
-				dashboard.preferences = getSharedPreferences("preferences",
-						Context.MODE_PRIVATE);
-				dashboard.editor = dashboard.preferences.edit();
+				else {
+					dashboard.preferences = getSharedPreferences("preferences",
+							Context.MODE_PRIVATE);
+					dashboard.editor = dashboard.preferences.edit();
 
 				/* FOR EXACT LOCATION PREF VALUES */
-				if (et_exact_location.getText().toString().trim().equals("")) {
-					dashboard.editor.putString("exact_location", "");
-				} else {
-					dashboard.editor.putString("exact_location",
-							et_exact_location.getText().toString().trim());
-				}
+					if (et_exact_location.getText().toString().trim().equals("")) {
+						dashboard.editor.putString("exact_location", "");
+					} else {
+						dashboard.editor.putString("exact_location",
+								et_exact_location.getText().toString().trim());
+					}
 
 				/* ANALYSER ID PREF VALUES */
-				if (et_analyser.getText().toString().trim().equals("")) {
-					dashboard.editor.putLong("analyser_id", 0);
-				} else {
-					dashboard.editor.putLong("analyser_id",Integer.parseInt(et_analyser.getText().toString().trim()));
-				}
-
-				if (et_bt_address.getText().toString().trim().length()<15) {
-					showToast("Please Pair Valid Bluetooth Device");
-				}else{
-					dashboard.editor.putString("btaddress", ""+ et_bt_address.getText().toString().trim());
-					dashboard.editor.commit();
-					
-					showToast("Details Saved Successfully");
-					finish();
-				}	
-
-				 SharedPreferences case_Vals = getSharedPreferences("PS_POINT_NAMES", MODE_PRIVATE);
-				  SharedPreferences.Editor edit = case_Vals.edit() ;
-				  
-				  edit.putString("BOOKED_PS", ""+btn_ps_name.getText().toString().trim());
-				  edit.putString("BOOKED_POINT", ""+btn_pointby_ps_name.getText().toString().trim());
-				  
-				  edit.commit();
-				  
-				// dashboard.editor.putString("weburl", ""
-				// + et_web_url.getText().toString().trim());
-				
-
-				
-			}
-			break;
-			
-		case R.id.btnscan_settings_xml:
-
-			bluetoothFLG = true;
-			pinpadFLG = false;
-
-			ffd.setVisibility(View.VISIBLE);
-			final ProgressDialog progressDialog = new ProgressDialog(
-					Settings_New.this);
-			progressDialog
-					.setMessage("Please wait BlueTooth Scan is in Process!!!");
-			progressDialog.setCancelable(false);
-			progressDialog.show();
-
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					btArrayAdapter.clear();
-					bluetoothAdapter.cancelDiscovery();
-					bluetoothAdapter.startDiscovery();
-				}
-			});
-
-			new Thread() {
-				@Override
-				public void run() {
-					super.run();
-					try {
-						Thread.sleep(6000);
-						if (progressDialog.isShowing())
-							progressDialog.dismiss();
-
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					if (et_analyser.getText().toString().trim().equals("")) {
+						dashboard.editor.putLong("analyser_id", 0);
+					} else {
+						dashboard.editor.putLong("analyser_id",Integer.parseInt(et_analyser.getText().toString().trim()));
 					}
-				}
-			}.start();
-			break;
 
-		case R.id.btn_pinpadscan_xml:
-			pinpadFLG = true;
-			bluetoothFLG = false;
+					if (et_bt_address.getText().toString().trim().length()<15) {
+						showToast("Please Pair Valid Bluetooth Device");
+					}else{
+						dashboard.editor.putString("btaddress", ""+ et_bt_address.getText().toString().trim());
+						dashboard.editor.commit();
 
-			ffd.setVisibility(View.VISIBLE);
-			final ProgressDialog progressDialog2 = new ProgressDialog(
-					Settings_New.this);
-			progressDialog2
-					.setMessage("Please wait BlueTooth Scan is in Process!!!");
-			progressDialog2.setCancelable(false);
-			progressDialog2.show();
-
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					btArrayAdapter.clear();
-					bluetoothAdapter.cancelDiscovery();
-					bluetoothAdapter.startDiscovery();
-				}
-			});
-
-			new Thread() {
-				@Override
-				public void run() {
-					super.run();
-					try {
-						Thread.sleep(6000);
-						if (progressDialog2.isShowing())
-							progressDialog2.dismiss();
-
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+						showToast("Details Saved Successfully");
+						finish();
 					}
-				}
-			}.start();
-			break;
 
-		default:
-			break;
+					SharedPreferences case_Vals = getSharedPreferences("PS_POINT_NAMES", MODE_PRIVATE);
+					SharedPreferences.Editor edit = case_Vals.edit() ;
+
+					edit.putString("BOOKED_PS", ""+btn_ps_name.getText().toString().trim());
+					edit.putString("BOOKED_POINT", ""+btn_pointby_ps_name.getText().toString().trim());
+
+					edit.commit();
+
+					// dashboard.editor.putString("weburl", ""
+					// + et_web_url.getText().toString().trim());
+
+
+
+				}
+				break;
+
+			case R.id.btnscan_settings_xml:
+
+				bluetoothFLG = true;
+				pinpadFLG = false;
+
+				ffd.setVisibility(View.VISIBLE);
+				final ProgressDialog progressDialog = new ProgressDialog(
+						Settings_New.this);
+				progressDialog
+						.setMessage("Please wait BlueTooth Scan is in Process!!!");
+				progressDialog.setCancelable(false);
+				progressDialog.show();
+
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						btArrayAdapter.clear();
+						bluetoothAdapter.cancelDiscovery();
+						bluetoothAdapter.startDiscovery();
+					}
+				});
+
+				new Thread() {
+					@Override
+					public void run() {
+						super.run();
+						try {
+							Thread.sleep(6000);
+							if (progressDialog.isShowing())
+								progressDialog.dismiss();
+
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}.start();
+				break;
+
+			case R.id.btn_pinpadscan_xml:
+				pinpadFLG = true;
+				bluetoothFLG = false;
+
+				ffd.setVisibility(View.VISIBLE);
+				final ProgressDialog progressDialog2 = new ProgressDialog(
+						Settings_New.this);
+				progressDialog2
+						.setMessage("Please wait BlueTooth Scan is in Process!!!");
+				progressDialog2.setCancelable(false);
+				progressDialog2.show();
+
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						btArrayAdapter.clear();
+						bluetoothAdapter.cancelDiscovery();
+						bluetoothAdapter.startDiscovery();
+					}
+				});
+
+				new Thread() {
+					@Override
+					public void run() {
+						super.run();
+						try {
+							Thread.sleep(6000);
+							if (progressDialog2.isShowing())
+								progressDialog2.dismiss();
+
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}.start();
+				break;
+
+			default:
+				break;
 		}
 	}
 
@@ -844,7 +840,7 @@ public class Settings_New extends Activity implements OnClickListener {
 					server = IPSettings.ftp_fix;
 				}
 				Log.i("server URL ::", ""+server);
-				
+
 				ftpClient.connect(server, port);
 				ftpClient.login(username, password);
 				ftpClient.enterLocalPassiveMode();
@@ -855,13 +851,13 @@ public class Settings_New extends Activity implements OnClickListener {
 				File downloadFile1 = new File("/sdcard/Download/ETicketHYD.apk");
 				//String remoteFile1 = "/23/TabAPK" + "/" + version;
 				String remoteFile1 = "/23/TabAPK" + "/ETicketHYD.apk";
-				
+
 				OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile1));
 				boolean success = ftpClient.retrieveFile(remoteFile1, outputStream);
 
 				FileOutputStream fileOutput = new FileOutputStream(downloadFile1);
 				InputStream inputStream = ftpClient.retrieveFileStream(remoteFile1);
-				
+
 				if (inputStream == null || ftpClient.getReplyCode() == 550) {
 					// it means that file doesn't exist.
 					fileOutput.close();
@@ -932,16 +928,15 @@ public class Settings_New extends Activity implements OnClickListener {
 						db2.execSQL(DBHelper.psNamesCreation);
 						db2.execSQL(DBHelper.wheelerCodeCreation);
 						db2.close();
-						
+
 						SharedPreferences preferences = getSharedPreferences("PREFERENCE", 0);
 						SharedPreferences.Editor editor = preferences.edit();
-						editor.clear(); 
+						editor.clear();
 						editor.commit();
-						
+
 					} catch (Exception e) {
 						// TODO: handle exception
 						e.printStackTrace();
-						Log.i("CATCH BLOG 1::::::::", "***********ENTERED*******");
 					}
 					totalSize = remoteFile1.length();
 
@@ -970,7 +965,7 @@ public class Settings_New extends Activity implements OnClickListener {
 							}
 						});
 					}
-					
+
 					// close the output stream when complete //
 					fileOutput.close();
 					outputStream.close();
@@ -995,14 +990,27 @@ public class Settings_New extends Activity implements OnClickListener {
 						}
 
 						finish();
-						
-						System.out.println("File #1 has been downloaded successfully.");
 
-						Intent intent = new Intent(Intent.ACTION_VIEW);
-						intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory()+ "/download/"
-								+ "ETicketHYD.apk")),"application/vnd.android.package-archive");
-						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
+
+						if (Build.VERSION.SDK_INT <= 23) {
+
+							Intent intent = new Intent(Intent.ACTION_VIEW);
+							intent.setDataAndType(
+									Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/download/" + "ETicketHYD.apk")),
+									"application/vnd.android.package-archive");
+							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							startActivity(intent);
+						}
+
+						else {
+
+							Uri apkUri = FileProvider.getUriForFile(Settings_New.this, BuildConfig.APPLICATION_ID +
+									".provider", new File(Environment.getExternalStorageDirectory() + "/download/" + "ETicketHYD.apk"));
+							Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+							intent.setData(apkUri);
+							intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+							startActivity(intent);
+						}
 
 					}
 				}
@@ -1040,120 +1048,120 @@ public class Settings_New extends Activity implements OnClickListener {
 	protected Dialog onCreateDialog(int id) {
 		// TODO Auto-generated method stub
 		switch (id) {
-		
-		case PS_NAME_DIALOG:
-			TextView title = new TextView(this);
-			title.setText("Select PS Name");
-			title.setBackgroundColor(Color.parseColor("#007300"));
-			title.setGravity(Gravity.CENTER);
-			title.setTextColor(Color.WHITE);
-			title.setTextSize(26);
-			title.setTypeface(title.getTypeface(), Typeface.BOLD);
-			title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dialog_logo, 0, R.drawable.dialog_logo, 0);
-			title.setPadding(20, 0, 20, 0);
-			title.setHeight(70);
 
-			AlertDialog.Builder ad_ps_name = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
-			ad_ps_name.setCustomTitle(title);
-			ad_ps_name.setSingleChoiceItems(psname_name, selected_ps_name,
-					new DialogInterface.OnClickListener() {
+			case PS_NAME_DIALOG:
+				TextView title = new TextView(this);
+				title.setText("Select PS Name");
+				title.setBackgroundColor(Color.parseColor("#007300"));
+				title.setGravity(Gravity.CENTER);
+				title.setTextColor(Color.WHITE);
+				title.setTextSize(26);
+				title.setTypeface(title.getTypeface(), Typeface.BOLD);
+				title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dialog_logo, 0, R.drawable.dialog_logo, 0);
+				title.setPadding(20, 0, 20, 0);
+				title.setHeight(70);
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-							selected_ps_name = which;
-							btn_ps_name.setText(""+ psname_name[which].toString().trim());
-							ps_code_pos = which;
+				AlertDialog.Builder ad_ps_name = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+				ad_ps_name.setCustomTitle(title);
+				ad_ps_name.setSingleChoiceItems(psname_name, selected_ps_name,
+						new DialogInterface.OnClickListener() {
 
-							dashboard.preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
-							dashboard.editor = dashboard.preferences.edit();
-							dashboard.editor.putInt("psname_code_toSet", which);
-							dashboard.editor.putString("psname_code", psname_code[which].toString());
-							dashboard.editor.putString("psname_name", psname_name[which].toString());
-							dashboard.editor.commit();
-							removeDialog(PS_NAME_DIALOG);
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+								selected_ps_name = which;
+								btn_ps_name.setText(""+ psname_name[which].toString().trim());
+								ps_code_pos = which;
 
-							// if ((pointNameBy_PsName_code_arr.size() > 0)
-							// && (pointNameBy_PsName_arr.size() > 0)) {
-							// pointNameBy_PsName_code_arr.clear();
-							// pointNameBy_PsName_arr.clear();
-							// }
-
-							if (isOnline()) {
-								selected_pointby_psname = -1;
 								dashboard.preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
 								dashboard.editor = dashboard.preferences.edit();
-								dashboard.editor.putInt("point_code_toSet", selected_pointby_psname);
+								dashboard.editor.putInt("psname_code_toSet", which);
+								dashboard.editor.putString("psname_code", psname_code[which].toString());
+								dashboard.editor.putString("psname_name", psname_name[which].toString());
 								dashboard.editor.commit();
-								btn_pointby_ps_name.setText(""+ getResources().getString(R.string.select_pointbypsname));
-								new Async_getPointNameByPsName().execute();
-								
-							} else {
-								showToast("Please check your network connection!");
+								removeDialog(PS_NAME_DIALOG);
+
+								// if ((pointNameBy_PsName_code_arr.size() > 0)
+								// && (pointNameBy_PsName_arr.size() > 0)) {
+								// pointNameBy_PsName_code_arr.clear();
+								// pointNameBy_PsName_arr.clear();
+								// }
+
+								if (isOnline()) {
+									selected_pointby_psname = -1;
+									dashboard.preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+									dashboard.editor = dashboard.preferences.edit();
+									dashboard.editor.putInt("point_code_toSet", selected_pointby_psname);
+									dashboard.editor.commit();
+									btn_pointby_ps_name.setText(""+ getResources().getString(R.string.select_pointbypsname));
+									new Async_getPointNameByPsName().execute();
+
+								} else {
+									showToast("Please check your network connection!");
+								}
 							}
-						}
-					});
-			Dialog dg_ps_name = ad_ps_name.create();
-			return dg_ps_name;
-			
-		case PS_CODE_DIALOG:
-			TextView title2 = new TextView(this);
-			title2.setText("Select PS By Point Name");
-			title2.setBackgroundColor(Color.parseColor("#007300"));
-			title2.setGravity(Gravity.CENTER);
-			title2.setTextColor(Color.WHITE);
-			title2.setTextSize(26);
-			title2.setTypeface(title2.getTypeface(), Typeface.BOLD);
-			title2.setCompoundDrawablesWithIntrinsicBounds(
-					R.drawable.dialog_logo, 0, R.drawable.dialog_logo, 0);
-			title2.setPadding(20, 0, 20, 0);
-			title2.setHeight(70);
+						});
+				Dialog dg_ps_name = ad_ps_name.create();
+				return dg_ps_name;
 
-			AlertDialog.Builder ad_ps_code = new AlertDialog.Builder(this,
-					AlertDialog.THEME_HOLO_LIGHT);
-			ad_ps_code.setCustomTitle(title2);
-			ad_ps_code.setSingleChoiceItems((pointNameBy_PsName_arr.toArray(new String[pointNameBy_PsName_arr.size()])),
-					selected_pointby_psname,
-					new DialogInterface.OnClickListener() {
+			case PS_CODE_DIALOG:
+				TextView title2 = new TextView(this);
+				title2.setText("Select PS By Point Name");
+				title2.setBackgroundColor(Color.parseColor("#007300"));
+				title2.setGravity(Gravity.CENTER);
+				title2.setTextColor(Color.WHITE);
+				title2.setTextSize(26);
+				title2.setTypeface(title2.getTypeface(), Typeface.BOLD);
+				title2.setCompoundDrawablesWithIntrinsicBounds(
+						R.drawable.dialog_logo, 0, R.drawable.dialog_logo, 0);
+				title2.setPadding(20, 0, 20, 0);
+				title2.setHeight(70);
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-							selected_pointby_psname = which;
-							btn_pointby_ps_name.setText(""+ pointNameBy_PsName_arr.get(which).toString().trim());
-							dashboard.preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
-							dashboard.editor = dashboard.preferences.edit();
+				AlertDialog.Builder ad_ps_code = new AlertDialog.Builder(this,
+						AlertDialog.THEME_HOLO_LIGHT);
+				ad_ps_code.setCustomTitle(title2);
+				ad_ps_code.setSingleChoiceItems((pointNameBy_PsName_arr.toArray(new String[pointNameBy_PsName_arr.size()])),
+						selected_pointby_psname,
+						new DialogInterface.OnClickListener() {
 
-							dashboard.editor.putInt("point_code_toSet", which);
-							dashboard.editor.putString("point_code", pointNameBy_PsName_code_arr.get(which).toString().trim());// for sending
-							// to service
-							dashboard.editor.putString("point_name", pointNameBy_PsName_arr.get(which));
-							dashboard.editor.commit();
-							removeDialog(PS_CODE_DIALOG);
-						}
-					});
-			Dialog dg_ps_code = ad_ps_code.create();
-			return dg_ps_code;
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+								selected_pointby_psname = which;
+								btn_pointby_ps_name.setText(""+ pointNameBy_PsName_arr.get(which).toString().trim());
+								dashboard.preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+								dashboard.editor = dashboard.preferences.edit();
+
+								dashboard.editor.putInt("point_code_toSet", which);
+								dashboard.editor.putString("point_code", pointNameBy_PsName_code_arr.get(which).toString().trim());// for sending
+								// to service
+								dashboard.editor.putString("point_name", pointNameBy_PsName_arr.get(which));
+								dashboard.editor.commit();
+								removeDialog(PS_CODE_DIALOG);
+							}
+						});
+				Dialog dg_ps_code = ad_ps_code.create();
+				return dg_ps_code;
 			// for (int i = 0; i < pointNameBy_PsName_arr.size(); i++) {
 			// showToast("" + pointNameBy_PsName_arr.get(i));
 			// }
 			// break;
-			
-		case PROGRESS_DIALOG:
-			ProgressDialog pd = ProgressDialog.show(this, "", "", true);
-			pd.setContentView(R.layout.custom_progress_dialog);
-			pd.setCancelable(false);
-			return pd;
 
-		default:
-			break;
+			case PROGRESS_DIALOG:
+				ProgressDialog pd = ProgressDialog.show(this, "", "", true);
+				pd.setContentView(R.layout.custom_progress_dialog);
+				pd.setCancelable(false);
+				return pd;
+
+			default:
+				break;
 		}
 		return super.onCreateDialog(id);
 	}
 
 	/* TO GET POINT NAME BY PS-NAME */
 	public class Async_getPointNameByPsName extends AsyncTask<Void, Void, String> {
-		
+
 		@Override
 		protected String doInBackground(Void... params) {
 			// TODO Auto-generated method stub
@@ -1186,11 +1194,7 @@ public class Settings_New extends Activity implements OnClickListener {
 
 					for (int i = 1; i < ServiceHelper.PointNamesBypsNames_master.length; i++) {
 						pointNameBYpsname_name_code_arr[i] = ServiceHelper.PointNamesBypsNames_master[i].toString().trim().split("@");
-						Log.i("**POINT DETAILS**", "" + pointNameBYpsname_name_code_arr[i][1].toString().trim());
 					}
-
-
-
 
 					pointNameBy_PsName_code_arr.clear();
 					pointNameBy_PsName_arr.clear();
@@ -1238,7 +1242,7 @@ public class Settings_New extends Activity implements OnClickListener {
 		Toast toast = Toast.makeText(getApplicationContext(), "" + msg, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		View toastView = toast.getView();
-		
+
 		ViewGroup group = (ViewGroup) toast.getView();
 		TextView messageTextView = (TextView) group.getChildAt(0);
 		messageTextView.setTextSize(24);

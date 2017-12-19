@@ -31,6 +31,17 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme" >
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.mtpv.mobilee_ticket.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -108,11 +119,6 @@
             android:name=".VehicleHistoryPendingChallans"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" >
-        </activity>
-        <activity
-            android:name=".SpecialDrive"
-            android:label="@string/title_activity_special_drive"
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
@@ -256,9 +262,23 @@
             android:name=".Drunk_Drive_Fake_Dialog"
             android:label="@string/title_activity_drunk__drive__fake__dialog" >
         </activity>
+
+        <activity android:name=".mtpv_SpecialDrive"></activity>
+        <activity android:name=".SpecialDriveResponse_Print"></activity>
+        <activity android:name=".E_Challan_Non_ContactModule"
+
+
+            ></activity>
+
+
+
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="2cdc37f0ea9fc03062bf6c77c47b64d3bb01fda8" />
+
+
+
     </application>
 
 </manifest>

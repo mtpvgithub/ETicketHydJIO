@@ -34,6 +34,7 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.Html;
@@ -638,7 +639,6 @@ public class SpotChallan extends Activity
         radioGroupButton_isOwner = (RadioButton) findViewById(R.id.radioGroupButton_isOwner);
         radioGroupButton_isDriver = (RadioButton) findViewById(R.id.radioGroupButton_isDriver);
 
-        // hardcode
 
 
         // et_driver_lcnce_num_spot.setText("7461WGL1998OD");
@@ -647,7 +647,6 @@ public class SpotChallan extends Activity
 
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
-
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
@@ -700,7 +699,6 @@ public class SpotChallan extends Activity
                                                     e.printStackTrace();
                                                 }
 
-
                                                 String todaysdate = new DateUtil().getTodaysDate();
 
                                                 long days = new DateUtil().DaysCalucate(dob_DL, todaysdate);
@@ -712,8 +710,6 @@ public class SpotChallan extends Activity
                                                 } else {
                                                     ShowMessageDateAlert("Please select Date of Birth Atleast Person Should be Age Greater Than 16");
                                                 }
-
-
                                                 //  dob_DL = date_format.format(dayOfMonth  + (----------------OfYear + 1) + year);
                                             }
                                         }, mYear, mMonth, mDay);
@@ -1229,6 +1225,7 @@ public class SpotChallan extends Activity
                 break;
 
             case R.id.btn_whlr_code_spotchallan_xml:
+
                 int rg_iOD = rg_isOwner_isDriver.getCheckedRadioButtonId();
 
 			/*------is_driver/is_owner only for spot_challan : 29-01-2015------*/
@@ -2000,11 +1997,40 @@ public class SpotChallan extends Activity
 
     private void selectImagefrom_Camera() {
         // TODO Auto-generated method stub
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-        startActivityForResult(intent, 1);
-        imgSelected = "1";
+/*        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");*/
+
+/*        ContentValues values = new ContentValues(1);
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");
+        fileUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);*/
+//            if (fileTemp != null) {
+//            fileUri = Uri.fromFile(fileTemp);
+        // intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+
+/*        intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(getApplicationContext(),
+                BuildConfig.APPLICATION_ID + ".provider",f));
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);*/
+
+
+        if (Build.VERSION.SDK_INT<=23) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+            startActivityForResult(intent, 1);
+            imgSelected = "1";
+        }else{
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(SpotChallan.this,
+                    BuildConfig.APPLICATION_ID + ".provider",f));
+
+
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(intent, 1);
+            imgSelected = "1";
+        }
+
+        //   imgSelected = "1";
     }
 
 
@@ -2081,7 +2107,7 @@ public class SpotChallan extends Activity
 
                         Paint paint = new Paint();
                         paint.setColor(Color.RED);
-                        paint.setTextSize(60);
+                        paint.setTextSize(80);
                         paint.setTextAlign(Paint.Align.CENTER);
                         int xPos = (canvas.getWidth() / 2);
                         int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
@@ -2137,15 +2163,36 @@ public class SpotChallan extends Activity
 
                     Paint paint = new Paint();
                     paint.setColor(Color.RED);
-                    paint.setTextSize(80);
+                    paint.setTextSize(60);
                     paint.setTextAlign(Paint.Align.CENTER);
                     int xPos = (canvas.getWidth() / 2);
                     int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
 
-                    canvas.drawText("Date & Time: " + Current_Date, xPos, yPos + 300, paint);
+                    canvas.drawText("Date & Time: " + Current_Date, xPos, yPos+300 , paint);
                     canvas.drawText("Lat :" + latitude, xPos, yPos + 400, paint);
                     canvas.drawText("Long :" + longitude, xPos, yPos + 500, paint);
+
+
+
+                  /* // canvas.save();
+                   // canvas.rotate(90f, xPos, yPos);
+                    canvas.drawText("Date & Time: " + Current_Date, xPos, yPos, paint);
+                  //  canvas.restore();
+
+                  //  canvas.save();
+                    //canvas.rotate(90f, xPos, yPos);
+                    canvas.drawText("Lat :" + latitude, xPos, yPos + 400, paint);
+                    //canvas.restore();
+
+                    //canvas.save();
+                    //canvas.rotate(90f, xPos, yPos);
+                    canvas.drawText("Long :" + longitude, xPos, yPos + 500, paint);
+                    //canvas.rotate(90);
+                    //canvas.restore();
+*/
+
                     offender_image.setImageBitmap(mutableBitmap);
+                    offender_image.setRotation(offender_image.getRotation() + 360);
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 20, bytes);
                     byteArray = bytes.toByteArray();
@@ -2736,24 +2783,6 @@ public class SpotChallan extends Activity
             // TODO Auto-generated method stub
             super.onPostExecute(result);
             removeDialog(PROGRESS_DIALOG);
-//            end = System.currentTimeMillis();
-//            Log.i("TIME>>>END>>>Async_getViolations",String.valueOf(end));
-//
-//            res=end-start;
-//            Log.i("TIME>>>Async_getViolations :  Taken in seconds>> ", String.valueOf(res/1000));
-
-
-//            if (ServiceHelper.Opdata_Chalana != null) {
-//                if (ServiceHelper.Opdata_Chalana.toString().trim().equals("1")) {
-//                    showToast("Invalid Login ID");
-//                } else if (ServiceHelper.Opdata_Chalana.toString().trim().equals("2")) {
-//                    showToast("Invalid Password");
-//                } else if (ServiceHelper.Opdata_Chalana.toString().trim().equals("3")) {
-//                    showToast("Unautherized Device");
-//                } else if (ServiceHelper.Opdata_Chalana.toString().trim().equals("4")) {
-//                    showToast("Error, Please Contact E Challan Team at 040-27852721");
-//                } else
-
             if (ServiceHelper.violation_detailed_views != null && ServiceHelper.violation_detailed_views.length > 0) {
                 violation_list.removeAll(violation_list);
                 violation_offence_Code.removeAll(violation_offence_Code);
@@ -2782,9 +2811,7 @@ public class SpotChallan extends Activity
 
         }
     }
-
-	/* TO GET DETAINED ITEMS LIST */
-
+    /* TO GET DETAINED ITEMS LIST */
     public class Async_getDetainedItems extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
@@ -2792,7 +2819,6 @@ public class SpotChallan extends Activity
             ServiceHelper.getDetainedItemsList("" + completeVehicle_num_send, "" + Dashboard.UNIT_CODE);
             return null;
         }
-
         @Override
         protected void onPreExecute() {
             // TODO Auto-generated method stub
@@ -2808,10 +2834,6 @@ public class SpotChallan extends Activity
 
 
             if (ServiceHelper.Opdata_Chalana != null) {
-
-         /*       if(ServiceHelper.detained_items_list_details!=null
-                        && ServiceHelper.detained_items_list_details.length>0) {*/
-
                 detained_items_status = new ArrayList<Boolean>();
                 detained_items_status.clear();
                 releasedDetained_items_list = new ArrayList<String>();
@@ -2820,7 +2842,6 @@ public class SpotChallan extends Activity
                 sb_detained_items = new StringBuilder("");
                 sb_detained_items.delete(0, sb_detained_items.length());
                 boolean minorFlg = false;
-
 
                 for (int i = 0; i < ServiceHelper.detained_items_list_details.length; i++) {
 
@@ -2834,7 +2855,6 @@ public class SpotChallan extends Activity
                                 + ServiceHelper.detained_items_list_details[i][5] + ":"
                                 + ServiceHelper.detained_items_list_details[i][6] + ":"
                                 + ServiceHelper.detained_items_list_details[i][7]);
-
 
                         minor_valueCode = ServiceHelper.detained_items_list_details[i][7];
                     } catch (ArrayIndexOutOfBoundsException e) {
@@ -2977,9 +2997,6 @@ public class SpotChallan extends Activity
                 String service_year = "";
                 tv_aadhar_header.setText("AADHAR DETAILS");
                 if (!"NA".equals(ServiceHelper.aadhar_data)) {
-
-                    Log.i("AAdhar ........", "Card");
-
                     try {
                         tv_aadhar_user_name.setText("" + ServiceHelper.aadhar_details[0] != null
                                 ? ServiceHelper.aadhar_details[0].trim().toUpperCase() : "");
@@ -3015,8 +3032,6 @@ public class SpotChallan extends Activity
                         service_year = "0";
                     }
                 }
-
-
                 int final_age = present_year - Integer.parseInt(service_year);
                 tv_aadhar_dob.setText("" + final_age);
                 tv_aadhar_uid.setText("" + (!ServiceHelper.aadhar_details[11].equalsIgnoreCase("0")
@@ -3140,7 +3155,6 @@ public class SpotChallan extends Activity
                 et_driver_city_iOD.setClickable(true);
 
             }
-
 /*            else if (ServiceHelper.Opdata_Chalana.equals(0)) {
 
                 tv_aadhar_header.setVisibility(View.VISIBLE);
@@ -3209,9 +3223,6 @@ public class SpotChallan extends Activity
                                 btn_violation.setText("" + getResources().getString(R.string.select_violation));
 
                                 if (isOnline()) {
-                                    // total_amount = 0;
-
-
                                     new Async_getViolations().execute();
                                 } else {
                                     showToast("" + NETWORK_TXT);
@@ -3250,10 +3261,8 @@ public class SpotChallan extends Activity
                                 // TODO Auto-generated method stub
                                 if (isChecked) {
                                     violation_positions.add("" + which);
-                                    // violation_checked_items_status.add(true);
                                 } else if (!isChecked) {
                                     violation_positions.remove("" + which);
-                                    // violation_checked_items_status.remove(w);
                                 }
                             }
                         });
@@ -3265,9 +3274,6 @@ public class SpotChallan extends Activity
                         // TODO Auto-generated method stub
                         String desc = "";
                         for (int i = 0; i < violation_positions.size(); i++) {
-                            // showToast(violation_offence_Code.get(Integer
-                            // .parseInt(violation_positions.get(i))));
-
                             if (i == 0) {
                                 desc = violation_description.get(Integer.parseInt(violation_positions.get(i))).toString()
                                         .trim();
@@ -3304,11 +3310,6 @@ public class SpotChallan extends Activity
 
                 Dialog dg_scond = new Dialog(this, android.R.style.Theme_Black_NoTitleBar);
                 dg_scond.setContentView(R.layout.spot_challan_two);
-
-
-                //  LinearLayout layout_language=(LinearLayout) dg_scond.findViewById(R.id.layout_language);
-
-                // layout_language.setVisibility(Vi);
 
 			/* IS IT SPOT DETAILS */
                 ll_spot_payment_root = (LinearLayout) dg_scond.findViewById(R.id.ll_is_spotpayment_spotchallan_two_xml);
@@ -3474,7 +3475,6 @@ public class SpotChallan extends Activity
 
                         } catch (NumberFormatException a) {
                             a.printStackTrace();
-
                             totaldl_points = 0;
                         }
 
@@ -7509,7 +7509,10 @@ public class SpotChallan extends Activity
 
                     if ((et_driver_lcnce_num_spot.getText().toString().trim().equals(""))
                             && (btn_violation.getText().toString().equals("" + getResources().getString(R.string.select_violation)))
-                            || ((dl_points != null && !"".equalsIgnoreCase(dl_points) && Integer.parseInt(dl_points) > 12) && "INVALID".equalsIgnoreCase(DLvalidFLG))) {
+                            || ((dl_points != null && !"".equalsIgnoreCase(dl_points) && Integer.parseInt(dl_points) > 12) && "INVALID".equalsIgnoreCase(DLvalidFLG))
+                            ||(et_driver_lcnce_num_spot.getText().length()<=5 &&!btn_violation.getText().toString().contains("W/o Driving Licence")
+                            &&!btn_violation.getText().toString().contains("Minor driving the vehicle")
+                            &&!btn_violation.getText().toString().contains("W/o Carring Driving License"))) {
 
                         licence_details_spot_master = new String[0];
                         otp_msg = "\n Please select  violation -without driving license \n";
@@ -7548,17 +7551,7 @@ public class SpotChallan extends Activity
                                 int pos = 0;
 
                                 if (Fake_NO_Dialog.fake_action == "not fake") {
-                                            /*
-                                             * if
-											 * (et_aadharnumber_spot.getText().
-											 * toString().trim().equals("")) {
-											 * et_aadharnumber_spot.setError(
-											 * Html.
-											 * fromHtml("<font color='black'>Please Enter Adhaar Number</font>"
-											 * ));
-											 * et_aadharnumber_spot.requestFocus
-											 * (); }else
-											 */
+
                                     if (et_aadharnumber_spot.getText().toString().trim().length() > 1
                                             && et_aadharnumber_spot.getText().toString().length() != 12) {
                                         et_aadharnumber_spot.setError(Html.fromHtml(
@@ -7570,7 +7563,8 @@ public class SpotChallan extends Activity
                                         et_aadharnumber_spot.setError(Html.fromHtml(
                                                 "<font color='black'>Enter Valid Aadhaar Number</font>"));
                                         et_aadharnumber_spot.requestFocus();
-                                    } /*
+                                    }
+                                    /*
                                                  * else if
 												 * (picturePath.equals("")) {
 												 * showToast("Please Capture Image"
@@ -7585,17 +7579,7 @@ public class SpotChallan extends Activity
                                         }
                                     }
                                 } else if (Fake_NO_Dialog.fake_action == null) {
-                                            /*
-                                             * if
-											 * (et_aadharnumber_spot.getText().
-											 * toString().trim().equals("")) {
-											 * et_aadharnumber_spot.setError(
-											 * Html.
-											 * fromHtml("<font color='black'>Please Enter Adhaar Number</font>"
-											 * ));
-											 * et_aadharnumber_spot.requestFocus
-											 * (); }else
-											 */
+
                                     if (et_aadharnumber_spot.getText().toString().trim().length() > 1
                                             && et_aadharnumber_spot.getText().toString().length() != 12) {
                                         et_aadharnumber_spot.setError(Html.fromHtml(
@@ -7607,12 +7591,9 @@ public class SpotChallan extends Activity
                                         et_aadharnumber_spot.setError(Html.fromHtml(
                                                 "<font color='black'>Enter Valid Aadhaar Number</font>"));
                                         et_aadharnumber_spot.requestFocus();
-                                    } /*
-                                                 * else if
-												 * (picturePath.equals("")) {
-												 * showToast("Please Capture Image"
-												 * ); }
-												 */ else {
+                                    }
+
+                                    else {
                                         // new Async_getDetainedItems().execute();
                                         commomAsync();
                                     }
@@ -7656,19 +7637,7 @@ public class SpotChallan extends Activity
                                 int pos = 0;
 
                                 if (Fake_NO_Dialog.fake_action == "not fake") {
-                                            /*
-                                             * if
-											 * (et_aadharnumber_spot.getText().
-											 * toString().trim().equals("")) {
-											 * et_aadharnumber_spot.setError(
-											 * Html.
-											 * fromHtml("<font color='black'>Please Enter Adhaar Number</font>"
-											 * ));
-											 * et_aadharnumber_spot.requestFocus
-											 * (); }else { new
-											 * Async_getDetainedItems().execute(
-											 * ); }
-											 */
+
                                     if (et_aadharnumber_spot.getText().toString().trim().length() > 1
                                             && et_aadharnumber_spot.getText().toString().length() != 12) {
                                         et_aadharnumber_spot.setError(Html.fromHtml(
@@ -7692,19 +7661,7 @@ public class SpotChallan extends Activity
                                         }
                                     }
                                 } else if (Fake_NO_Dialog.fake_action == null) {
-                                            /*
-                                             * if
-											 * (et_aadharnumber_spot.getText().
-											 * toString().trim().equals("")) {
-											 * et_aadharnumber_spot.setError(
-											 * Html.
-											 * fromHtml("<font color='black'>Please Enter Adhaar Number</font>"
-											 * ));
-											 * et_aadharnumber_spot.requestFocus
-											 * (); }else { new
-											 * Async_getDetainedItems().execute(
-											 * ); }
-											 */
+
                                     if (et_aadharnumber_spot.getText().toString().trim().length() > 1
                                             && et_aadharnumber_spot.getText().toString().length() != 12) {
                                         et_aadharnumber_spot.setError(Html.fromHtml(
@@ -7716,12 +7673,10 @@ public class SpotChallan extends Activity
                                         et_aadharnumber_spot.setError(Html.fromHtml(
                                                 "<font color='black'>Enter Valid Aadhaar Number</font>"));
                                         et_aadharnumber_spot.requestFocus();
-                                    } /*
-												 * else if
-												 * (picturePath.equals("")) {
-												 * showToast("Please Capture Image"
-												 * ); }
-												 */ else {
+                                    }
+
+
+                                    else {
                                         if (DLvalidFLG.equals("VALID")) {
                                             // new Async_getDetainedItems().execute();
                                             commomAsync();
@@ -7751,14 +7706,7 @@ public class SpotChallan extends Activity
                         }
 
                         if (status == 1) {
-									/*
-									 * if ((et_driver_lcnce_num_spot.getText().
-									 * toString().trim().equals("")) &&
-									 * (btn_violation.getText().toString().
-									 * equals(""+
-									 * getResources().getString(R.string.
-									 * select_violation)))) {
-									 */
+
                             licence_details_spot_master = new String[0];
                             otp_msg = "Please select  violation -without driving license";
                             removeDialog(OTP_CNFRMTN_DIALOG);
@@ -7840,19 +7788,7 @@ public class SpotChallan extends Activity
 
                                     }
                                 } else if (Fake_NO_Dialog.fake_action == null) {
-											/*
-											 * if
-											 * (et_aadharnumber_spot.getText().
-											 * toString().trim().equals("")) {
-											 * et_aadharnumber_spot.setError(
-											 * Html.
-											 * fromHtml("<font color='black'>Please Enter Adhaar Number</font>"
-											 * ));
-											 * et_aadharnumber_spot.requestFocus
-											 * (); }else { new
-											 * Async_getDetainedItems().execute(
-											 * ); }
-											 */
+
                                     if (et_aadharnumber_spot.getText().toString().trim().length() > 1
                                             && et_aadharnumber_spot.getText().toString().length() != 12) {
                                         et_aadharnumber_spot.setError(Html.fromHtml(
@@ -7926,19 +7862,7 @@ public class SpotChallan extends Activity
                                         }
                                     }
                                 } else if (Fake_NO_Dialog.fake_action == null) {
-											/*
-											 * if
-											 * (et_aadharnumber_spot.getText().
-											 * toString().trim().equals("")) {
-											 * et_aadharnumber_spot.setError(
-											 * Html.
-											 * fromHtml("<font color='black'>Please Enter Adhaar Number</font>"
-											 * ));
-											 * et_aadharnumber_spot.requestFocus
-											 * (); }else { new
-											 * Async_getDetainedItems().execute(
-											 * ); }
-											 */
+
                                     if (et_aadharnumber_spot.getText().toString().trim().length() > 1
                                             && et_aadharnumber_spot.getText().toString().length() != 12) {
                                         et_aadharnumber_spot.setError(Html.fromHtml(

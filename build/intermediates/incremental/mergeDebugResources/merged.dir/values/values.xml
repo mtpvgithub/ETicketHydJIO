@@ -42,6 +42,9 @@
     <color name="bright_foreground_material_light">@android:color/black</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
+    <color name="colorAccent">#f56432</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
     <color name="dd_btn_blue_color">#58ACFA</color>
     <color name="design_bottom_navigation_shadow_color">#14000000</color>
     <color name="design_fab_shadow_end_color">@android:color/transparent</color>
@@ -644,7 +647,7 @@
     <string name="alcohol_reading">Enter Alcohol Reading</string>
     <string name="amnt">Amount</string>
     <string name="app_name">Hyderabad\nE-Ticket</string>
-    <string name="app_version">Version-2.3.2</string>
+    <string name="app_version">Version-2.3.4</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="back">Back</string>
     <string name="bar">Bar &amp; Restaurant</string>
@@ -669,7 +672,7 @@
     <string name="city_res">City</string>
     <string name="colon">:</string>
     <string name="color">Color</string>
-    <string name="com.crashlytics.android.build_id" ns1:ignore="UnusedResources,TypographyDashes" translatable="false">261fcc18-fd5e-4ba7-a542-2b9d002242ae</string>
+    <string name="com.crashlytics.android.build_id" ns1:ignore="UnusedResources,TypographyDashes" translatable="false">483c8310-95f9-42cc-af7d-68e105e922dc</string>
     <string name="confirm">Confirm</string>
     <string name="counselling_date">Counselling Date</string>
     <string name="dates">Date</string>
@@ -700,6 +703,7 @@
     <string name="dup_vhcle_hstry">Vehicle History</string>
     <string name="duplicate_print">Duplicate\nPrint</string>
     <string name="echallan">E Challan</string>
+    <string name="echallanfornoncontact">e_Challan</string>
     <string name="echallanreports">E Challan Reports</string>
     <string name="eid">EID</string>
     <string name="email">Enter Email ID of Profession</string>

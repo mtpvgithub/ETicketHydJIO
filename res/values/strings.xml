@@ -14,7 +14,7 @@
     <string name="towing">Crane \n41 CP ACT</string>
     <string name="towing_one_line">Crane 41 CP ACT</string>
     <string name="reports">Reports</string>
-    <string name="app_version">Version-2.3.2</string>
+    <string name="app_version">Version-2.3.4</string>
     <string name="regNo">Regn.No</string>
     <string name="engine">Engine No</string>
     <string name="chasis">Chasis No</string>
@@ -201,6 +201,8 @@
     <string name="spot_challan">Spot Challan</string>
     <string name="special_drive">Special Drive</string>
     <string name="ddbasic_drive">DD BASIC \n WITHOUT DL \n AND AADHAR</string>
+    <string name="echallanfornoncontact">e_Challan</string>
+
     <string name="select_violation">Select Violation</string>
 
     <!-- SPOT CHALLAN_TWO.XML VALUES -->

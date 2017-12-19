@@ -59,5 +59,38 @@ public class DateUtil {
 
 
 
+    public String getPresentDateandTime() {
+        String pattern = "dd-MMM-yyyy@HH:mm:ss";
+        format = new SimpleDateFormat(pattern);
+        String formattedDate = format.format(new Date());
+
+        return formattedDate;
+    }
+
+
+    public String getPresentyear() {
+        String pattern = "yyyy";
+        format = new SimpleDateFormat(pattern);
+        String formattedDate = format.format(new Date());
+
+        return formattedDate;
+    }
+
+    public String getPresentMonth() {
+        String pattern = "MMM";
+        format = new SimpleDateFormat(pattern);
+        String formattedDate = format.format(new Date());
+
+        return formattedDate;
+    }
+
+    public String getPresentDay() {
+        String pattern = "dd";
+        format = new SimpleDateFormat(pattern);
+        String formattedDate = format.format(new Date());
+
+        return formattedDate;
+    }
+
 
 }

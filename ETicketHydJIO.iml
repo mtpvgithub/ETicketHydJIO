@@ -107,6 +107,7 @@
     <orderEntry type="library" exported="" name="sun.misc.BASE64Decoder" level="project" />
     <orderEntry type="library" exported="" name="ksoap2-android-assembly-2.4-jar-with-dependencies" level="project" />
     <orderEntry type="library" exported="" name="common-lang3" level="project" />
+    <orderEntry type="library" exported="" name="support-core-utils-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="commons-net-3.5" level="project" />
     <orderEntry type="library" exported="" name="securityJar" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="multidex-instrumentation-1.0.1" level="project" />

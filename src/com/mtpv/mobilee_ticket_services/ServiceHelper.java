@@ -30,7 +30,7 @@ public class ServiceHelper {
             versionData,getOfficerLimit;
 
     public static Map<String, String> viodetMap = null;
-    public static String  rtaapproovedresponse,validregnoresponse,insertDetainItemsresponse,remarksresult,otpStatusnTime;
+    public static String  rtaapproovedresponse,validregnoresponse,insertDetainItemsresponse,remarksresult,otpStatusnTime,noncontactresponse;
 
 
     static String WHEELER_MEHOD_NAME = "getWheelerDetails", GET_PS_NAMES_MEHOD_NAME = "getPsNames", GET_POINTNAME_BY_PSNAME_MEHOD_NAME = "getPointNamesByPsName";
@@ -1010,6 +1010,44 @@ public class ServiceHelper {
         }
     }
 
+
+    public static void getVehRemarks(String vhle_num, String license, String aadhar) {
+
+        try {
+            SoapObject request = new SoapObject(NAMESPACE, "" + "getVehRemarks");
+            request.addProperty("regnNo", vhle_num);
+            request.addProperty("aadharno", "" + aadhar);
+            request.addProperty("dlNo", "" + license);
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.dotNet = true;
+            envelope.setOutputSoapObject(request);
+
+            HttpTransportSE httpTransportSE = new HttpTransportSE(MainActivity.URL);
+            httpTransportSE.call(SOAP_ACTION, envelope);
+            Object result = envelope.getResponse();
+            offender_remarks = "";
+
+            try {
+                if(result!=null) {
+                    offender_remarks = result.toString();
+                    // offender_remarks = new com.mtpv.mobilee_ticket_services.PidSecEncrypt().decrypt(offender_remarks);
+                }else {
+                    offender_remarks="0";
+                }
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                offender_remarks="0";
+            }
+        } catch (SoapFault fault) {
+            offender_remarks="0";
+        } catch (Exception e) {
+            // TODO: handle exception
+            offender_remarks = "0";
+        }
+    }
+
+
     public static void getRTADetails(String vhle_num) {
         try {
             SoapObject request = new SoapObject(NAMESPACE, "" + RTA_DETAILS_BY_REGNO_METHOD_NAME);
@@ -1036,23 +1074,33 @@ public class ServiceHelper {
                                 SpotChallan.rta_details_spot_master = new String[0];
                                 SpotChallan.rta_details_spot_master = rta_data.split("!");
                             }
+                       /*     else if (Dashboard.rta_details_request_from.equals("noncontact")) {
+                                SpotChallan.rta_details_spot_master = new String[0];
+                                SpotChallan.rta_details_spot_master = rta_data.split("!");
+                            }*/
                         } catch (Exception e) {
                             e.printStackTrace();
                             rta_data = "0";
                             if (Dashboard.rta_details_request_from.equals("RTACLASS")) {
                                 Drunk_Drive.rta_details_master = new String[0];
-                            } else if (Dashboard.rta_details_request_from.equals("RTACLASS")) {
+                            } else if (Dashboard.rta_details_request_from.equals("SPOT")) {
                                 SpotChallan.rta_details_spot_master = new String[0];
                             }
+                           /* else if (Dashboard.rta_details_request_from.equals("noncontact")) {
+                                SpotChallan.rta_details_spot_master = new String[0];
+                            }*/
                         }
                     }
                 }else {
                     rta_data="0";
                     if (Dashboard.rta_details_request_from.equals("RTACLASS")) {
                         Drunk_Drive.rta_details_master = new String[0];
-                    } else if (Dashboard.rta_details_request_from.equals("RTACLASS")) {
+                    } else if (Dashboard.rta_details_request_from.equals("SPOT")) {
                         SpotChallan.rta_details_spot_master = new String[0];
                     }
+                   /* else if (Dashboard.rta_details_request_from.equals("noncontact")) {
+                        SpotChallan.rta_details_spot_master = new String[0];
+                    }*/
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
@@ -1060,9 +1108,12 @@ public class ServiceHelper {
                 rta_data="0";
                 if (Dashboard.rta_details_request_from.equals("RTACLASS")) {
                     Drunk_Drive.rta_details_master = new String[0];
-                } else if (Dashboard.rta_details_request_from.equals("RTACLASS")) {
+                } else if (Dashboard.rta_details_request_from.equals("SPOT")) {
                     SpotChallan.rta_details_spot_master = new String[0];
                 }
+               /* else if (Dashboard.rta_details_request_from.equals("noncontact")) {
+                    SpotChallan.rta_details_spot_master = new String[0];
+                }*/
             }
 
         } catch (SoapFault fault) {
@@ -1070,18 +1121,24 @@ public class ServiceHelper {
             rta_data="0";
             if (Dashboard.rta_details_request_from.equals("RTACLASS")) {
                 Drunk_Drive.rta_details_master = new String[0];
-            } else if (Dashboard.rta_details_request_from.equals("RTACLASS")) {
+            } else if (Dashboard.rta_details_request_from.equals("SPOT")) {
                 SpotChallan.rta_details_spot_master = new String[0];
             }
+            /*else if (Dashboard.rta_details_request_from.equals("noncontact")) {
+                SpotChallan.rta_details_spot_master = new String[0];
+            }*/
         } catch (Exception e) {
             // TODO: handle exception
             // Opdata_Chalana = "0";
             rta_data="0";
             if (Dashboard.rta_details_request_from.equals("RTACLASS")) {
                 Drunk_Drive.rta_details_master = new String[0];
-            } else if (Dashboard.rta_details_request_from.equals("RTACLASS")) {
+            } else if (Dashboard.rta_details_request_from.equals("SPOT")) {
                 SpotChallan.rta_details_spot_master = new String[0];
             }
+          /*  else if (Dashboard.rta_details_request_from.equals("noncontact")) {
+                SpotChallan.rta_details_spot_master = new String[0];
+            }*/
         }
     }
 
@@ -1208,6 +1265,62 @@ public class ServiceHelper {
             } else if (Dashboard.licence_details_request_from.equals("SPOT")) {
                 SpotChallan.licence_details_spot_master = new String[0];
             }
+        }
+    }
+
+    public static void generateNonContactChallan(String regnCD,String vehicleNo,String wheelerCode,String rtaoName,String rtaAddr,String city,String mobileNo,
+                                                 String offenceDtTime,String pidCD,String pidName,String cadre_code,String cadre_name,String psCode,String psName,
+                                                 String unitCode,String unitName,String pointCD,String pointName, String vioCode,String vehRemak,
+                                                 String evidenceData,String imeiNo,String macID,String gpsLatti,String gpsLong) {
+        try {
+            SoapObject request = new SoapObject(NAMESPACE, "eChallanMobile");
+            request.addProperty("regnCD", "" + regnCD);
+            request.addProperty("vehicleNo", "" + vehicleNo);
+            request.addProperty("wheelerCode", "" + wheelerCode);
+            request.addProperty("rtaOname", "" + rtaoName);
+            request.addProperty("rtaAdres", "" + rtaAddr);
+            request.addProperty("city", "" + city);
+            request.addProperty("mobileNo", "" + mobileNo);
+            request.addProperty("offenceDtTime", "" + offenceDtTime);
+            request.addProperty("pidCD", "" + pidCD);
+            request.addProperty("pidName", "" + pidName);
+            request.addProperty("cadreCD", "" + cadre_code);
+            request.addProperty("cadreName", "" + cadre_name);
+            request.addProperty("psCode", "" + psCode);
+            request.addProperty("psName", "" + psName);
+            request.addProperty("unitCode", "" + unitCode);
+            request.addProperty("unitName", "" + unitName);
+            request.addProperty("pointCD", "" + pointCD);
+            request.addProperty("pointName", "" + pointName);
+            request.addProperty("vioCode", "" + vioCode);
+            request.addProperty("vehRemak", "" + vehRemak);
+            request.addProperty("evidenceData", "" + evidenceData);
+            request.addProperty("imeiNo", "" + imeiNo);
+            request.addProperty("macID", "" + macID);
+            request.addProperty("gpsLatti", "" + gpsLatti);
+            request.addProperty("gpsLong", "" + gpsLong);
+
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.dotNet = true;
+            envelope.setOutputSoapObject(request);
+
+            HttpTransportSE httpTransportSE = new HttpTransportSE(MainActivity.URL);
+            httpTransportSE.call(SOAP_ACTION, envelope);
+            Object result = envelope.getResponse();
+            try {
+                //  points_resp = new com.mtpv.mobilee_ticket_services.PidSecEncrypt().decrypt(result.toString());
+
+                ServiceHelper.noncontactresponse="0";
+                noncontactresponse = result.toString();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                ServiceHelper.noncontactresponse="0";
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            ServiceHelper.noncontactresponse="0";
         }
     }
 

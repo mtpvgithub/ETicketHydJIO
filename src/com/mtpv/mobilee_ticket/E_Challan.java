@@ -37,9 +37,11 @@ import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -419,8 +421,24 @@ public class E_Challan extends Activity implements OnClickListener, LocationList
 			cam_imag = "";
 			cam_imag = "camera";
 			if (isDeviceSupportCamera()) {
-				Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				startActivityForResult(cameraIntent, CAMERA_REQUEST);
+			/*	Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
+
+
+				if (Build.VERSION.SDK_INT<=23) {
+					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+					intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+					startActivityForResult(intent, 1);
+				}else{
+					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+					intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(E_Challan.this,
+							BuildConfig.APPLICATION_ID + ".fileProvider",f));
+					intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+					startActivityForResult(intent, 1);
+				}
+
 			} else {
 				showToast("Sorry! Your device doesn't support camera");
 			}

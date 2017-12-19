@@ -320,18 +320,20 @@
             android:visibility="visible"/>
 
         <TextView
-            android:id="@+id/tv_dd_basic"
+            android:id="@+id/tv_echallannon"
 
             style="@style/navi_text_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:drawableTop="@drawable/ddwithoutdloraadhar"
+            android:drawableTop="@drawable/noncontact"
             android:gravity="center_horizontal|center_vertical"
-            android:text="@string/ddbasic_drive"
+            android:text="@string/echallanfornoncontact"
             android:textSize="19sp"
-            android:visibility="invisible"/>
+            android:visibility="visible"/>
+
+
     </LinearLayout>
 
 

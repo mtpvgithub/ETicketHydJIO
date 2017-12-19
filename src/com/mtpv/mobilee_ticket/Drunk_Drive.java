@@ -33,6 +33,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.Html;
@@ -702,6 +703,7 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
                 Fake_NO_Dialog.fake_action = null;
                 tv_vehicle_details.setText("");
                 tv_licence_details.setText("");
+                image_data_tosend=null;
 
 
                 ServiceHelper.rc_send = "";
@@ -1062,10 +1064,29 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
     }
 
     protected void selectImage() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+/*        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-        startActivityForResult(intent, 1);
+      //  intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(getApplicationContext(),
+                BuildConfig.APPLICATION_ID + ".provider",f));
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        startActivityForResult(intent, 1);*/
+
+
+
+        if (Build.VERSION.SDK_INT<=23) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+            startActivityForResult(intent, 1);
+        }else{
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(Drunk_Drive.this,
+                    BuildConfig.APPLICATION_ID + ".provider",f));
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(intent, 1);
+        }
 
     }
 

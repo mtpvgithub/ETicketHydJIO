@@ -252,8 +252,8 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
         btn_submit = (Button) findViewById(R.id.btnsubmit_login_xml);
         tv_ip_settings = (TextView) findViewById(R.id.tv_ipsettings);
 
-   /*     et_pid.setText("23001004");
-        et_pid_pwd.setText("WdSt48Pr");*/
+        et_pid.setText("23001004");
+        et_pid_pwd.setText("WdSt48Pri");
 
         btn_cancel.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
@@ -449,7 +449,6 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
                 db.execSQL(DBHelper.CREATE_USER_TABLE);
                 db.execSQL("delete from " + DBHelper.USER_TABLE);
                 db.insert(DBHelper.USER_TABLE, null, values); // Inserting Row
-                System.out.println("*********************OFFICER TABLE Insertion Successfully **********************");
 
                 if (et_pid.getText().toString().trim().equals("")) {
                     et_pid.setError(Html.fromHtml("<font color='black'>Enter PID</font>"));
@@ -633,10 +632,8 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
                             String cadre_code = "" + arr_logindetails[4];
                             String cadre_name = "" + arr_logindetails[5];
                             String pass_word = "" + user_pwd;
-
                             String off_phone_no = "" + arr_logindetails[6];
                             String current_version = "" + arr_logindetails[7];
-
                             String rta_data_flg = "" + arr_logindetails[8];
                             Log.i("",""+rta_data_flg);
                             String dl_data_flg = "" + arr_logindetails[9];
@@ -654,9 +651,6 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
                             if (arr_logindetails != null && arr_logindetails.length == 16){
                                 officerLogin_Otp = "" + arr_logindetails[15];
                             }
-
-
-
                             editors.putString("PID_CODE", pidCode);
                             editors.putString("PID_NAME", pidName);
                             editors.putString("PS_CODE", psCd);
@@ -666,7 +660,6 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
                             editors.putString("PASS_WORD", pass_word);
                             editors.putString("OFF_PHONE_NO", off_phone_no);
                             editors.putString("CURRENT_VERSION", current_version);
-
                             editors.putString("RTA_DATA_FLAG", rta_data_flg);
                             editors.putString("DL_DATA_FLAG", dl_data_flg);
                             editors.putString("AADHAAR_DATA_FLAG", aadhaar_data_flg);

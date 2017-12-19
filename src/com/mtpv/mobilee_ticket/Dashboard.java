@@ -25,8 +25,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -78,12 +78,12 @@ public class Dashboard extends Activity implements OnClickListener {
     int downloadedSize = 0 , totalSize = 0;
     TextView cur_val;
 
-    TextView tv_login_username, echallan, echallan_reports, tv_drunk_and_drive , tv_spot_challan, tv_vehicle_history;
+    TextView tv_login_username, echallan, echallan_reports, tv_drunk_and_drive , tv_spot_challan, tv_vehicle_history,tv_echallannon;
     TextView tv_towing_cp_act , tv_release_document, tv_reports, tv_duplicate_print, tv_settings, tv_sync;
     ImageButton ibtn_logout;
     ImageView offline_btn, aadhaar;
 
-    TextView tv_about_version,tv_special_drive,tv_dd_basic;
+    TextView tv_about_version,tv_special_drive;
 
     final int EXIT_DIALOG = 0, ALERT_USER = 1, PROGRESS_DIALOG = 2, MASTER_DOWNLOAD = 3;
 
@@ -163,6 +163,7 @@ public class Dashboard extends Activity implements OnClickListener {
     TelephonyManager telephonyManager;
     String imei_send = "";
     String simid_send = "";
+
 
     public static String terminalID, bluetoothName, bluetoothAddress;
 
@@ -285,7 +286,6 @@ public class Dashboard extends Activity implements OnClickListener {
                 }else{
                     server = "192.168.11.9";
                 }
-                Log.i("server URL ::", ""+server);
                 ftpClient.connect(server, port);
                 ftpClient.login(username, password);
                 ftpClient.enterLocalPassiveMode();
@@ -416,14 +416,40 @@ public class Dashboard extends Activity implements OnClickListener {
                         }
 
                         finish();
-                        System.out.println("File #1 has been downloaded successfully.");
+/*                        System.out.println("File #1 has been downloaded successfully.");
                         Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setDataAndType(
+*//*                        intent.setDataAndType(
                                 Uri.fromFile(new File(
                                         Environment.getExternalStorageDirectory() + "/download/" + "ETicketHYD.apk")),
-                                "application/vnd.android.package-archive");
+                                "application/vnd.android.package-archive");*//*
+                        intent.setType("application/vnd.android.package-archive");
+
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(Dashboard.this,
+                                BuildConfig.APPLICATION_ID + ".provider",new File(Environment.getExternalStorageDirectory() + "/download/" + "ETicketHYD.apk")));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                        startActivity(intent);*/
+
+
+
+                        if (Build.VERSION.SDK_INT <= 23) {
+
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setDataAndType(
+                                    Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/download/" + "ETicketHYD.apk")),
+                                    "application/vnd.android.package-archive");
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+
+                        else {
+
+                            Uri apkUri = FileProvider.getUriForFile(Dashboard.this, BuildConfig.APPLICATION_ID +
+                                    ".provider", new File(Environment.getExternalStorageDirectory() + "/download/" + "ETicketHYD.apk"));
+                            Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+                            intent.setData(apkUri);
+                            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            startActivity(intent);
+                        }
 
                     }
                 }
@@ -489,7 +515,8 @@ public class Dashboard extends Activity implements OnClickListener {
 
         tv_about_version = (TextView) findViewById(R.id.tv_about_version);
         tv_special_drive=(TextView)findViewById(R.id.tv_special_drive);
-        tv_dd_basic=(TextView)findViewById(R.id.tv_dd_basic);
+       // tv_dd_basic=(TextView)findViewById(R.id.tv_dd_basic);
+        tv_echallannon=(TextView)findViewById(R.id.tv_echallannon);
 
 
 
@@ -511,8 +538,8 @@ public class Dashboard extends Activity implements OnClickListener {
         tv_reports.setOnClickListener(this);
         tv_special_drive.setOnClickListener(this);
         tv_about_version.setOnClickListener(this);
-        tv_dd_basic.setOnClickListener(this);
-
+        //tv_dd_basic.setOnClickListener(this);
+        tv_echallannon.setOnClickListener(this);
 
         //aadhaar.setOnClickListener(this);
 
@@ -545,12 +572,62 @@ public class Dashboard extends Activity implements OnClickListener {
                 break;
 
 
-            case R.id.tv_dd_basic:
+          /*  case R.id.tv_dd_basic:
 
                 check_vhleHistory_or_Spot = "drunkdrive_withourDlAadhar";
                 Dashboard.otpbuttoncheckinspldrive="dd";
                 ddCommonMethod();
 
+                break;*/
+
+
+            case R.id.tv_echallannon:
+
+                check_vhleHistory_or_Spot = "noncontact";
+                //    Dashboard.otpbuttoncheckinspldrive="dd";
+
+                rtaFLG = true;
+                getPreferenceValues();
+
+                preferences = getSharedPreferences("preferences", MODE_PRIVATE);
+                editor = preferences.edit();
+                address_spot = preferences.getString("btaddress", "btaddr");
+
+                try {
+
+
+
+
+                    db.open();
+                    cursor_psnames = DBHelper.db.rawQuery("select * from " + db.psName_table, null);
+
+                    c_whlr_details = DBHelper.db.rawQuery("select * from " + DBHelper.wheelercode_table, null);
+
+                    if ((cursor_psnames.getCount() == 0) && (c_whlr_details.getCount() == 0)) {
+                        showToast("Please download master's !");
+                    } else if ((psname_settings.equals("psname")) && (pointnameBycode_settings.equals("pointname"))) {
+                        showToast("Configure Settings!");
+                    } else if (address_spot.trim() != null && address_spot.trim().length() < 15) {
+                        showToast("Configure BlueTooth Settings!");
+                    } else {
+                        if (isOnline()) {
+                            //    Dashboard.otpbuttoncheckinspldrive="Spot";
+                            startActivity(new Intent(Dashboard.this, E_Challan_Non_ContactModule.class));
+                        } else {
+                            showToast("" + netwrk_info_txt);
+                        }
+                    }
+
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    c_whlr_details.close();
+                    cursor_psnames.close();
+                    db.close();
+                }
+                c_whlr_details.close();
+                cursor_psnames.close();
+                db.close();
                 break;
 
 
