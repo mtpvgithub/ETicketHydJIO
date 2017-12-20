@@ -1037,7 +1037,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                     // 7/8/9
                     // Length=11 case starting digit should start with 0
                     if ((tempContactNumber.charAt(0) == '7') || (tempContactNumber.charAt(0) == '8')
-                            || (tempContactNumber.charAt(0) == '9')) {
+                            || (tempContactNumber.charAt(0) == '9')||(tempContactNumber.charAt(0) == '6')) {
                         if (isOnline()) {
                             otp_status = "send";
                             if (isOnline()) {

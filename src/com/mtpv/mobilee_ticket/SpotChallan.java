@@ -4078,7 +4078,7 @@ public class SpotChallan extends Activity
 
                         } else if (tempContactNumber.length() == 10) {
                             if ((tempContactNumber.charAt(0) == '7') || (tempContactNumber.charAt(0) == '8')
-                                    || (tempContactNumber.charAt(0) == '9')) {
+                                    || (tempContactNumber.charAt(0) == '9')||(tempContactNumber.charAt(0) == '6')) {
                                 if (isOnline()) {
                                     otp_status = "send";
                                     SpotChallan.mobilenumber = "";
@@ -6697,7 +6697,7 @@ public class SpotChallan extends Activity
 
                     } else if (tempContactNumber.length() == 10) {
                         if ((tempContactNumber.charAt(0) == '7') || (tempContactNumber.charAt(0) == '8')
-                                || (tempContactNumber.charAt(0) == '9')) {
+                                || (tempContactNumber.charAt(0) == '9')||(tempContactNumber.charAt(0) == '6')) {
                             if (isOnline()) {
                                 if (police_vehcle.isChecked()) {
                                     is_govt_police = "2";
@@ -6904,7 +6904,7 @@ public class SpotChallan extends Activity
                             et_driver_contact_spot.setError("Enter Valid mobile number!!");
                         } else if (tempContactNumber.length() == 10) {
                             if ((tempContactNumber.charAt(0) == '7') || (tempContactNumber.charAt(0) == '8')
-                                    || (tempContactNumber.charAt(0) == '9')) {
+                                    || (tempContactNumber.charAt(0) == '9')||(tempContactNumber.charAt(0) == '6')) {
                                 if (isOnline()) {
 											/*
 											 * to call mobileSpotChallanPayment
@@ -6965,7 +6965,7 @@ public class SpotChallan extends Activity
                             et_driver_contact_spot.setError("Enter Valid mobile number!!");
                         } else if (tempContactNumber.length() == 10) {
                             if ((tempContactNumber.charAt(0) == '7') || (tempContactNumber.charAt(0) == '8')
-                                    || (tempContactNumber.charAt(0) == '9')) {
+                                    || (tempContactNumber.charAt(0) == '9')||(tempContactNumber.charAt(0) == '6')) {
                                 if (isOnline()) {
 											/*
 											 * to call mobileSpotChallanPayment
@@ -7081,7 +7081,7 @@ public class SpotChallan extends Activity
                             et_driver_contact_spot.setError("Enter Valid mobile number!!");
                         } else if (tempContactNumber.length() == 10) {
                             if ((tempContactNumber.charAt(0) == '7') || (tempContactNumber.charAt(0) == '8')
-                                    || (tempContactNumber.charAt(0) == '9')) {
+                                    || (tempContactNumber.charAt(0) == '9')|| (tempContactNumber.charAt(0) == '6')) {
                                 if (isOnline()) {
 											/*
 											 * to call mobileSpotChallanPayment
@@ -7144,7 +7144,7 @@ public class SpotChallan extends Activity
                             et_driver_contact_spot.setError("Enter Valid mobile number!!");
                         } else if (tempContactNumber.length() == 10) {
                             if ((tempContactNumber.charAt(0) == '7') || (tempContactNumber.charAt(0) == '8')
-                                    || (tempContactNumber.charAt(0) == '9')) {
+                                    || (tempContactNumber.charAt(0) == '9')|| (tempContactNumber.charAt(0) == '6')) {
                                 if (isOnline()) {
 
                                     if (Dashboard_PC.check_vhleHistory_or_Spot.equals("releasedocuments")) {

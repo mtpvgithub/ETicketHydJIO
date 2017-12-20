@@ -1238,6 +1238,7 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
                 else {
                     showToast("Ticket Genereted Successfully");
                     resetAftersubmit();
+
                 }
 
             } else {

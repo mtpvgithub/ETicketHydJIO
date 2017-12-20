@@ -97,8 +97,8 @@
 
             <ImageView
                 android:id="@+id/encroachment_image"
-                android:layout_width="450dp"
-                android:layout_height="480dp"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="25dp"
                 android:contentDescription="@null"
@@ -188,7 +188,7 @@
                     android:textColor="@color/black"
                     android:imeOptions="actionNext"
                     android:inputType="textCapCharacters"
-                    android:textColorHint="@color/navi_color"
+                    android:textColorHint="#b6b4b4"
                     android:maxLength="4">
                 </EditText>
 
@@ -205,7 +205,7 @@
                     android:textColor="@color/black"
                     android:imeOptions="actionNext"
                     android:inputType="text|textCapCharacters"
-                    android:textColorHint="@color/navi_color"
+                    android:textColorHint="#b6b4b4"
                     android:maxLength="4">
 
                 </EditText>
@@ -220,7 +220,7 @@
                     android:gravity="center"
                     android:imeOptions="actionNext"
                     android:textColor="@color/black"
-                    android:textColorHint="@color/navi_color"
+                    android:textColorHint="#b6b4b4"
                     android:inputType="number"
                     android:hint="1234"
                     android:maxLength="4"></EditText>
