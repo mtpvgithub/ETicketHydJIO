@@ -4146,8 +4146,6 @@ public class SpotChallan extends Activity
                         // TODO Auto-generated method stub
                         is_it_spot_send = "1";
                         ll_cash_or_card.setVisibility(View.VISIBLE);
-                        // et_payment_card_pin.setVisibility(View.GONE);
-
 
                         if ((Dashboard.check_vhleHistory_or_Spot.equals("vehiclehistory"))
                                 || (Dashboard.check_vhleHistory_or_Spot.equals("spot"))
@@ -4179,7 +4177,6 @@ public class SpotChallan extends Activity
                 });
 
                 radioGroupButton_spotpaymentNo.setOnClickListener(new OnClickListener() {
-
                     @Override
                     public void onClick(View v) {
                         // TODO Auto-generated method stub
@@ -4227,18 +4224,15 @@ public class SpotChallan extends Activity
                         cardFLG = true;
                     }
                 });
-                /*** KIRAN CODING END ***/
-
-
                 // 21_MAR_2017
                 /*************** FINAL SUBMIT DETAILS *****************/
+
                 btn_final_submit.setOnClickListener(new OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
 
-
-//                        if(soldOut==1) {
+//                            if(soldOut==1) {
 //                            if (chck_detainedItems_vhcle.isChecked()) {
 //
 //

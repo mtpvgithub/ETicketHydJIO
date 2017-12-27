@@ -2122,14 +2122,13 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
 
     }
 
-    /***********************
-     * Mobile Number Validation Method
-     ***************************/
+
     protected boolean validateMobileNo(String mobileNo) {
         boolean flg = false;
         try {
             if (mobileNo != null && mobileNo.trim().length() == 10 && ("7".equals(mobileNo.trim().substring(0, 1))
-                    || "8".equals(mobileNo.trim().substring(0, 1)) || "9".equals(mobileNo.trim().substring(0, 1)))) {
+                    || "8".equals(mobileNo.trim().substring(0, 1)) || "9".equals(mobileNo.trim().substring(0, 1)))
+                    || "6".equals(mobileNo.trim().substring(0, 1))) {
                 flg = true;
             } else if (mobileNo != null && mobileNo.trim().length() == 11
                     && "0".equals(mobileNo.trim().substring(0, 1))) {
@@ -2138,7 +2137,6 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
         } catch (Exception e) {
             e.printStackTrace();
             flg = false;
-
         }
         return flg;
     }

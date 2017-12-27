@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -39,6 +40,7 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -152,6 +154,8 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
             rtaOname,rtaAdres,city,mobileNo;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+
+    String realPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -481,6 +485,7 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
 
                 ed_time.setText("SELECT TIME");
                 ed_date.setText("SELECT DATE");
+                encroachment_image.setRotation(0);
                 selectImage();
             }
         });
@@ -489,6 +494,7 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
             @Override
             public void onClick(View v) {
                 if (imgString!=null) {
+                    encroachment_image.setRotation(0);
                     encroachment_image.setImageDrawable(getResources().getDrawable(R.drawable.photo));
                     ed_time.setText("SELECT TIME");
                     ed_date.setText("SELECT DATE");
@@ -597,7 +603,6 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
 
             }
         });
-
 
     }
 
@@ -1238,7 +1243,6 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
                 else {
                     showToast("Ticket Genereted Successfully");
                     resetAftersubmit();
-
                 }
 
             } else {
@@ -1468,23 +1472,47 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
 
                         outFile = new FileOutputStream(file);
                         mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-                        //   Canvas canvas = new Canvas(mutableBitmap); //bmp is the bitmap to dwaw into
+                          Canvas canvas = new Canvas(mutableBitmap); //bmp is the bitmap to dwaw into
 
-                      /*  Paint paint= new Paint();
+                        Paint paint= new Paint();
                         paint.setColor(Color.RED);
                         paint.setTextSize(80);
-                        paint.setTextAlign(Paint.Align.CENTER);*/
+                        paint.setTextAlign(Paint.Align.CENTER);
 
-                   /*     int xPos = (canvas.getWidth() / 2);
+                        int xPos = (canvas.getWidth() / 2);
                         int yPos = (int) ((canvas.getHeight() / 2) - ((paint
-                                .descent() + paint.ascent()) / 2));*/
+                                .descent() + paint.ascent()) / 2));
 
                        /* canvas.drawText("Date & Time: " + presentdate+" "+presenttime, xPos,
                                 yPos + 800, paint);
                         canvas.drawText("Lat :" + latitude , xPos, yPos + 900, paint);
-                        canvas.drawText("Long :"+ longitude, xPos, yPos + 1000, paint);*/
-                        //canvas.drawText("Date & Time: "+Current_Date+"\n"+" Lat :"+latitude+ " Long :"+longitude,1250, 1500, paint);
+                        canvas.drawText("Long :"+ longitude, xPos, yPos + 1000, paint);
+                        canvas.drawText("Date & Time: "+ presentdate+" "+presenttime+"\n"+" Lat :"+latitude+ " Long :"+longitude,1250, 1500, paint);
+*/
+                        canvas.save();
+                        canvas.rotate(270f, xPos, yPos);
+                        canvas.drawText("Date & Time: " +  presentdate+" "+presenttime, xPos + 10, yPos, paint);
+                        canvas.restore();
 
+                        canvas.save();
+                        canvas.rotate(270f, xPos, yPos);
+                        canvas.drawText("Lat :" + latitude, xPos, yPos + 900, paint);
+                        canvas.restore();
+
+                        canvas.save();
+                        canvas.rotate(270f, xPos, yPos);
+                        canvas.drawText("Long :" + longitude, xPos, yPos + 1000, paint);
+                        canvas.rotate(90);
+                        canvas.restore();
+
+                        Display d = getWindowManager().getDefaultDisplay();
+                        int x = d.getWidth();
+                        int y = d.getHeight();
+
+                        Bitmap scaledBitmap = Bitmap.createScaledBitmap(mutableBitmap, y, x, true);
+                        Matrix matrix = new Matrix();
+                        matrix.postRotate(90);
+                        mutableBitmap = Bitmap.createBitmap(scaledBitmap , 0, 0, scaledBitmap .getWidth(), scaledBitmap .getHeight(), matrix, true);
                         mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outFile);
                         outFile.flush();
                         outFile.close();
@@ -1515,7 +1543,7 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
                     canvas.drawText("Lat :" + latitude , xPos, yPos + 900, paint);
                     canvas.drawText("Long :"+ longitude, xPos, yPos + 1000, paint);
 */
-                    canvas.save();
+                /*    canvas.save();
                     canvas.rotate(270f, xPos, yPos);
                     canvas.drawText("Date & Time: " +  presentdate+" "+presenttime, xPos + 10, yPos, paint);
                     canvas.restore();
@@ -1529,11 +1557,11 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
                     canvas.rotate(270f, xPos, yPos);
                     canvas.drawText("Long :" + longitude, xPos, yPos + 1000, paint);
                     canvas.rotate(90);
-                    canvas.restore();
+                    canvas.restore();*/
                     //canvas.drawText("Date & Time: "+Current_Date+"\n"+" Lat :"+latitude+ " Long :"+longitude,1250, 1500, paint);
 
                     encroachment_image.setImageBitmap(mutableBitmap);
-                    encroachment_image.setRotation(encroachment_image.getRotation() + 90);
+                  //  encroachment_image.setRotation(encroachment_image.getRotation() + 90);
 
                     //picture1.setRotation(90);
 
@@ -1631,7 +1659,7 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
                 imgString = Base64.encodeToString(byteArray, Base64.NO_WRAP);
 */
 
-                String realPath;
+
                 // SDK < API11
                 if (Build.VERSION.SDK_INT < 11)
                     realPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, data.getData());
@@ -1678,7 +1706,7 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
                 filenameselected = realPath.substring(realPath.lastIndexOf("/") + 1);
 
                 String[] dateandtimefromfile = filenameselected.split("@");
-                String time = dateandtimefromfile[1].substring(0, 6);
+                String time = dateandtimefromfile[1].substring(0, 5);
 
                 ed_date.setText(dateandtimefromfile[0].toString());
                 ed_date.setEnabled(false);
@@ -1909,6 +1937,10 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
 
     public void resetAftersubmit()
     {
+        File file = new File(realPath);
+        boolean deleted = file.delete();
+        Log.d("gdjFsd",""+deleted);
+
         completeVehicle_num_send = "";
         edt_regncid_spotchallan_xml.setText("");
         edt_regncidname_spotchallan_xml.setText("");
@@ -1939,6 +1971,7 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
         imgString="";
         btn_whlr_code.setText("");
         btn_violation.setText("");
+        encroachment_image.setRotation(0);
         encroachment_image.setImageDrawable(getResources().getDrawable(R.drawable.camera));
         rl_rta_details_layout.setVisibility(View.GONE);
     }
