@@ -1930,7 +1930,7 @@ public class ServiceHelper {
 
                 }
 
-                if (final_spot_reponse_master[1].toString().trim().length() > 0) {
+                if (final_spot_reponse_master[1].trim().length() > 0) {
                     final_spot_reponse_details = final_spot_reponse_master[1].split("!");
 
                     for (int i = 0; i < final_spot_reponse_details.length; i++) {
@@ -1938,7 +1938,7 @@ public class ServiceHelper {
                     }
                 }
 
-                if (final_spot_reponse_master[2].toString().trim().length() > 0) {
+                if (final_spot_reponse_master[2].trim().length() > 0) {
 
                     final_spot_reponse_violations_master = final_spot_reponse_master[2].split("!");
                     final_spot_reponse_violations = new String[final_spot_reponse_violations_master.length][3];

@@ -778,7 +778,6 @@ public class Dashboard extends Activity implements OnClickListener {
                     }
 
                 } catch (SQLException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                     c_whlr_details.close();
                     cursor_psnames.close();

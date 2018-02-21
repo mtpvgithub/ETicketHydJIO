@@ -1,4 +1,4 @@
-#Wed Dec 27 14:32:08 IST 2017
+#Wed Feb 21 14:51:15 IST 2018
 file.9=D\:\\Android\\ETicketHydJIO\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\2\\ftp4j-1.6_95639f1fbe0f36dedaae9a6e7b5fc43be637dc8a\\classes.dex
 base.10=D\:\\Android\\ETicketHydJIO\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\2\\AnalogicsVersa3TBTPrinterAPI_2a1218d411c3521a75bae768019821292fcc40c2
 file.8=D\:\\Android\\ETicketHydJIO\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\classes_dc50f95ada20fd1363ee017a562a4b6b725aa544\\classes.dex

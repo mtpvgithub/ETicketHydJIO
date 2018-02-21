@@ -28,20 +28,20 @@
         "source": "D:\\Android\\ETicketHydJIO\\res\\layout\\activity_popup_details.xml"
     },
     {
-        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\spot_challan.xml",
-        "source": "D:\\Android\\ETicketHydJIO\\res\\layout\\spot_challan.xml"
-    },
-    {
         "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\activity_noncontactmodule.xml",
         "source": "D:\\Android\\ETicketHydJIO\\res\\layout\\activity_noncontactmodule.xml"
     },
     {
-        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\list_item_device.xml",
-        "source": "D:\\Android\\ETicketHydJIO\\res\\layout\\list_item_device.xml"
+        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\spot_challan.xml",
+        "source": "D:\\Android\\ETicketHydJIO\\res\\layout\\spot_challan.xml"
     },
     {
         "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_menu_layout.xml",
         "source": "C:\\Users\\Srinivas\\.android\\build-cache\\974101f1dea352e552f56f8fcc4c8c51ada5e7c9\\output\\res\\layout\\abc_action_menu_layout.xml"
+    },
+    {
+        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\list_item_device.xml",
+        "source": "D:\\Android\\ETicketHydJIO\\res\\layout\\list_item_device.xml"
     },
     {
         "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\apk_progressbar.xml",
@@ -60,16 +60,16 @@
         "source": "C:\\Users\\Srinivas\\.android\\build-cache\\974101f1dea352e552f56f8fcc4c8c51ada5e7c9\\output\\res\\layout\\abc_list_menu_item_icon.xml"
     },
     {
-        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_media_custom.xml",
-        "source": "C:\\Users\\Srinivas\\.android\\build-cache\\974101f1dea352e552f56f8fcc4c8c51ada5e7c9\\output\\res\\layout\\notification_template_media_custom.xml"
+        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\drunkdrive.xml",
+        "source": "D:\\Android\\ETicketHydJIO\\res\\layout\\drunkdrive.xml"
     },
     {
         "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\activity_e__challan.xml",
         "source": "D:\\Android\\ETicketHydJIO\\res\\layout\\activity_e__challan.xml"
     },
     {
-        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\drunkdrive.xml",
-        "source": "D:\\Android\\ETicketHydJIO\\res\\layout\\drunkdrive.xml"
+        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_media_custom.xml",
+        "source": "C:\\Users\\Srinivas\\.android\\build-cache\\974101f1dea352e552f56f8fcc4c8c51ada5e7c9\\output\\res\\layout\\notification_template_media_custom.xml"
     },
     {
         "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\fake_no_alert.xml",
@@ -96,12 +96,12 @@
         "source": "D:\\Android\\ETicketHydJIO\\res\\layout\\cust_pen_challans.xml"
     },
     {
-        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_toolbar.xml",
-        "source": "C:\\Users\\Srinivas\\.android\\build-cache\\974101f1dea352e552f56f8fcc4c8c51ada5e7c9\\output\\res\\layout\\abc_screen_toolbar.xml"
-    },
-    {
         "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\version_details.xml",
         "source": "D:\\Android\\ETicketHydJIO\\res\\layout\\version_details.xml"
+    },
+    {
+        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_toolbar.xml",
+        "source": "C:\\Users\\Srinivas\\.android\\build-cache\\974101f1dea352e552f56f8fcc4c8c51ada5e7c9\\output\\res\\layout\\abc_screen_toolbar.xml"
     },
     {
         "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_simple_overlay_action_mode.xml",

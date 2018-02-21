@@ -498,7 +498,6 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
                     encroachment_image.setImageDrawable(getResources().getDrawable(R.drawable.photo));
                     ed_time.setText("SELECT TIME");
                     ed_date.setText("SELECT DATE");
-
                     imgString = null ;
                     showToast("Captured Image Saved Succesufuly !!!");
                 }else {
@@ -509,16 +508,14 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
 
 
         btn_whlr_code.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 
-
                 if (edt_regncid_spotchallan_xml.getText().toString().equals("") || edt_regncid_lastnum_spotchallan_xml.getText().toString().equals("")) {
                     showToast("Please Enter Proper Vehicle Number");
-
                 } else {
                     if (isOnline()) {
-
                         showDialog(WHEELER_CODE);
                     } else {
                         showToast("No Internet Connection");
@@ -531,7 +528,6 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
         btngetrtadetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 completeVehicle_num_send = "";
                 completeVehicle_num_send = ("" + edt_regncid_spotchallan_xml.getText().toString() + ""
                         + edt_regncidname_spotchallan_xml.getText().toString() + "" + edt_regncid_lastnum_spotchallan_xml.getText().toString());
@@ -553,8 +549,8 @@ public class E_Challan_Non_ContactModule extends Activity  implements LocationLi
                     btn_whlr_code.setVisibility(View.GONE);
                     btn_submit.setText("Update Fake Info");
                     btn_violation.setVisibility(View.GONE);
-
-                }else
+                }
+                else
                 {
                     btn_whlr_code.setVisibility(View.VISIBLE);
                     btn_submit.setText("Submit");

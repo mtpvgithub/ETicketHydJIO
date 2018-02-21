@@ -3,13 +3,9 @@ package com.mtpv.mobilee_ticket_services;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by MANOHAR on 7/26/2017.
- */
-
 public class DateUtil {
-    SimpleDateFormat format;
 
+    SimpleDateFormat format;
 
     public String getTodaysDate() {
         String pattern = "dd-MMM-yyyy";
@@ -57,8 +53,6 @@ public class DateUtil {
         return formattedDate;
     }
 
-
-
     public String getPresentDateandTime() {
         String pattern = "dd-MMM-yyyy@HH:mm:ss";
         format = new SimpleDateFormat(pattern);
@@ -66,7 +60,6 @@ public class DateUtil {
 
         return formattedDate;
     }
-
 
     public String getPresentyear() {
         String pattern = "yyyy";
@@ -91,6 +84,5 @@ public class DateUtil {
 
         return formattedDate;
     }
-
 
 }
