@@ -266,22 +266,17 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.drunkdrive);
-
         dd_dobFLG = false;
         dd_dob_DL = null;
-
         date = (DateFormat.format("dd/MM/yyyy hh:mm:ss", new java.util.Date()).toString());
-
         cal = Calendar.getInstance();
         day = cal.get(Calendar.DAY_OF_MONTH);
         month = cal.get(Calendar.MONTH);
         year = cal.get(Calendar.YEAR);
-
         Calendar c1 = Calendar.getInstance();
         int mSec = c1.get(Calendar.MILLISECOND);
         SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -344,7 +339,8 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
         bookedPSname_send_from_settings = preferences.getString("psname_name", "psname");
         point_code_send_from_settings = preferences.getString("point_code", "0");
         point_name_send_from_settings = preferences.getString("point_name", "pointname");
-        exact_location_send_from_settings = preferences.getString("exact_location", "location");
+        exact_location_send_from_settings=preferences.getString("ps_res_name_code","0");
+        //exact_location_send_from_settings = preferences.getString("exact_location", "location");
 
 
         rl_rta_details_layout.setVisibility(View.GONE);
@@ -450,14 +446,11 @@ public class Drunk_Drive extends Activity implements OnClickListener, LocationLi
     }
 
     private void LoadUIComponents() {
-        // TODO Auto-generated method stub
 
-        // hardcode
         et_regcid = (EditText) findViewById(R.id.edt_regncid_rtadetails_xml);
         et_vchl_num = (EditText) findViewById(R.id.edt_regncidname_rtadetails_xml);
         et_last_num = (EditText) findViewById(R.id.edt_regncid_lastnum_rtadetails_xml);
         tv_dlpoints_spotchallan_xml=(TextView)findViewById(R.id.tv_dlpoints_spotchallan_xml);
-
 
         offender_image = (ImageView) findViewById(R.id.offender_image);
         offender_image.setVisibility(View.GONE);

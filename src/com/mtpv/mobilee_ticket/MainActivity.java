@@ -178,7 +178,6 @@ public class MainActivity extends Activity implements OnClickListener, LocationL
 
         showDialog(SPLASH_DIALOG);
         new Handler().postDelayed(new Runnable() {
-
             @Override
             public void run() {
                 removeDialog(SPLASH_DIALOG);

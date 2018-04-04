@@ -735,6 +735,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
 
         getInitialDetails();
 
+
 		/* FOR DEFAULT DATE TO BUTTON */
         format = new SimpleDateFormat("dd-MMM-yyyy");
 
@@ -742,7 +743,10 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
 
         btn_offence_date.setText("" + inspectiondate.toUpperCase());
 
-        btn_offence_time.setText(hour + ":" + minute);
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("HH:mm");
+        String time=simpleDateFormat.format(new Date());
+
+        btn_offence_time.setText(time);
 
 		/* SET IMAGE FROM RTA DETAILS CLASS */
         picturePath_dd = "0";
@@ -845,6 +849,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
     private void getInitialDetails() {
         // TODO Auto-generated method stub
         try {
+
             cal = Calendar.getInstance();
 		/* FOR DATE PICKER */
             offnce_year = cal.get(Calendar.YEAR);
@@ -853,7 +858,14 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
 
 		/* FOR TIME PICKER */
             hour = String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
+            if (hour.length()<2){
+                hour="0"+hour;
+            }
             minute = String.valueOf(cal.get(Calendar.MINUTE));
+
+            if (minute.length()<2){
+                minute="0"+minute;
+            }
 
             telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
             IMEI_send = telephonyManager.getDeviceId();// TO GET IMEI NUMBER
@@ -1266,7 +1278,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
             case OFFENCE_TIME_PICKER:
 
 
-                return new TimePickerDialog(this, timePickerListener, Integer.parseInt(hour), Integer.parseInt(minute), false);
+                return new TimePickerDialog(this, timePickerListener, Integer.parseInt(hour), Integer.parseInt(minute), true);
 
             case PROGRESS_DIALOG:
                 ProgressDialog pd = ProgressDialog.show(this, "", "", true);
@@ -1655,6 +1667,7 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfDay) {
             // TODO Auto-generated method stub
+
             hour = String.valueOf(hourOfDay);
             minute = String.valueOf(minuteOfDay);
 
@@ -2669,14 +2682,14 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
 				/* THIRD SCREEN VALUES */
             ps_name = preferences.getString("psname_name", "psname");
             point_name = preferences.getString("point_name", "pointname");
-            exact_location = preferences.getString("exact_location", "location");
+            exact_location = preferences.getString("ps_res_name_code", "location");
             breath_anlysr = preferences.getLong("analyser_id", 0);
 
 				/* FOR CHECKING THE PREF VALUES TO PUSH */
             if (exact_location.equals("location")) {
                 exct_lctn_send = "";
             } else {
-                exct_lctn_send = preferences.getString("exact_location", "location");
+                exct_lctn_send = preferences.getString("ps_res_name_code", "location");
             }
 
 				/* FOR CHECKING THE PREF VALUES TO PUSH */
@@ -2790,9 +2803,8 @@ public class GenerateDrunkDriveCase extends Activity implements OnClickListener,
                     edt_email_ID.setError(Html.fromHtml("<font color='black'>Enter Valid Email ID</font>"));
                     edt_email_ID.requestFocus();
 
-                } else if (offender_image == null) {
-                    Log.i("FTP IMAGE ", "Please Select Image");
-                    showToast("Please Select Image");
+                } else if (final_image_data_tosend == null) {
+                    showToast("Please Capture the Image! ");
                 } else {
                     if ("Y".equals(SpotChallan.OtpStatus.trim().toUpperCase()) && otpStatus != null) {
                         if (otpStatus.equals("0")) {

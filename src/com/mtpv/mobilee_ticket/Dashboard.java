@@ -137,6 +137,7 @@ public class Dashboard extends Activity implements OnClickListener {
 
     String psname_settings = "";
     String pointnameBycode_settings = "";
+    String psResName_settings="";
 
     public static String rta_details_request_from = "";
     public static String licence_details_request_from = "";
@@ -607,7 +608,12 @@ public class Dashboard extends Activity implements OnClickListener {
                         showToast("Please download master's !");
                     } else if ((psname_settings.equals("psname")) && (pointnameBycode_settings.equals("pointname"))) {
                         showToast("Configure Settings!");
-                    } else if (address_spot.trim() != null && address_spot.trim().length() < 15) {
+                    }
+                   /* else if(psResName_settings.equals("location")){
+                        showToast("Configure Settings!");
+                    }*/
+
+                    else if (address_spot.trim() != null && address_spot.trim().length() < 15) {
                         showToast("Configure BlueTooth Settings!");
                     } else {
                         if (isOnline()) {
@@ -681,7 +687,11 @@ public class Dashboard extends Activity implements OnClickListener {
                         showToast("Please download master's !");
                     } else if ((psname_settings.equals("psname")) && (pointnameBycode_settings.equals("pointname"))) {
                         showToast("Configure Settings!");
-                    } else if (address_spot.trim() != null && address_spot.trim().length() < 15) {
+                    }
+                    /*else if(psResName_settings.equals("location")){
+                        showToast("Configure Settings!");
+                    }*/
+                    else if (address_spot.trim() != null && address_spot.trim().length() < 15) {
                         showToast("Configure BlueTooth Settings!");
                     } else {
                         if (isOnline()) {
@@ -726,7 +736,11 @@ public class Dashboard extends Activity implements OnClickListener {
                         showToast("Please download master's !");
                     } else if ((psname_settings.equals("psname")) && (pointnameBycode_settings.equals("pointname"))) {
                         showToast("Configure Settings!");
-                    } else if (address_spot.trim() != null && address_spot.trim().length() < 15) {
+                    }
+                   /* else if(Settings_New.btn_ResponsiblePSName.getText().toString().equals("Responsible PS Name")){
+                        showToast("Configure Settings!");
+                    }*/
+                    else if (address_spot.trim() != null && address_spot.trim().length() < 15) {
                         showToast("Configure BlueTooth Settings!");
                     } else {
                         if (isOnline()) {
@@ -807,7 +821,7 @@ public class Dashboard extends Activity implements OnClickListener {
                         showToast("Please download master's !");
                     } else if ((psname_settings.equals("psname")) && (pointnameBycode_settings.equals("pointname"))) {
                         showToast("Configure Settings!");
-                    } else if (address_spot.trim() != null && address_spot.trim().length() < 15) {
+                    }else if (address_spot.trim() != null && address_spot.trim().length() < 15) {
                         showToast("Configure BlueTooth Settings!");
                     } else {
                         if (isOnline()) {
@@ -1048,7 +1062,10 @@ public class Dashboard extends Activity implements OnClickListener {
         preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         editor = preferences.edit();
         psname_settings = preferences.getString("psname_name", "psname");
+
         pointnameBycode_settings = preferences.getString("point_name", "pointname");
+
+        psResName_settings=preferences.getString("ps_res_name_name","location");
     }
 
     @SuppressWarnings("deprecation")
@@ -1084,6 +1101,7 @@ public class Dashboard extends Activity implements OnClickListener {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
+
                         finish();
                     }
                 });
@@ -1947,6 +1965,8 @@ public class Dashboard extends Activity implements OnClickListener {
         editor = preferences.edit();
         psname_settings = preferences.getString("psname_name", "psname");
         pointnameBycode_settings = preferences.getString("point_name", "pointname");
+        psResName_settings=preferences.getString("ps_res_name_name","location");
+
     }
 
     private void showToast(String msg) {
@@ -2115,7 +2135,11 @@ public class Dashboard extends Activity implements OnClickListener {
                 showToast("Please download master's !");
             } else if ((psname_settings.equals("psname")) && (pointnameBycode_settings.equals("pointname"))) {
                 showToast("Configure Settings!");
-            } else if (address_spot.trim() != null && address_spot.trim().length() < 15) {
+            }
+            /*else if(Settings_New.btn_ResponsiblePSName.getText().toString().equals("Responsible PS Name")){
+                showToast("Configure Settings!");
+            }*/
+            else if (address_spot.trim() != null && address_spot.trim().length() < 15) {
                 showToast("Configure BlueTooth Settings!");
             } else {
                 if (isOnline()) {

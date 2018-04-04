@@ -259,7 +259,7 @@ public class SpotChallan extends Activity
 
     StringBuffer present_time_toSend;
 
-    String bookedPScode_send_from_settings, bookedPSname_send_from_settings, point_code_send_from_settings, point_name_send_from_settings,
+    String bookedPScode_send_from_settings,booked_RES_PScode_send_from_settings, bookedPSname_send_from_settings, point_code_send_from_settings, point_name_send_from_settings,
             exact_location_send_from_settings, present_date_toSend = "", emailId_to_send = "", pancard_to_send = "", passport_to_send = "",
             VoterId_to_send = "", is_it_spot_send = "0", licStatus_send = "";
 
@@ -487,7 +487,9 @@ public class SpotChallan extends Activity
         bookedPSname_send_from_settings = preferences.getString("psname_name", "psname");
         point_code_send_from_settings = preferences.getString("point_code", "0");
         point_name_send_from_settings = preferences.getString("point_name", "pointname");
-        exact_location_send_from_settings = preferences.getString("exact_location", "location");
+        booked_RES_PScode_send_from_settings=preferences.getString("ps_res_name_code","0");
+      //  exact_location_send_from_settings = preferences.getString("exact_location", "location");
+        exact_location_send_from_settings=preferences.getString("ps_res_name_code","0");
 
 
     }
@@ -4169,7 +4171,6 @@ public class SpotChallan extends Activity
                 radioGroupButton_spotpaymentNo.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // TODO Auto-generated method stub
                         is_it_spot_send = "0";
                         ll_cash_or_card.setVisibility(View.GONE);
                         // et_payment_card_pin.setVisibility(View.GONE);
@@ -4185,6 +4186,7 @@ public class SpotChallan extends Activity
                                 ll_detained_items_root.setVisibility(View.GONE);
                                 ll_cash_or_card.setVisibility(View.GONE);
                                 ll_detained_itemlist_layout.setVisibility(View.GONE);
+
                             }
                         }
                         if ((Dashboard.check_vhleHistory_or_Spot.equals("chargesheet"))) {
@@ -4450,7 +4452,7 @@ public class SpotChallan extends Activity
 
                 TextView tv_sub_header = (TextView) dg_dynmic_violtns.findViewById(R.id.textView_header_spot_challan_xml);
                 TextView tv_title = (TextView) dg_dynmic_violtns.findViewById(R.id.textView_title_header_dynmicvltns_xml);
-                tv_title.setText("" + getResources().getString(R.string.select_violation));
+                tv_title.setText( getResources().getString(R.string.select_violation));
                 ll_dynamic_violations_root_static = (LinearLayout) dg_dynmic_violtns
                         .findViewById(R.id.ll_dynamic_violations_xml);
 
@@ -4467,6 +4469,7 @@ public class SpotChallan extends Activity
                         android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
 
 			/* DYNAMIC LAYOUTS START */
+
                 if (violation_offence_Code.size() > 0 && ServiceHelper.violation_detailed_views != null && ServiceHelper.violation_detailed_views.length > 0) {
 
                     ll_dynamic_vltns = new LinearLayout[violation_offence_Code.size()];
@@ -6645,7 +6648,9 @@ public class SpotChallan extends Activity
             bookedPSname_send_from_settings = preferences.getString("psname_name", "psname");
             point_code_send_from_settings = preferences.getString("point_code", "0");
             point_name_send_from_settings = preferences.getString("point_name", "pointname");
-            exact_location_send_from_settings = preferences.getString("exact_location", "location");
+
+            exact_location_send_from_settings=preferences.getString("ps_res_name_code","0");
+          //  exact_location_send_from_settings = preferences.getString("exact_location", "location");
 
 
 

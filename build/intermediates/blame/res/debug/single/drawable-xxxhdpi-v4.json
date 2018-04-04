@@ -4,16 +4,16 @@
         "source": "C:\\Users\\Srinivas\\.android\\build-cache\\bf29cc1757da7e464081bc1c294abb3db9b3ae0b\\output\\res\\drawable-xxxhdpi-v4\\efp_light__ic_action_list.png"
     },
     {
-        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\efp_dark__ic_action_list.png",
-        "source": "C:\\Users\\Srinivas\\.android\\build-cache\\bf29cc1757da7e464081bc1c294abb3db9b3ae0b\\output\\res\\drawable-xxxhdpi-v4\\efp_dark__ic_action_list.png"
+        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\efp_light__ic_action_invert_selection.png",
+        "source": "C:\\Users\\Srinivas\\.android\\build-cache\\bf29cc1757da7e464081bc1c294abb3db9b3ae0b\\output\\res\\drawable-xxxhdpi-v4\\efp_light__ic_action_invert_selection.png"
     },
     {
         "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\efp_light__ic_action_deselect.png",
         "source": "C:\\Users\\Srinivas\\.android\\build-cache\\bf29cc1757da7e464081bc1c294abb3db9b3ae0b\\output\\res\\drawable-xxxhdpi-v4\\efp_light__ic_action_deselect.png"
     },
     {
-        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\efp_light__ic_action_invert_selection.png",
-        "source": "C:\\Users\\Srinivas\\.android\\build-cache\\bf29cc1757da7e464081bc1c294abb3db9b3ae0b\\output\\res\\drawable-xxxhdpi-v4\\efp_light__ic_action_invert_selection.png"
+        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\efp_dark__ic_action_list.png",
+        "source": "C:\\Users\\Srinivas\\.android\\build-cache\\bf29cc1757da7e464081bc1c294abb3db9b3ae0b\\output\\res\\drawable-xxxhdpi-v4\\efp_dark__ic_action_list.png"
     },
     {
         "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\abc_ic_menu_copy_mtrl_am_alpha.png",
@@ -48,12 +48,12 @@
         "source": "C:\\Users\\Srinivas\\.android\\build-cache\\bf29cc1757da7e464081bc1c294abb3db9b3ae0b\\output\\res\\drawable-xxxhdpi-v4\\efp_light__ic_action_grid.png"
     },
     {
-        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\efp_dark__ic_action_deselect.png",
-        "source": "C:\\Users\\Srinivas\\.android\\build-cache\\bf29cc1757da7e464081bc1c294abb3db9b3ae0b\\output\\res\\drawable-xxxhdpi-v4\\efp_dark__ic_action_deselect.png"
-    },
-    {
         "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\abc_switch_track_mtrl_alpha.9.png",
         "source": "C:\\Users\\Srinivas\\.android\\build-cache\\974101f1dea352e552f56f8fcc4c8c51ada5e7c9\\output\\res\\drawable-xxxhdpi-v4\\abc_switch_track_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\efp_dark__ic_action_deselect.png",
+        "source": "C:\\Users\\Srinivas\\.android\\build-cache\\bf29cc1757da7e464081bc1c294abb3db9b3ae0b\\output\\res\\drawable-xxxhdpi-v4\\efp_dark__ic_action_deselect.png"
     },
     {
         "merged": "D:\\Android\\ETicketHydJIO\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4\\abc_btn_check_to_on_mtrl_000.png",

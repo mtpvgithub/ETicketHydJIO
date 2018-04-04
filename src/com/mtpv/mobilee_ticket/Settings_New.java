@@ -82,20 +82,25 @@ public class Settings_New extends Activity implements OnClickListener {
 
 	Button btn_ps_name;
 	public static Button btn_pointby_ps_name;
+	public static Button btn_ResponsiblePSName;
 	Button btn_save;
 	Button btn_cancel;
 	Button btn_back;
 	EditText et_exact_location;
+
 	EditText et_analyser;
 	EditText et_web_url;
 
 	final int PS_NAME_DIALOG = 0;
 	final int PS_CODE_DIALOG = 1;
 	final int PROGRESS_DIALOG = 2;
+	final int PS_RESPONSIBLE_NAME_DIALOG=3;
 
 	int selected_ps_name = -1;
+	int selected_responsible_ps_name=-1;
 	int selected_pointby_psname = -1;
-	int ps_code_pos;
+	int ps_code_pos,ps_responsible_Code;
+
 
 	String ps_name_title = "Select PS Name";
 	String ps_code_title = "Select PS By Point Name";
@@ -277,6 +282,7 @@ public class Settings_New extends Activity implements OnClickListener {
 		if (dashboard.ps_name.equals("psname")) {
 		} else {
 			btn_ps_name.setText("" + dashboard.ps_name);
+			btn_ResponsiblePSName.setText("" + dashboard.ps_name);
 			if (isOnline()) {
 				selected_pointby_psname = -1;
 				btn_pointby_ps_name.setText(""+ getResources().getString(R.string.select_pointbypsname));
@@ -299,12 +305,17 @@ public class Settings_New extends Activity implements OnClickListener {
 		}
 		/* FOR PS POINT NAME END */
 
-		dashboard.exact_location = dashboard.preferences.getString("exact_location", "location");
+		dashboard.exact_location = dashboard.preferences.getString("ps_res_name_code", "location");
+
+
+
 		Long anly_id = dashboard.preferences.getLong("analyser_id", 0);
 
 		if (dashboard.exact_location.equals("location")) {
 		} else {
-			et_exact_location.setText("" + dashboard.exact_location);
+			//et_exact_location.setText("" + dashboard.exact_location);
+			btn_ResponsiblePSName.setText(""+ dashboard.preferences.getString("ps_res_name_name", "location"));
+
 		}
 
 		if (anly_id == 0) {
@@ -391,6 +402,7 @@ public class Settings_New extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		btn_ps_name = (Button) findViewById(R.id.btnpsname_settings_xml);
 		btn_pointby_ps_name = (Button) findViewById(R.id.btnpointby_psname_settings_xml);
+		btn_ResponsiblePSName=(Button)findViewById(R.id.btn_responsiblePS_settings_xml);
 
 		et_exact_location = (EditText) findViewById(R.id.edt_exctlocation_settings_xml);
 		et_analyser = (EditText) findViewById(R.id.edt_breatheanalyser_settings_xml);
@@ -425,6 +437,7 @@ public class Settings_New extends Activity implements OnClickListener {
 
 
 		btn_ps_name.setOnClickListener(this);
+		btn_ResponsiblePSName.setOnClickListener(this);
 		// update_apk.setOnClickListener(this);
 		btn_pointby_ps_name.setOnClickListener(this);
 		btn_back.setOnClickListener(this);
@@ -598,6 +611,9 @@ public class Settings_New extends Activity implements OnClickListener {
 			case R.id.btnpsname_settings_xml:
 				showDialog(PS_NAME_DIALOG);
 				break;
+			case R.id.btn_responsiblePS_settings_xml:
+				showDialog(PS_RESPONSIBLE_NAME_DIALOG);
+				break;
 
 			case R.id.btnpointby_psname_settings_xml:
 
@@ -619,6 +635,7 @@ public class Settings_New extends Activity implements OnClickListener {
 				dashboard.preferences.edit().clear().commit();
 				btn_ps_name.setText(""+ getResources().getString(R.string.select_ps_name));
 				btn_pointby_ps_name.setText(""+ getResources().getString(R.string.select_pointbypsname));
+				btn_ResponsiblePSName.setText("Responsible PS Name");
 				et_exact_location.setText("");
 				et_analyser.setText("");
 				et_bt_address.setText("");
@@ -652,7 +669,9 @@ public class Settings_New extends Activity implements OnClickListener {
 					showToast("Select PS Name");
 				} else if (btn_pointby_ps_name.getText().toString().trim().equals(""+ getResources().getString(R.string.select_pointbypsname))) {
 					showToast("Select Point Name");
-				} else if ((et_bt_address.getText().toString().trim().equals(""))
+				} else if (btn_ResponsiblePSName.getText().toString().trim().equals("Responsible PS Name")) {
+					showToast("Select Responsible PS name!");
+				}else if ((et_bt_address.getText().toString().trim().equals(""))
 						&& (et_bt_address.getText().toString().trim().length() < 10)) {
 					// et_bt_address.setError("Check Bluetooth Details Properly");
 					et_bt_address.setError(Html.fromHtml("<font color='black'>Check Bluetooth Details Properly</font>"));
@@ -672,11 +691,12 @@ public class Settings_New extends Activity implements OnClickListener {
 					dashboard.editor = dashboard.preferences.edit();
 
 				/* FOR EXACT LOCATION PREF VALUES */
-					if (et_exact_location.getText().toString().trim().equals("")) {
+				//Changed to edt TExt to BTn
+					if (btn_ResponsiblePSName.getText().toString().trim().equals("")) {
 						dashboard.editor.putString("exact_location", "");
 					} else {
 						dashboard.editor.putString("exact_location",
-								et_exact_location.getText().toString().trim());
+								btn_ResponsiblePSName.getText().toString().trim());
 					}
 
 				/* ANALYSER ID PREF VALUES */
@@ -701,6 +721,8 @@ public class Settings_New extends Activity implements OnClickListener {
 
 					edit.putString("BOOKED_PS", ""+btn_ps_name.getText().toString().trim());
 					edit.putString("BOOKED_POINT", ""+btn_pointby_ps_name.getText().toString().trim());
+					edit.putString("BOOKED_RESPONSIBLE_Ps_NAME", ""+btn_ResponsiblePSName.getText().toString().trim());
+
 
 					edit.commit();
 
@@ -1103,6 +1125,51 @@ public class Settings_New extends Activity implements OnClickListener {
 						});
 				Dialog dg_ps_name = ad_ps_name.create();
 				return dg_ps_name;
+
+
+			case PS_RESPONSIBLE_NAME_DIALOG:
+				TextView title_responsiblePS = new TextView(this);
+				title_responsiblePS.setText("Select RESPONSIBLE PS Name");
+				title_responsiblePS.setBackgroundColor(Color.parseColor("#007300"));
+				title_responsiblePS.setGravity(Gravity.CENTER);
+				title_responsiblePS.setTextColor(Color.WHITE);
+				title_responsiblePS.setTextSize(26);
+				title_responsiblePS.setTypeface(title_responsiblePS.getTypeface(), Typeface.BOLD);
+				title_responsiblePS.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dialog_logo, 0, R.drawable.dialog_logo, 0);
+				title_responsiblePS.setPadding(20, 0, 20, 0);
+				title_responsiblePS.setHeight(70);
+
+				AlertDialog.Builder ad_responsible_ps_name = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+				ad_responsible_ps_name.setCustomTitle(title_responsiblePS);
+				ad_responsible_ps_name.setSingleChoiceItems(psname_name, selected_responsible_ps_name,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+								selected_responsible_ps_name = which;
+								btn_ResponsiblePSName.setText(""+ psname_name[which].toString().trim());
+								ps_responsible_Code = which;
+
+								dashboard.preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+								dashboard.editor = dashboard.preferences.edit();
+								dashboard.editor.putInt("ps_res_name_code_toSet", which);
+								dashboard.editor.putString("ps_res_name_code", psname_code[which].toString());
+								dashboard.editor.putString("ps_res_name_name", psname_name[which].toString());
+								dashboard.editor.commit();
+								removeDialog(PS_RESPONSIBLE_NAME_DIALOG);
+
+								// if ((pointNameBy_PsName_code_arr.size() > 0)
+								// && (pointNameBy_PsName_arr.size() > 0)) {
+								// pointNameBy_PsName_code_arr.clear();
+								// pointNameBy_PsName_arr.clear();
+								// }
+
+
+							}
+						});
+				Dialog dg_res_ps_name = ad_responsible_ps_name.create();
+				return dg_res_ps_name;
 
 			case PS_CODE_DIALOG:
 				TextView title2 = new TextView(this);
